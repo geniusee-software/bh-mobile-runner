@@ -1,6 +1,7 @@
 import type { Browser } from "webdriverio";
 import type { PageGraphBuilder } from "./PageGraphBuilder.ts";
 import { readScreen } from "./ScreenSignature.ts";
+import { ScreenReader } from "./ScreenReader.ts";
 
 export namespace Crawler {
   export interface Props {
@@ -17,6 +18,8 @@ export namespace Crawler {
     taps: number;
     screensSeen: number;
     deadEnds: number;
+    /** Full accessibility dumps actually asked of the device. */
+    treeReads: number;
   }
 }
 
@@ -54,6 +57,13 @@ export class Crawler {
     };
   }
 
+  #reader: ScreenReader | undefined;
+
+  /** The screen, read once per change rather than once per question. */
+  get #screen(): ScreenReader {
+    return (this.#reader ??= new ScreenReader(this.#props.browser));
+  }
+
   async crawl(): Promise<Crawler.Report> {
     await this.#relaunch();
     await this.#explore(0, "crawl");
@@ -62,6 +72,7 @@ export class Crawler {
       taps: this.#taps,
       screensSeen: this.#visited.size,
       deadEnds: this.#deadEnds,
+      treeReads: this.#screen.reads,
     };
   }
 
@@ -76,7 +87,7 @@ export class Crawler {
     for (const target of targets) {
       if (this.#taps >= this.#props.maxTaps) return;
 
-      const moved = await this.#tap(target);
+      const moved = await this.#tap(target, screen.signature);
       this.#taps += 1;
       if (!moved) {
         this.#deadEnds += 1;
@@ -116,13 +127,14 @@ export class Crawler {
     // Recorded from the raw dump rather than the compacted tree: only the raw
     // one says which elements are visible, and this app mounts every tab at
     // once, so without that every screen reads as the home screen.
-    const source = await this.#props.browser.getPageSource();
+    const { source, screen } = await this.#screen.current();
     this.#props.builder.add({ treeXml: source, instruction: "crawl", sequenceId });
-    return readScreen(source);
+    return screen;
   }
 
-  async #tap(text: string): Promise<boolean> {
-    const before = await this.#signature();
+  async #tap(text: string, before: string): Promise<boolean> {
+    // The caller already knows where it stands, so the crawl does not pay for
+    // a dump to be told again.
     const element = this.#props.browser.$(
       `-ios predicate string:name == "${text}" OR label == "${text}" OR value == "${text}"`,
     );
@@ -130,7 +142,8 @@ export class Crawler {
 
     await element.click().catch(() => undefined);
     await this.#settle();
-    if ((await this.#signature()) !== before) return true;
+    this.#screen.invalidate();
+    if ((await this.#screen.signature()) !== before) return true;
 
     // A tab bar drawn as static text over an unnamed container is not hittable
     // itself: the click lands on a label that handles nothing. Tapping its
@@ -138,7 +151,8 @@ export class Crawler {
     // this, three quarters of the crawl's taps went nowhere.
     if (!(await this.#tapCentre(element))) return false;
     await this.#settle();
-    return (await this.#signature()) !== before;
+    this.#screen.invalidate();
+    return (await this.#screen.signature()) !== before;
   }
 
   async #tapCentre(element: WebdriverIO.Element): Promise<boolean> {
@@ -159,22 +173,19 @@ export class Crawler {
 
   async #back(expected: string, sequenceId: string): Promise<void> {
     for (let attempt = 0; attempt < 3; attempt++) {
-      if ((await this.#signature()) === expected) return;
+      if ((await this.#screen.signature()) === expected) return;
       await this.#props.browser
         .execute("mobile: swipe", { direction: "right" })
         .catch(() => undefined);
       await this.#settle();
+      this.#screen.invalidate();
     }
 
     // Swiping did not get back; restart rather than crawl from a lost place.
-    if ((await this.#signature()) !== expected) {
+    if ((await this.#screen.signature()) !== expected) {
       await this.#relaunch();
       await this.#record(sequenceId);
     }
-  }
-
-  async #signature(): Promise<string> {
-    return readScreen(await this.#props.browser.getPageSource()).signature;
   }
 
   async #relaunch(): Promise<void> {
@@ -182,6 +193,7 @@ export class Crawler {
     await browser.execute("mobile: terminateApp", { bundleId });
     await browser.execute("mobile: launchApp", { bundleId });
     await this.#settle(2500);
+    this.#screen.invalidate();
   }
 
   #settle(ms = 1400): Promise<void> {

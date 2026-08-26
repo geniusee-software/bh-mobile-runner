@@ -20,6 +20,8 @@ export namespace RunRecord {
      * became more generous about.
      */
     passReason?: string;
+    /** Set when the actor's only move was a scroll and the action was re-issued. */
+    scrollRetried?: boolean;
     durationMs: number;
     llmCalls: number;
     /** Present only on a failed check: was the answer on screen at all? */

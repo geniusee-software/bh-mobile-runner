@@ -172,6 +172,23 @@ export class CaseRunner {
 
     await this.#props.systemDialogs?.clear(`step ${index + 1} after`);
 
+    // A step whose only move was a scroll has not been performed: scrolling
+    // brings the target into view, and the instruction asked for something to
+    // be done to it. Recorded in the traces, this looked like the agent
+    // deciding a card was reached because it had become visible — the tap that
+    // the case actually asked for never happened. One more turn, now that the
+    // target is on screen, is cheaper than losing the case.
+    let scrollRetried = false;
+    if (this.#onlyScrolled(callsBefore)) {
+      scrollRetried = true;
+      try {
+        await alumni.do(step.action);
+      } catch (error) {
+        return finish("errored", `action (after scroll): ${describe(error)}`);
+      }
+      await this.#props.systemDialogs?.clear(`step ${index + 1} after retry`);
+    }
+
     if (!step.expected) return finish("passed", "");
 
     let outcome;
@@ -185,6 +202,7 @@ export class CaseRunner {
 
     if (outcome.passed) {
       const passed = finish("passed", "");
+      passed.scrollRetried = scrollRetried || undefined;
       passed.verifierAttempts = outcome.attempts;
       passed.passReason = outcome.explanation;
       // A pass the tree could not have reached was decided by a picture, and
@@ -204,10 +222,30 @@ export class CaseRunner {
     }
 
     const failed = finish("failed", `check: ${outcome.explanation.slice(0, 300)}`);
+    failed.scrollRetried = scrollRetried || undefined;
     failed.verifierAttempts = outcome.attempts;
     failed.evidence = await this.#probeExpectation(step.expected);
     failed.screenshotPath = await this.#captureScreen(index);
     return failed;
+  }
+
+  /**
+   * Whether the actor's whole contribution to this step was scrolling.
+   *
+   * Read from the calls the recorder already collects, so nothing new has to
+   * be threaded through the agent classes. A step with no actor call at all is
+   * not counted: that is a different failure, and re-issuing it would only
+   * spend another call to reach the same place.
+   */
+  #onlyScrolled(callsBefore: number): boolean {
+    const tools = this.#llmCalls.calls
+      .slice(callsBefore)
+      .filter((call) => call.agent === "actor")
+      .flatMap((call) => call.calls);
+
+    return (
+      tools.length > 0 && tools.every((tool) => /scroll/i.test(tool.name))
+    );
   }
 
   /**

@@ -14,6 +14,10 @@ import { SimulatorSession } from "../runner/SimulatorSession.ts";
 const session = new SimulatorSession(DEVICE);
 const browser = await session.start();
 
+// A fresh install opens on the onboarding carousel, and a crawl that starts
+// there maps the carousel instead of the app.
+await session.relaunchApp();
+
 const builder = new PageGraphBuilder();
 const report = await new Crawler({
   browser,
@@ -26,7 +30,10 @@ const data = builder.toData(DEVICE.bundleId);
 await fs.mkdir(path.dirname(GRAPH_PATH), { recursive: true });
 await Bun.write(GRAPH_PATH, JSON.stringify(data, null, 2));
 
-console.log(`taps ${report.taps}, dead ends ${report.deadEnds}`);
+console.log(
+  `taps ${report.taps}, dead ends ${report.deadEnds}, tree reads ${report.treeReads}` +
+    (report.taps ? ` (${(report.treeReads / report.taps).toFixed(1)} per tap)` : ""),
+);
 console.log(`screens ${data.screens.length}, edges ${data.edges.length}\n`);
 for (const screen of [...data.screens].sort((a, b) => b.visits - a.visits)) {
   const stable = screen.elements
