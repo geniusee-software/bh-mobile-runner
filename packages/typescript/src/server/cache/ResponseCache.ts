@@ -155,7 +155,25 @@ export class ResponseCache extends ServerCache {
 
       const { requestHash } = this.#initiate(agentMeta, prompt, llmKey);
 
-      const storedGenerations = generations.map(Lchain.toStored);
+      let storedGenerations;
+      try {
+        storedGenerations = generations.map(Lchain.toStored);
+      } catch (error) {
+        // A response the cache cannot store is still a perfectly good response.
+        // Providers vary in the usage metadata they attach, and a model whose
+        // shape this schema has not met yet must not lose the call that was
+        // already paid for — skip the write and let the caller have its answer.
+        logger.warn(
+          `Skipping response cache update, generation could not be stored: {error}`,
+          { error },
+        );
+        span.event("cache.update.skip", {
+          ...this.#spanAttrs(),
+          "cache.update.skip.reason": "unserializable",
+        });
+        return;
+      }
+
       this.#memoryCache[requestHash] = {
         prompt,
         llmKey,
