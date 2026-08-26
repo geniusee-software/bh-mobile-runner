@@ -9,10 +9,19 @@ Every number below comes from `experiments/results/`; regenerate the tables with
 
 ## The short version
 
-Two things came out of the night. The cost of a step fell by more than half and
-is now understood line by line. The pass rate did not reach 90%, and the reason
-is not the model: **64% of the suite cannot be satisfied in this environment at
-all**, and of the failures that remain, genuine model errors are 7%.
+Two things came out of the night. The cost of a case fell from $0.050 to
+$0.021, and is now understood line by line. The pass rate did not reach 90%:
+on all 46 cases the environment can satisfy, the best configuration passes
+**56 of 136 steps (41%)** and completes 11 of 46 cases, at $0.0208 each.
+
+The reason is not the model. **99 of the suite's 145 cases cannot be satisfied
+here at all** — they need a signed-in account or quote feed content that has
+since rotated — and of the steps that do fail, **83% are expectations phrased as
+prose** that name no element to check against. Genuine model errors are 9%.
+
+A note on sampling: a six-case subset put the same configuration at 50–74%. The
+full set says 41%. Small samples flattered every number in this document until
+they were re-measured.
 
 ## What the step was paying for
 
