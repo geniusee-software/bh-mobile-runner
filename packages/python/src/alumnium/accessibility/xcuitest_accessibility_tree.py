@@ -73,29 +73,40 @@ class XCUITestAccessibilityTree(BaseAccessibilityTree):
             name=element.get("name"),
             value=element.get("value"),
             label=element.get("label"),
+            visible=element.get("visible") != "false",
             match_index=self._match_index_of(root, element),
         )
 
     def _match_index_of(self, root: Element, target: Element) -> int:
-        """Count how many elements before this one share its identifying attributes.
+        """Count how many elements before this one share its attributes *and* its visibility.
 
         Those attributes are all a predicate can carry, and screens repeat them:
         a feed of thirty shiur rows has thirty buttons named "play". Document
         order is the order WebDriverAgent returns matches in, so the count is
         enough to pick this element back out of that set.
+
+        Visibility has to be part of the count because the driver asks for
+        on-screen matches only. Counting across both sets and then indexing into
+        one of them lands on a different element — and on a tabbed app that
+        different element is usually the same label on a tab nobody is looking
+        at, which accepts the tap, reports success, and changes nothing.
         """
 
         def signature(elem: Element) -> tuple:
             return (elem.tag, elem.get("name"), elem.get("value"), elem.get("label"))
 
+        def is_visible(elem: Element) -> bool:
+            return elem.get("visible") != "false"
+
         wanted = signature(target)
+        wanted_visible = is_visible(target)
         seen = 0
 
         def walk(elem: Element) -> int | None:
             nonlocal seen
             if elem is target:
                 return seen
-            if signature(elem) == wanted:
+            if signature(elem) == wanted and is_visible(elem) == wanted_visible:
                 seen += 1
             for child in elem:
                 found = walk(child)

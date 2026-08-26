@@ -61,3 +61,26 @@ def test_contains_webview_is_true_when_the_screen_embeds_one():
         "</XCUIElementTypeApplication></AppiumAUT>"
     )
     assert XCUITestAccessibilityTree(xml).contains_webview() is True
+
+
+def test_match_index_counts_within_the_same_visibility():
+    # Two elements share a label; one is on a tab nobody is looking at. The
+    # driver asks for on-screen matches only, so the count must follow the same
+    # set — otherwise a tap aimed at the visible one lands on the hidden one.
+    xml = (
+        '<AppiumAUT><XCUIElementTypeApplication type="XCUIElementTypeApplication" name="App">'
+        '<XCUIElementTypeStaticText type="XCUIElementTypeStaticText" name="Highlights" label="Highlights" visible="false" />'
+        '<XCUIElementTypeStaticText type="XCUIElementTypeStaticText" name="Highlights" label="Highlights" visible="true" />'
+        '<XCUIElementTypeStaticText type="XCUIElementTypeStaticText" name="Highlights" label="Highlights" visible="true" />'
+        "</XCUIElementTypeApplication></AppiumAUT>"
+    )
+    tree = XCUITestAccessibilityTree(xml)
+    hidden, first_visible, second_visible = (tree.element_by_id(i) for i in (3, 4, 5))
+
+    assert (hidden.visible, hidden.match_index) == (False, 0)
+    assert (first_visible.visible, first_visible.match_index) == (True, 0)
+    assert (second_visible.visible, second_visible.match_index) == (True, 1)
+
+
+def test_element_reports_visibility(simple_tree: XCUITestAccessibilityTree):
+    assert simple_tree.element_by_id(74).visible is True

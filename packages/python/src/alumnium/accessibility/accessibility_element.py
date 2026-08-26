@@ -25,3 +25,10 @@ class AccessibilityElement:
     # Without this the driver silently acts on the first of that set and the
     # agent's actual choice is discarded.
     match_index: int = 0
+    # Whether this element is on screen, as the snapshot reports it.
+    #
+    # An iOS app keeps every tab mounted, so a label the agent can see is often
+    # matched by a second element with the same name on a tab nobody is looking
+    # at. Carrying this lets the driver ask for the on-screen one and count its
+    # position among the on-screen ones, which is the set the agent was reading.
+    visible: bool = True

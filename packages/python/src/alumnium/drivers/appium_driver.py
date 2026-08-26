@@ -17,6 +17,7 @@ from ..tools.press_key_tool import PressKeyTool
 from ..tools.type_tool import TypeTool
 from .base_driver import BaseDriver
 from .keys import Key
+from .tree.snapshot_depth import SnapshotDepth
 
 logger = get_logger(__name__)
 
@@ -42,6 +43,9 @@ class AppiumDriver(BaseDriver):
         # webview. The tree already carries that answer, so the scan only runs
         # when a webview node is actually present.
         self.lazy_webview_contexts = True
+        # Reads shallow, and deep only when the shallow read missed what was
+        # asked for. Left unset, every read is whatever the session's cap says.
+        self.snapshot_depth: SnapshotDepth | None = None
         self.delay: float = 0
         self.hide_keyboard_after_typing = False
         self.double_fetch_page_source = False
@@ -58,12 +62,25 @@ class AppiumDriver(BaseDriver):
         # Intentionally fetch and discard the page source to refresh internal state.
         if self.double_fetch_page_source:
             _ = self.driver.page_source
-        xml_string = self.driver.page_source
+
+        def fetch_source() -> str:
+            return self.driver.page_source
+
+        xml_string = self.snapshot_depth.read(fetch_source) if self.snapshot_depth else fetch_source()
 
         if self.platform == "uiautomator2":
             return UIAutomator2AccessibilityTree(xml_string)
         else:
             return XCUITestAccessibilityTree(xml_string)
+
+    def looking_for(self, terms: list[str]) -> None:
+        """Tell the next reads what the current instruction named.
+
+        A shallow tree that does not contain it can then be recognised as too
+        shallow rather than as an empty screen.
+        """
+        if self.snapshot_depth:
+            self.snapshot_depth.expect(terms)
 
     def click(self, id: int) -> None:
         self._ensure_native_app_context()
@@ -229,6 +246,14 @@ class AppiumDriver(BaseDriver):
             props = [f'{k} == "{v}"' for k, v in props.items()]
             props_str = " AND ".join(props)
             predicate += f" AND {props_str}"
+
+        # Ask only for what is on screen when the agent chose something on
+        # screen. `is_displayed()` does not help here — WebDriverAgent answers
+        # true for an element of a mounted but unopened tab — so the snapshot's
+        # own flag is the only thing that separates them, and the tree counts
+        # match_index within the same set.
+        if element.visible is not False:
+            predicate += " AND visible == 1"
 
         logger.debug(f"Finding element by predicate: {predicate}")
 
