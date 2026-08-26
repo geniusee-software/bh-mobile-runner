@@ -23,6 +23,23 @@ A note on sampling: a six-case subset put the same configuration at 50–74%. Th
 full set says 41%. Small samples flattered every number in this document until
 they were re-measured.
 
+Two changes made later that day moved it further, measured step by step against
+the same twelve cases rather than by comparing two pass rates:
+
+| | steps | whole cases | $/case | median |
+| --- | --- | --- | --- | --- |
+| split-roles, as measured on the full set | 10/19 (53%) | 2/12 | $0.0192 | 84s |
+| + visibility in the tree | 11/19 (58%) | 3/12 | — | — |
+| + a screenshot where the tree cannot answer (`best`) | **12/19 (63%)** | **4/12** | **$0.0171** | **41s** |
+
+More accurate, cheaper and twice as fast at once — though most of the speed is
+the judge changing model (haiku rather than gpt-oss-120b), not the screenshot.
+All three gained steps are one class: which feed tab is active. That is exactly
+what the screenshot was bought for and exactly what an iOS tree cannot express.
+The one lost step is the app launching into a registration screen, which happens
+in 4.2% of recorded case runs evenly across every label — a tax of the
+environment, not a consequence of the change.
+
 ## What the step was paying for
 
 Same six cases, same model (`claude-haiku-4-5`), one change at a time.
@@ -200,6 +217,24 @@ What was built instead is the thing that makes a later fine-tune possible:
 screen as the model saw it, the instruction, the tool call, and whether the step
 passed — and `GET /dataset` returns them as chat-format JSONL. The dataset now
 accumulates on its own.
+
+## Comparing two runs
+
+`compare.ts` pairs by case and step:
+
+```
+bun experiments/scripts/compare.ts fullset:split-roles best:best
+```
+
+A pass rate on its own cannot say whether a change helped — two runs of one
+configuration differ, and two runs over different case sets differ for reasons
+unrelated to the change. Pairing removes both, and both directions are counted:
+a change that wins ten steps and loses eight is a different result from one that
+wins two and loses none.
+
+Runs pin their case set with `--cases-from <label>`, and `--limit N` narrows an
+already-pinned set when there is time to compare configurations case by case but
+not to finish either over the whole set.
 
 ## Reproducing
 

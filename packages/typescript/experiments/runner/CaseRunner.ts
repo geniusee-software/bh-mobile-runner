@@ -169,6 +169,13 @@ export class CaseRunner {
       const passed = finish("passed", "");
       passed.verifierAttempts = outcome.attempts;
       passed.passReason = outcome.explanation;
+      // A pass the tree could not have reached was decided by a picture, and
+      // the picture is the only thing that can show whether it was decided
+      // rightly. Keeping it only for failures left exactly the verdicts worth
+      // checking with nothing behind them.
+      if (outcome.attempts.some((attempt) => attempt.includes("vision"))) {
+        passed.screenshotPath = await this.#captureScreen(index);
+      }
       // Audit the pass against the very tree the verdict was reached on: free,
       // and the only guard against a lenient judge scoring well by accepting
       // screens that do not satisfy the expectation.
@@ -181,17 +188,17 @@ export class CaseRunner {
     const failed = finish("failed", `check: ${outcome.explanation.slice(0, 300)}`);
     failed.verifierAttempts = outcome.attempts;
     failed.evidence = await this.#probeExpectation(step.expected);
-    failed.screenshotPath = await this.#captureFailure(index);
+    failed.screenshotPath = await this.#captureScreen(index);
     return failed;
   }
 
   /**
-   * Saves what the screen looked like when a check failed.
+   * Saves what the screen looked like when a verdict was reached.
    *
    * A pass rate says how often the runner disagrees with the suite; only the
    * picture says which of the two was wrong.
    */
-  async #captureFailure(stepIndex: number): Promise<string | undefined> {
+  async #captureScreen(stepIndex: number): Promise<string | undefined> {
     const { failureShotsDir } = this.#props;
     if (!failureShotsDir) return undefined;
 
