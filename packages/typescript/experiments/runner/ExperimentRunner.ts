@@ -70,6 +70,7 @@ export class ExperimentRunner {
       variant,
       browser: session.browser,
       resetApp: () => session.relaunchApp(),
+      systemDialogs: session.systemDialogs,
       llm,
       verifierLlm,
       failureShotsDir: path.join(RESULTS_DIR, runLabel, "shots", variant.id),

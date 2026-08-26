@@ -64,6 +64,15 @@ export namespace RunRecord {
     llmCallsByAgent: Record<string, number>;
     tokens: Tokens;
     costUsd: number;
+    /**
+     * System dialogs answered while this case ran.
+     *
+     * Recorded so a run can be read back and audited, and kept out of
+     * `stepsTotal` on purpose: iOS asking for a permission is a property of the
+     * device, and counting it would score the runner on the operating system's
+     * behaviour rather than on the application's.
+     */
+    systemDialogs?: number;
     device: DeviceTotals;
   }
 }

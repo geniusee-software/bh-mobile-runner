@@ -24,6 +24,7 @@ export const PLATFORM_PREAMBLES: Record<Driver.Platform, string> = {
     '- An iOS app keeps every tab mounted, so the tree holds all of them at once. `visible="false"` marks what is not on the screen right now: a tab that is not open, a sheet underneath, a row below the fold.',
     "- Which tab is open is therefore readable: it is the one whose content is visible. The tab buttons themselves look identical, so judge by their content, never by the button.",
     "- An element without that attribute is on screen. One carrying it exists but is not being shown.",
+    "- Scrolling only brings something into view; it is not the action itself. Having scrolled, go on and do what the instruction asked — a step that ends on a scroll has not been performed.",
   ].join("\n"),
 
   uiautomator2: [
@@ -32,6 +33,7 @@ export const PLATFORM_PREAMBLES: Record<Driver.Platform, string> = {
     "- There is no page title and no URL; those fields are empty and carry no meaning. Never reason about them.",
     '- A screen is "titled" by its toolbar or action-bar text, not by the application name.',
     "- Treat `text`, `content-desc` and `resource-id` as the text a person sees. An element is present if it is in the tree, even when it sits below the fold.",
+    "- Scrolling only brings something into view; it is not the action itself. Having scrolled, go on and do what the instruction asked — a step that ends on a scroll has not been performed.",
   ].join("\n"),
 };
 

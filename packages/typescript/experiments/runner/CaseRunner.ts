@@ -14,6 +14,7 @@ import { ExpectationProbe } from "../diagnostics/ExpectationProbe.ts";
 import { DeviceCallRecorder } from "../metrics/DeviceCallRecorder.ts";
 import { LlmCallRecorder } from "../metrics/LlmCallRecorder.ts";
 import { RunRecord, summariseCalls } from "../metrics/RunRecord.ts";
+import type { SystemDialogActor } from "./SystemDialogActor.ts";
 import type { TraceCollector } from "../trace/TraceCollector.ts";
 import type { StepVerifier } from "../verify/StepVerifier.ts";
 import { verifierFor } from "../verify/verifierFor.ts";
@@ -35,6 +36,13 @@ export namespace CaseRunner {
     failureShotsDir?: string | undefined;
     /** Collects the model's decisions as training data; omit to skip. */
     traces?: TraceCollector | undefined;
+    /**
+     * Answers the dialogs iOS puts over the app.
+     *
+     * Passed in rather than built here: a dialog is a property of the device,
+     * not of a case, and the same actor serves the launch and every step.
+     */
+    systemDialogs?: SystemDialogActor | undefined;
   }
 }
 
@@ -77,6 +85,7 @@ export class CaseRunner {
     await resetApp();
     this.#llmCalls.reset();
     this.#deviceCalls.reset();
+    this.#props.systemDialogs?.forget();
 
     const alumni = new Alumni(this.#deviceCalls.instrument(browser), {
       model: Model.parse(variant.model),
@@ -123,6 +132,7 @@ export class CaseRunner {
       steps,
       ...summariseCalls(this.#llmCalls.calls),
       costUsd: this.#costUsd(),
+      systemDialogs: this.#props.systemDialogs?.dismissed.length,
       device: this.#deviceTotals(),
     };
   }
@@ -148,11 +158,19 @@ export class CaseRunner {
       llmCalls: this.#llmCalls.callCount - callsBefore,
     });
 
+    // Before the action, because a dialog standing over the app swallows the
+    // tap; and again after it, because an action can be what summons one. The
+    // count never enters the verdict — iOS asking for a permission is not the
+    // case failing.
+    await this.#props.systemDialogs?.clear(`step ${index + 1} before`);
+
     try {
       await alumni.do(step.action);
     } catch (error) {
       return finish("errored", `action: ${describe(error)}`);
     }
+
+    await this.#props.systemDialogs?.clear(`step ${index + 1} after`);
 
     if (!step.expected) return finish("passed", "");
 

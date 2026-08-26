@@ -1,5 +1,6 @@
 import { remote } from "webdriverio";
 import type { Browser } from "webdriverio";
+import { SystemDialogActor } from "./SystemDialogActor.ts";
 
 export namespace SimulatorSession {
   /** Everything needed to reach one iOS simulator through one Appium server. */
@@ -166,6 +167,13 @@ export class SimulatorSession {
     "Maybe later",
   ];
 
+  #systemDialogs: SystemDialogActor | undefined;
+
+  /** Answers the dialogs iOS puts over the app; never counted as a step. */
+  get systemDialogs(): SystemDialogActor {
+    return (this.#systemDialogs ??= new SystemDialogActor(this.browser));
+  }
+
   /** Return the app to its first screen without paying for a new WDA handshake. */
   async relaunchApp(): Promise<void> {
     const { bundleId } = this.#props;
@@ -174,6 +182,15 @@ export class SimulatorSession {
     await this.dismissInterstitials();
   }
 
+  /**
+   * Waits until the app has replaced its splash screen with a real one.
+   *
+   * "Something has been drawn" is not a usable signal: the splash draws a
+   * logo and nothing else, so a check for any named element returns
+   * immediately and every read after it is of a screen that is about to be
+   * replaced. What follows the splash is either the app itself or something
+   * standing in front of it, so waiting for any of those is precise.
+   */
   /**
    * Waits until the app has replaced its splash screen with a real one.
    *
@@ -244,7 +261,7 @@ export class SimulatorSession {
     // is how a run reached its first case still sitting on the onboarding
     // carousel.
     await this.#awaitLanding();
-    await this.#dismissSystemAlert();
+    await this.systemDialogs.clear("launch");
 
     for (const label of SimulatorSession.#INTERSTITIAL_CONTROLS) {
       const control = this.browser.$(
@@ -264,6 +281,7 @@ export class SimulatorSession {
   }
 
   async stop(): Promise<void> {
+    this.#systemDialogs = undefined;
     if (!this.#browser) return;
     await this.#browser.deleteSession();
     this.#browser = undefined;
