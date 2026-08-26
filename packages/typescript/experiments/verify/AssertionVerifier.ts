@@ -54,6 +54,7 @@ export class AssertionVerifier implements StepVerifier {
     // would cost tokens the retriever path does not pay and bury the labels the
     // judgement turns on.
     const tree = TreeFactory.create(alumni.driver.platform, raw.toStr());
+    const treeXml = tree.toXml(EXCLUDED_ATTRIBUTES);
 
     const response = await this.#llm.invoke([
       ["system", SYSTEM],
@@ -64,7 +65,7 @@ export class AssertionVerifier implements StepVerifier {
           "",
           "Screen accessibility tree:",
           "```xml",
-          tree.toXml(EXCLUDED_ATTRIBUTES),
+          treeXml,
           "```",
         ].join("\n"),
       ],
@@ -72,8 +73,8 @@ export class AssertionVerifier implements StepVerifier {
 
     const verdict = readVerdict(textOf(response.content));
     return verdict.passed
-      ? success(verdict.reason, [this.name])
-      : failure(verdict.reason, [this.name]);
+      ? success(verdict.reason, [this.name], treeXml)
+      : failure(verdict.reason, [this.name], treeXml);
   }
 }
 

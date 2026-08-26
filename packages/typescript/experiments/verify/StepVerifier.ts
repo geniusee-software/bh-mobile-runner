@@ -7,6 +7,14 @@ export namespace StepVerifier {
     explanation: string;
     /** Verifiers that ran, in order, so a result can be attributed. */
     attempts: string[];
+    /**
+     * The tree the verdict was reached against, when the verifier read one.
+     *
+     * Carried so a pass can be audited for free: a step that passed while the
+     * words its expectation quotes are nowhere on screen is a false positive,
+     * and a lenient judge scores well on pass rate precisely by producing them.
+     */
+    treeXml?: string | undefined;
   }
 }
 
@@ -27,15 +35,17 @@ export interface StepVerifier {
 export function failure(
   explanation: string,
   attempts: string[],
+  treeXml?: string,
 ): StepVerifier.Outcome {
-  return { passed: false, explanation, attempts };
+  return { passed: false, explanation, attempts, treeXml };
 }
 
 export function success(
   explanation: string,
   attempts: string[],
+  treeXml?: string,
 ): StepVerifier.Outcome {
-  return { passed: true, explanation, attempts };
+  return { passed: true, explanation, attempts, treeXml };
 }
 
 export function describeError(error: unknown): string {

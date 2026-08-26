@@ -6,6 +6,7 @@
 import { label as labelFor, taxonomyFor } from "../report/failureTaxonomy.ts";
 import { loadResults } from "../report/loadResults.ts";
 import { reportRuns } from "../report/reportRuns.ts";
+import { auditablePasses, suspectPasses } from "../report/suspectPasses.ts";
 
 const runLabel = process.argv[2];
 if (!runLabel) {
@@ -18,6 +19,19 @@ if (!byVariant.size) throw new Error(`No results under label "${runLabel}"`);
 console.log(reportRuns(byVariant));
 
 for (const [variantId, records] of byVariant) {
+  const suspects = suspectPasses(records);
+  if (suspects.length) {
+    const auditable = auditablePasses(records);
+    console.log(
+      `\n--- ${variantId}: ${suspects.length} of ${auditable} auditable passes look wrong ---`,
+    );
+    for (const suspect of suspects) {
+      console.log(`  step ${suspect.stepIndex} of "${suspect.caseTitle.slice(0, 44)}"`);
+      console.log(`    expected: ${suspect.expected.slice(0, 90)}`);
+      console.log(`    not on screen: ${suspect.missing.join(", ")}`);
+    }
+  }
+
   const failures = taxonomyFor(records);
   if (!failures.length) continue;
 

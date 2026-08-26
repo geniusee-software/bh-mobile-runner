@@ -154,7 +154,16 @@ export class CaseRunner {
       return finish("errored", `check: ${describe(error)}`);
     }
 
-    if (outcome.passed) return finish("passed", "");
+    if (outcome.passed) {
+      const passed = finish("passed", "");
+      // Audit the pass against the very tree the verdict was reached on: free,
+      // and the only guard against a lenient judge scoring well by accepting
+      // screens that do not satisfy the expectation.
+      if (outcome.treeXml) {
+        passed.evidence = this.#expectations.probe(step.expected, outcome.treeXml);
+      }
+      return passed;
+    }
 
     const failed = finish("failed", `check: ${outcome.explanation.slice(0, 300)}`);
     failed.verifierAttempts = outcome.attempts;
