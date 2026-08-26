@@ -26,8 +26,14 @@ const SUBMIT = `-ios predicate string:type == "XCUIElementTypeButton" AND label 
  * Present only once a session exists: the account's own address, which the
  * profile screen shows under the name. Chosen over the sign-out control
  * because that one sits below the fold and reports as absent until scrolled to.
+ *
+ * Restricted to static text on purpose. Matched loosely, it also matches the
+ * login form's own email field — whose `value` is the address we just typed —
+ * so every failed sign-in confirmed itself, and twenty cases ran as a guest
+ * while the run reported a session.
  */
-const signedInMarker = (email: string) => byText(email);
+const signedInMarker = (email: string) =>
+  `-ios predicate string:type == "XCUIElementTypeStaticText" AND (name == "${email}" OR label == "${email}")`;
 
 /**
  * Puts the app into a signed-in state before a run.
@@ -87,12 +93,50 @@ export class SignIn {
       return { signedIn: false, detail: "login form has no LOG IN button" };
     }
 
-    // The form posts and the app navigates; give it room before deciding.
-    await this.#settle(4000);
-    const landed = !(await this.#exists(SUBMIT));
-    return landed
-      ? { signedIn: true, detail: `signed in as ${this.#credentials.email}` }
-      : { signedIn: false, detail: "still on the login form after submitting" };
+    // Success is the account appearing, not the button disappearing. The
+    // submit button also goes away while the form is posting and when the app
+    // simply navigates elsewhere, so reading its absence as a session reported
+    // twenty cases as failures of the app while the runner was still a guest.
+    if (await this.#confirmSession(marker)) {
+      return { signedIn: true, detail: `signed in as ${this.#credentials.email}` };
+    }
+
+    const rejected = await this.#exists(byText("Incorrect email or password"));
+    return {
+      signedIn: false,
+      detail: rejected
+        ? "the app rejected the credentials"
+        : "submitted, but no session appeared",
+    };
+  }
+
+  /**
+   * Goes and looks for the account, rather than believing the form.
+   *
+   * The app lands on the home screen after signing in, and the address is only
+   * shown on the profile behind the avatar — so confirming means walking there.
+   * That is the same evidence the entry check uses, which is the point: a
+   * session either shows the account or it does not exist.
+   *
+   * Polled rather than slept, because signing in is a network round trip whose
+   * length is not ours to predict.
+   */
+  async #confirmSession(marker: string, timeoutMs = 20000): Promise<boolean> {
+    const deadline = Date.now() + timeoutMs;
+
+    while (Date.now() < deadline) {
+      if (await this.#exists(marker)) return true;
+
+      if (await this.#tap(AVATAR)) {
+        await this.#settle(1500);
+        if (await this.#exists(marker)) {
+          await this.#goBack();
+          return true;
+        }
+      }
+      await this.#settle(900);
+    }
+    return false;
   }
 
   /** @returns an error description, or undefined when both fields hold their value. */
