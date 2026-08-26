@@ -47,3 +47,30 @@ describe("containsWebview", () => {
     expect(new XCUITestAccessibilityTree(xml).containsWebview()).toBe(true);
   });
 });
+
+describe("matchIndex", () => {
+  const feed = `<AppiumAUT><XCUIElementTypeApplication type="XCUIElementTypeApplication" name="App">
+    <XCUIElementTypeButton type="XCUIElementTypeButton" name="play" />
+    <XCUIElementTypeOther type="XCUIElementTypeOther">
+      <XCUIElementTypeButton type="XCUIElementTypeButton" name="play" />
+    </XCUIElementTypeOther>
+    <XCUIElementTypeButton type="XCUIElementTypeButton" name="play" />
+    <XCUIElementTypeButton type="XCUIElementTypeButton" name="options" />
+  </XCUIElementTypeApplication></AppiumAUT>`;
+
+  it("counts identical elements in document order", () => {
+    // A locator built from any of these matches all three; only the position
+    // says which one the agent actually chose.
+    const tree = new XCUITestAccessibilityTree(feed);
+
+    expect(tree.elementById(3).matchIndex).toBe(0);
+    expect(tree.elementById(5).matchIndex).toBe(1);
+    expect(tree.elementById(6).matchIndex).toBe(2);
+  });
+
+  it("is zero for an element nothing else matches", () => {
+    const tree = new XCUITestAccessibilityTree(feed);
+
+    expect(tree.elementById(7).matchIndex).toBe(0);
+  });
+});

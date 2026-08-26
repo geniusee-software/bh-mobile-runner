@@ -230,6 +230,22 @@ export class AppiumDriver extends BaseDriver {
     const element = tree.elementById(id);
     const locator = this.#elementLocator(element);
     logger.debug(`Finding element by locator: ${locator}`);
+
+    const matchIndex = element.matchIndex ?? 0;
+    if (matchIndex === 0) {
+      return this.driver.$(locator).getElement();
+    }
+
+    // The label repeats on this screen, so the locator names a set and the
+    // agent picked one member of it. Taking the first would silently act on a
+    // different element — usually one belonging to another row entirely.
+    const matches = await this.driver.$$(locator).getElements();
+    const match = matches[matchIndex];
+    if (match) return match;
+
+    logger.debug(
+      `Expected at least ${matchIndex + 1} matches for ${locator}, found ${matches.length}; using the first`,
+    );
     return this.driver.$(locator).getElement();
   }
 

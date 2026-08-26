@@ -95,7 +95,47 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
       name: element.attribs["name"],
       value: element.attribs["value"],
       label: element.attribs["label"],
+      matchIndex: this.#matchIndexOf(root, element),
     };
+  }
+
+  /**
+   * Counts how many elements before this one share its identifying attributes.
+   *
+   * Those attributes are all a predicate can carry, and screens repeat them:
+   * a feed of thirty shiur rows has thirty buttons named "play". Document order
+   * is the same order WebDriverAgent returns matches in, so the count is enough
+   * to pick this element back out of that set.
+   */
+  #matchIndexOf(root: Element, target: Element): number {
+    const signature = (elem: Element) =>
+      JSON.stringify([
+        elem.tagName,
+        elem.attribs["name"],
+        elem.attribs["value"],
+        elem.attribs["label"],
+      ]);
+
+    const wanted = signature(target);
+    let seen = 0;
+    let found = 0;
+
+    const walk = (elem: Element): boolean => {
+      if (elem === target) {
+        found = seen;
+        return true;
+      }
+      if (signature(elem) === wanted) seen += 1;
+
+      for (const child of elem.children) {
+        const childEl = Xml.nodeAsTag(child);
+        if (childEl && walk(childEl)) return true;
+      }
+      return false;
+    };
+
+    walk(root);
+    return found;
   }
 
   /** Scope the tree to a smaller subtree identified by raw_id. */
