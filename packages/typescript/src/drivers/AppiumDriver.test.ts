@@ -20,7 +20,7 @@ describe("AppiumDriver", () => {
       [
         "iOS",
         { type: "XCUIElementTypeButton", name: "Save", label: "Save" },
-        '-ios predicate string:type == "XCUIElementTypeButton" AND name == "Save" AND label == "Save"',
+        '-ios predicate string:type == "XCUIElementTypeButton" AND name == "Save" AND label == "Save" AND visible == 1',
       ],
     ] as const)(
       "forces the %s native locator",

@@ -22,4 +22,13 @@ export interface AccessibilityElement {
    * agent's actual choice is discarded.
    */
   matchIndex?: number | undefined;
+  /**
+   * Whether this element is on screen, as the snapshot reports it.
+   *
+   * An iOS app keeps every tab mounted, so a label the agent can see is often
+   * matched by a second element with the same name on a tab nobody is looking
+   * at. Carrying this lets the driver ask for the on-screen one and count its
+   * position among the on-screen ones, which is the set the agent was reading.
+   */
+  visible?: boolean | undefined;
 }

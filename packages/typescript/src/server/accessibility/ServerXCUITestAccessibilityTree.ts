@@ -21,31 +21,34 @@ export class ServerXCUITestAccessibilityTree extends BaseServerAccessibilityTree
     if (!xmlAppTag) return [];
 
     const root = this.xmlNodeToTreeNode(xmlAppTag);
-    this.#summariseHidden(root, false);
+    this.#summariseHidden(root);
     return [root];
   }
 
   /**
-   * Reduces what is hidden to the least that still says it.
+   * Drops what is hidden and nameless; marks everything else as it stands.
    *
-   * XCUITest flags every element separately, so one closed tab arrives as
-   * several hundred individually marked nodes. Two things follow from
-   * invisibility being inherited: only the outermost hidden node needs the
-   * mark, and a hidden subtree that names nothing is worth no mark at all —
-   * the reader learns nothing from being told an anonymous box is off screen,
-   * and leaving it in place blocks the wrapper trimming that keeps these trees
-   * small.
+   * An earlier version treated invisibility as inherited and marked only the
+   * outermost hidden node. That was wrong twice over. Measured across sixteen
+   * real screens, 361 of 2086 nodes are visible inside a hidden ancestor — a
+   * webview under a hidden wrapper, a sheet over a hidden page — so inheriting
+   * the flag marked elements hidden that a person can see. And collapsing onto
+   * the container erased the only thing separating two elements that share a
+   * label: this app mounts every tab, so "Highlights" is both the tab-bar
+   * caption and the heading of a tab nobody is looking at, and both serialised
+   * to the identical line. A tap aimed at the visible one then landed on the
+   * hidden one, which reports success and changes nothing.
+   *
+   * What is dropped rather than marked is a hidden element whose subtree names
+   * nothing: an anonymous off-screen box tells the reader nothing, and leaving
+   * it in place blocks the wrapper trimming that keeps these trees small.
    */
-  #summariseHidden(node: Tree.Node, inherited: boolean): void {
-    const hidden = inherited || node.attrs["visible"] === "false";
-    if (inherited) delete node.attrs["visible"];
-
+  #summariseHidden(node: Tree.Node): void {
     node.children = node.children.filter(
-      (child) =>
-        !(hidden || child.attrs["visible"] === "false") || this.#names(child),
+      (child) => child.attrs["visible"] !== "false" || this.#names(child),
     );
 
-    for (const child of node.children) this.#summariseHidden(child, hidden);
+    for (const child of node.children) this.#summariseHidden(child);
   }
 
   /** Whether this subtree names anything a person could be looking for. */

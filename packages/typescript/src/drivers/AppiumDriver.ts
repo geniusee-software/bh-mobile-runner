@@ -435,6 +435,12 @@ export class AppiumDriver extends BaseDriver {
           .join(" AND ")}`;
       }
 
+      // Ask only for what is on screen when the agent chose something on
+      // screen. `isDisplayed` does not help here — WebDriverAgent answers true
+      // for an element of a mounted but unopened tab — so the snapshot's own
+      // flag is the only thing that separates them.
+      if (element.visible !== false) predicate += " AND visible == 1";
+
       return `-ios predicate string:${predicate}`;
     }
 

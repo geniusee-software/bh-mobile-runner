@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import type { Browser } from "webdriverio";
 import { NullCache } from "../../src/server/cache/NullCache.ts";
 import { LlmFactory } from "../../src/server/LlmFactory.ts";
 import { SessionContext } from "../../src/server/session/SessionContext.ts";
@@ -66,22 +67,27 @@ export class ExperimentRunner {
       ? buildLlm(Model.parse(variant.verifierModel), "-verify")
       : undefined;
 
-    const runner = new CaseRunner({
-      variant,
-      browser: session.browser,
-      resetApp: () => session.relaunchApp(),
-      systemDialogs: session.systemDialogs,
-      llm,
-      verifierLlm,
-      failureShotsDir: path.join(RESULTS_DIR, runLabel, "shots", variant.id),
-      traces: new TraceCollector({
-        sink: this.#props.traceSink,
-        runId: `${runLabel}-${variant.id}`,
-        model: model.name,
-        platform: this.#props.platform,
-        app: this.#props.app,
-      }),
-    });
+    // Built through a factory so the run can rebuild it around a fresh
+    // session without re-deriving everything else.
+    const buildRunner = (browser: Browser) =>
+      new CaseRunner({
+          variant,
+          browser,
+          resetApp: () => session.relaunchApp(),
+          systemDialogs: session.systemDialogs,
+          llm,
+          verifierLlm,
+          failureShotsDir: path.join(RESULTS_DIR, runLabel, "shots", variant.id),
+          traces: new TraceCollector({
+            sink: this.#props.traceSink,
+            runId: `${runLabel}-${variant.id}`,
+            model: model.name,
+            platform: this.#props.platform,
+            app: this.#props.app,
+          }),
+      });
+
+    const runner = buildRunner(session.browser);
 
     const outputPath = path.join(
       RESULTS_DIR,
@@ -100,14 +106,60 @@ export class ExperimentRunner {
       ? this.#healed(cases)
       : [...cases];
 
+    let active = runner;
+
     for (const [index, testCase] of toRun.entries()) {
-      const record = await this.#runOne(runner, testCase, variant);
+      let record = await this.#runOne(active, testCase, variant);
+
+      // One lost connection used to end the run: the case runner holds the
+      // browser it was built with, so once the session died every remaining
+      // case errored in under a second — forty-eight of them in nine seconds,
+      // which reads as a catastrophic pass rate and is one dropped socket.
+      if (record.verdict === "errored" && looksLikeLostSession(record)) {
+        console.log(`    session lost on "${testCase.title}"; reconnecting`);
+        const revived = await this.#reconnect(buildRunner);
+        if (revived) {
+          active = revived;
+          record = await this.#runOne(active, testCase, variant);
+        }
+      }
+
       records.push(record);
       await appendJsonl(outputPath, record);
       console.log(formatProgress(index, toRun.length, record));
     }
 
     return records;
+  }
+
+  /**
+   * Brings the device back and rebuilds the runner around the new session.
+   *
+   * Deliberately allowed to fail: if the device cannot be brought back, the
+   * remaining cases will error and be recorded as errors, which is the honest
+   * outcome. What must not happen is doing this silently — a run that quietly
+   * reconnects hides a device that is falling over every few cases.
+   */
+  async #reconnect(
+    buildRunner: (browser: Browser) => CaseRunner,
+  ): Promise<CaseRunner | undefined> {
+    const { session } = this.#props;
+    try {
+      await session.stop();
+    } catch {
+      // Already gone, which is what we are recovering from.
+    }
+
+    try {
+      const browser = await session.start();
+      await session.relaunchApp();
+      return buildRunner(browser);
+    } catch (error) {
+      console.log(
+        `    could not reconnect: ${error instanceof Error ? error.message.slice(0, 120) : error}`,
+      );
+      return undefined;
+    }
   }
 
   /** Applies the healer and says how much of the suite it touched. */
@@ -186,4 +238,20 @@ function formatProgress(
 async function appendJsonl(filePath: string, record: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.appendFile(filePath, `${JSON.stringify(record)}\n`, "utf8");
+}
+
+
+/**
+ * Whether this error is the connection to the device, rather than the app.
+ *
+ * Matched on the message because that is all WebDriver gives: the codes are
+ * not distinct enough to separate "the session is gone" from "the element is
+ * gone", and treating the second as the first would restart the device over an
+ * ordinary missing button.
+ */
+function looksLikeLostSession(record: RunRecord.Case): boolean {
+  const text = record.steps.map((step) => step.failure ?? "").join(" ");
+  return /invalid session id|session (is either terminated|does not exist|was deleted)|not started|ECONNREFUSED|socket hang up/i.test(
+    text,
+  );
 }

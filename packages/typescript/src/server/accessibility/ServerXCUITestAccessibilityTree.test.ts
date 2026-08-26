@@ -13,37 +13,49 @@ describe(ServerXCUITestAccessibilityTree, () => {
       "<Application id=1>
         <Window id=2>
           <div id=3 visible="false">
-            <NavigationBar name="BLTNBoard.BulletinView" id=6>
-              <Button name="ToDoList" id=7 />
-              <Button name="settingsIcon" id=8 />
-            </NavigationBar>
-            <div id=11>
-              <Table id=12>
-                <Cell id=13>
-                  <div id=14>0</div>
-                  <div id=17>All Tasks</div>
-                </Cell>
-                <Cell id=21>
-                  <div id=22>0</div>
-                  <div id=25>Today</div>
-                </Cell>
-                <Cell id=28>
-                  <div id=29>0</div>
-                  <div id=32>Tomorrow</div>
-                </Cell>
-                <Cell id=35>
-                  <div id=36>0</div>
-                  <div id=39>Next 7 Days</div>
-                </Cell>
-                <Cell id=42>Custom Interval</Cell>
-                <Cell id=48>
-                  <div id=49>0</div>
-                  <div id=52>Completed</div>
-                </Cell>
-                <div name="Vertical scroll bar, 1 page" id=55 value="0%" />
-                <div name="Horizontal scroll bar, 1 page" id=57 value="0%" />
-              </Table>
-              <Button id=59>Add Task</Button>
+            <div id=4 visible="false">
+              <div id=5 visible="false">
+                <NavigationBar name="BLTNBoard.BulletinView" id=6 visible="false">
+                  <Button name="ToDoList" id=7 visible="false" />
+                  <Button name="settingsIcon" id=8 visible="false" />
+                </NavigationBar>
+                <div id=9 visible="false">
+                  <div id=10 visible="false">
+                    <div id=11 visible="false">
+                      <Table id=12 visible="false">
+                        <Cell id=13 visible="false">
+                          <div id=14 visible="false">0</div>
+                          <div id=17 visible="false">All Tasks</div>
+                        </Cell>
+                        <Cell id=21 visible="false">
+                          <div id=22 visible="false">0</div>
+                          <div id=25 visible="false">Today</div>
+                        </Cell>
+                        <Cell id=28 visible="false">
+                          <div id=29 visible="false">0</div>
+                          <div id=32 visible="false">Tomorrow</div>
+                        </Cell>
+                        <Cell id=35 visible="false">
+                          <div id=36 visible="false">0</div>
+                          <div id=39 visible="false">Next 7 Days</div>
+                        </Cell>
+                        <Cell id=42 visible="false">
+                          <div id=45 visible="false">Custom Interval</div>
+                        </Cell>
+                        <Cell id=48 visible="false">
+                          <div id=49 visible="false">0</div>
+                          <div id=52 visible="false">Completed</div>
+                        </Cell>
+                        <div name="Vertical scroll bar, 1 page" id=55 value="0%" visible="false" />
+                        <div name="Horizontal scroll bar, 1 page" id=57 value="0%" visible="false" />
+                      </Table>
+                      <Button id=59 visible="false">
+                        <div id=60 visible="false">Add Task</div>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div id=66>
@@ -181,18 +193,57 @@ describe(ServerXCUITestAccessibilityTree, () => {
       expect(tree.toXml()).toMatchInlineSnapshot(`
         "<Application id=1>
           <div id=2 visible="false">
-            <Button name="DAILY SHIURIM" id=4 />
+            <Button name="DAILY SHIURIM" id=4 visible="false" />
           </div>
           <Button name="Dismiss" id=5 />
         </Application>"
       `);
     });
 
-    it("marks the outermost hidden element only, and drops hidden boxes that name nothing", () => {
-      const xml = new ServerXCUITestAccessibilityTree(overlaidScreen).toXml();
+    it("keeps the mark on every named element, so namesakes stay distinguishable", () => {
+      // The tab bar's caption and the heading of a tab nobody is looking at
+      // carry the same word. Marking only the outermost hidden container left
+      // both serialising to the identical line, and a tap aimed at the visible
+      // one landed on the hidden one.
+      const tree = new ServerXCUITestAccessibilityTree(`
+        <XCUIElementTypeApplication raw_id="1" visible="true">
+          <XCUIElementTypeOther raw_id="2" visible="false">
+            <XCUIElementTypeStaticText raw_id="3" name="Highlights" visible="false"/>
+          </XCUIElementTypeOther>
+          <XCUIElementTypeStaticText raw_id="4" name="Highlights" visible="true"/>
+        </XCUIElementTypeApplication>
+      `);
 
-      expect(xml.match(/visible="false"/g)).toHaveLength(1);
-      expect(xml).not.toContain("id=3");
+      const lines = tree
+        .toXml(new Set(["id"]))
+        .split("\n")
+        .filter((line) => line.includes("Highlights"));
+
+      expect(lines).toHaveLength(2);
+      expect(lines[0]).toContain('visible="false"');
+      expect(lines[1]).not.toContain("visible");
+    });
+
+    it("does not treat invisibility as inherited", () => {
+      // Measured over sixteen real screens, 361 of 2086 nodes are visible
+      // inside a hidden ancestor — a sheet over a hidden page, a webview under
+      // a hidden wrapper. Inheriting the flag marks elements hidden that a
+      // person can see.
+      const tree = new ServerXCUITestAccessibilityTree(`
+        <XCUIElementTypeApplication raw_id="1" visible="true">
+          <XCUIElementTypeOther raw_id="2" visible="false">
+            <XCUIElementTypeStaticText raw_id="3" name="On screen" visible="true"/>
+          </XCUIElementTypeOther>
+        </XCUIElementTypeApplication>
+      `);
+
+      const shown = tree
+        .toXml(new Set(["id"]))
+        .split("\n")
+        .find((line) => line.includes("On screen"));
+
+      expect(shown).toBeDefined();
+      expect(shown).not.toContain("visible");
     });
   });
 

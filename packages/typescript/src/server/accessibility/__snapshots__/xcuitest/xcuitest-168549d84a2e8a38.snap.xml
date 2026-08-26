@@ -36,56 +36,64 @@
                       <TextField name="Readonly input" id=54 />
                     </div>
                     <Link id=56>Return to index</Link>
-                    <div id=58>
-                      <div id=59>Dropdown (select)</div>
-                      <div name="Dropdown (select)" id=60 value="Open this select menu" />
+                    <div id=58 visible="false">
+                      <div id=59 visible="false">Dropdown (select)</div>
+                      <div name="Dropdown (select)" id=60 value="Open this select menu" visible="false" />
                     </div>
-                    <div id=61>
-                      <div id=62>Dropdown (datalist)</div>
-                      <TextField name="Dropdown (datalist)" id=63 value="Type to search..." />
+                    <div id=61 visible="false">
+                      <div id=62 visible="false">Dropdown (datalist)</div>
+                      <TextField name="Dropdown (datalist)" id=63 value="Type to search..." visible="false" />
                     </div>
-                    <div id=64>
-                      <div id=65>File input</div>
-                      <Button name="File input" id=66 value="no file selected" />
+                    <div id=64 visible="false">
+                      <div id=65 visible="false">File input</div>
+                      <Button name="File input" id=66 value="no file selected" visible="false" />
                     </div>
-                    <div id=67>
-                      <div id=68>
-                        <Switch name="Checked checkbox" id=69 value=1 />
-                        <div id=70>Checked checkbox</div>
+                    <div id=67 visible="false">
+                      <div id=68 visible="false">
+                        <Switch name="Checked checkbox" id=69 value=1 visible="false" />
+                        <div id=70 visible="false">Checked checkbox</div>
                       </div>
-                      <div id=71>
-                        <Switch name="Default checkbox" id=72 value=0 />
-                        <div id=73>Default checkbox</div>
+                      <div id=71 visible="false">
+                        <Switch name="Default checkbox" id=72 value=0 visible="false" />
+                        <div id=73 visible="false">Default checkbox</div>
                       </div>
                     </div>
-                    <div id=75>
-                      <div name="Checked radio" id=76 value=1 />
-                      <div id=77>Checked radio</div>
-                    </div>
-                    <div id=79>
-                      <div name="Default radio" id=80 value=0 />
-                      <div id=81>Default radio</div>
-                    </div>
-                    <Button name="Submit" id=82 />
-                    <div id=83>
-                      <div id=84>
-                        <div id=85>Color picker</div>
-                        <ColorWell name="Color picker" id=86 value="dark indigo" />
+                    <div id=74 visible="false">
+                      <div id=75 visible="false">
+                        <div name="Checked radio" id=76 value=1 visible="false" />
+                        <div id=77 visible="false">Checked radio</div>
                       </div>
-                      <div id=87>
-                        <div id=88>Date picker</div>
-                        <TextField name="Date picker" id=89 />
+                    </div>
+                    <div id=78 visible="false">
+                      <div id=79 visible="false">
+                        <div name="Default radio" id=80 value=0 visible="false" />
+                        <div id=81 visible="false">Default radio</div>
                       </div>
-                      <div id=90>
-                        <div id=91>Example range</div>
-                        <Slider name="Example range" id=92 value=5.00 />
+                    </div>
+                    <Button name="Submit" id=82 visible="false" />
+                    <div id=83 visible="false">
+                      <div id=84 visible="false">
+                        <div id=85 visible="false">Color picker</div>
+                        <ColorWell name="Color picker" id=86 value="dark indigo" visible="false" />
+                      </div>
+                      <div id=87 visible="false">
+                        <div id=88 visible="false">Date picker</div>
+                        <TextField name="Date picker" id=89 visible="false" />
+                      </div>
+                      <div id=90 visible="false">
+                        <div id=91 visible="false">Example range</div>
+                        <Slider name="Example range" id=92 value=5.00 visible="false" />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div name="content information" id=93 visible="false">
-                  <div id=95>Copyright © 2021-2026</div>
-                  <Link id=96>Boni García</Link>
+                  <div id=94 visible="false">
+                    <div id=95 visible="false">Copyright © 2021-2026</div>
+                    <Link id=96 visible="false">
+                      <div id=97 visible="false">Boni García</div>
+                    </Link>
+                  </div>
                 </div>
               </WebView>
               <div name="Vertical scroll bar, 2 pages" id=99 value="0 %" />
@@ -108,12 +116,18 @@
     </div>
   </Window>
   <Window id=130 visible="false">
-    <Toolbar name="Toolbar" id=137>
-      <Button name="Previous" id=146 />
-      <Button name="Next" id=150 />
-      <Button name="Done" id=154 />
-    </Toolbar>
-    <div name="inputView" id=155 />
+    <div id=131 visible="false">
+      <div id=133 visible="false">
+        <Toolbar name="Toolbar" id=137>
+          <div id=141 visible="false">
+            <Button name="Previous" id=146 />
+            <Button name="Next" id=150 />
+            <Button name="Done" id=154 />
+          </div>
+        </Toolbar>
+        <div name="inputView" id=155 visible="false" />
+      </div>
+    </div>
   </Window>
   <Window id=156>
     <div name="SystemInputAssistantView" id=160>

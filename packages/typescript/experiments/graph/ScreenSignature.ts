@@ -82,20 +82,28 @@ export function readScreen(treeXml: string): ScreenSignature.Screen {
     const tag = Xml.nodeAsTag(node);
     if (!tag) return;
 
-    // Everything under a hidden element is hidden too, and this app keeps every
-    // tab mounted at once — so without this the reading is of all four tabs
-    // stacked together, and no two screens can be told apart.
-    if (tag.attribs["visible"] === "false") return;
+    // Skipped for itself only, not for its subtree. This app keeps every tab
+    // mounted at once, so reading the hidden ones would stack four screens into
+    // one and no two would be tellable apart — but invisibility is not
+    // inherited here: measured over sixteen real screens, 361 of 2086 nodes are
+    // visible inside a hidden ancestor, and dropping the whole subtree would
+    // lose content a person can see.
+    const hidden = tag.attribs["visible"] === "false";
 
     const role = tag.tagName.replace(/^XCUIElementType/, "");
+    // WebDriverAgent reports `name` as the accessibility identifier when the
+    // developer set one, and only falls back to the label otherwise. So when
+    // the two differ, `name` is a name from the source — "PrimaryButton" for a
+    // button reading "LOG IN" — and a map built from those is a map of words
+    // no user has ever read. Whatever a person would see comes first.
     const label = (
-      tag.attribs["name"] ??
       tag.attribs["label"] ??
+      tag.attribs["name"] ??
       tag.attribs["value"] ??
       ""
     ).trim();
 
-    if (label && !isJunk(label)) {
+    if (!hidden && label && !isJunk(label)) {
       const isText = role === "StaticText";
       elements.push({ role: isText ? "Text" : role, text: label });
       if (!isText && STRUCTURAL_ROLES.has(role) && !isContentLike(label)) {

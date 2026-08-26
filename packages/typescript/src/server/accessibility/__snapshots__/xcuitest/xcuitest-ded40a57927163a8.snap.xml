@@ -2,21 +2,21 @@
   <Window id=2>
     <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=22EF9D86-B658-4063-9AA0-90A6B50B4BEC&amp;UsingLoweredBar=true&amp;IsSecure=false&amp;IsTabBarAvailable=false" id=11>
       <div id=13>
-        <ScrollView id=18>
-          <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=02185351-127F-4127-B0D1-5F875A2B6EA1&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=40171" id=19>
-            <WebView name="WebView" id=20>
-              <WebView id=21>
-                <div name="Vertical scroll bar, 1 page" id=27 value="0 %" />
-                <div name="Horizontal scroll bar, 1 page" id=29 value="0 %" />
-                <div name="Vertical scroll bar, 1 page" id=31 value="0 %" />
-                <div name="Horizontal scroll bar, 1 page" id=33 value="0 %" />
+        <ScrollView id=18 visible="false">
+          <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=02185351-127F-4127-B0D1-5F875A2B6EA1&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=40171" id=19 visible="false">
+            <WebView name="WebView" id=20 visible="false">
+              <WebView id=21 visible="false">
+                <div name="Vertical scroll bar, 1 page" id=27 value="0 %" visible="false" />
+                <div name="Horizontal scroll bar, 1 page" id=29 value="0 %" visible="false" />
+                <div name="Vertical scroll bar, 1 page" id=31 value="0 %" visible="false" />
+                <div name="Horizontal scroll bar, 1 page" id=33 value="0 %" visible="false" />
               </WebView>
             </WebView>
           </div>
-          <div name="Horizontal scroll bar, 1 page" id=35 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=37 value="0 %" />
+          <div name="Horizontal scroll bar, 1 page" id=35 value="0 %" visible="false" />
+          <div name="Horizontal scroll bar, 1 page" id=37 value="0 %" visible="false" />
         </ScrollView>
-        <CollectionView name="StartPageCollectionView" id=46>
+        <CollectionView name="StartPageCollectionView" id=46 visible="false">
           <Cell name="onboardingItemIdentifierContent-CustomizeStartPage" id=49>
             <div id=53>
               <div id=54>Start Page</div>
@@ -32,18 +32,22 @@
             <div id=63>Privacy Report</div>
           </div>
           <Cell name="privacyReportIdentifierContent" id=64>
-            <div id=68>0 blocked trackers</div>
-            <div name="TrackersPreventedCount?TrackingPreventionDataExists=false" id=69>In the last seven days, Safari has prevented 0 trackers from profiling you.</div>
+            <div id=67 visible="false">
+              <div id=68 visible="false">0 blocked trackers</div>
+              <div name="TrackersPreventedCount?TrackingPreventionDataExists=false" id=69 visible="false">In the last seven days, Safari has prevented 0 trackers from profiling you.</div>
+            </div>
           </Cell>
-          <Cell name="com.apple.mobilesafari.framework-customization-sectionContent" id=70>
-            <Button name="customizationsSheetButton" id=73>
-              <div id=74>Edit</div>
-            </Button>
+          <Cell name="com.apple.mobilesafari.framework-customization-sectionContent" id=70 visible="false">
+            <div id=71 visible="false">
+              <Button name="customizationsSheetButton" id=73 visible="false">
+                <div id=74 visible="false">Edit</div>
+              </Button>
+            </div>
           </Cell>
-          <div name="Vertical scroll bar, 1 page" id=75 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=77 value="0 %" />
-          <div name="Vertical scroll bar, 1 page" id=79 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=81 value="0 %" />
+          <div name="Vertical scroll bar, 1 page" id=75 value="0 %" visible="false" />
+          <div name="Horizontal scroll bar, 1 page" id=77 value="0 %" visible="false" />
+          <div name="Vertical scroll bar, 1 page" id=79 value="0 %" visible="false" />
+          <div name="Horizontal scroll bar, 1 page" id=81 value="0 %" visible="false" />
         </CollectionView>
       </div>
       <div name="CapsuleViewController" id=85>

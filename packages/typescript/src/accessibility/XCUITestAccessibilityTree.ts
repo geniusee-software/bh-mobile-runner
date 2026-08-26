@@ -108,17 +108,25 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
       name: element.attribs["name"],
       value: element.attribs["value"],
       label: element.attribs["label"],
+      visible: element.attribs["visible"] !== "false",
       matchIndex: this.#matchIndexOf(root, element),
     };
   }
 
   /**
-   * Counts how many elements before this one share its identifying attributes.
+   * Counts how many elements before this one share its identifying attributes
+   * *and* its visibility.
    *
-   * Those attributes are all a predicate can carry, and screens repeat them:
-   * a feed of thirty shiur rows has thirty buttons named "play". Document order
-   * is the same order WebDriverAgent returns matches in, so the count is enough
-   * to pick this element back out of that set.
+   * Those attributes are all a predicate can carry, and screens repeat them: a
+   * feed of thirty shiur rows has thirty buttons named "play". Document order
+   * is the order WebDriverAgent returns matches in, so a count is enough to
+   * pick this element back out of that set.
+   *
+   * Visibility has to be part of the count because the driver asks for
+   * on-screen matches only. Counting across both sets and then indexing into
+   * one of them lands on a different element — and on this app that different
+   * element is usually the same label on a tab nobody is looking at, which
+   * accepts the tap, reports success, and changes nothing.
    */
   #matchIndexOf(root: Element, target: Element): number {
     const signature = (elem: Element) =>
@@ -130,6 +138,7 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
       ]);
 
     const wanted = signature(target);
+    const wantedVisible = target.attribs["visible"] !== "false";
     let seen = 0;
     let found = 0;
 
@@ -138,7 +147,12 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
         found = seen;
         return true;
       }
-      if (signature(elem) === wanted) seen += 1;
+      if (
+        signature(elem) === wanted &&
+        (elem.attribs["visible"] !== "false") === wantedVisible
+      ) {
+        seen += 1;
+      }
 
       for (const child of elem.children) {
         const childEl = Xml.nodeAsTag(child);

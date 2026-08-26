@@ -1,58 +1,101 @@
 <Application name="Safari" id=1 visible="false">
   <Window id=2>
-    <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=22EF9D86-B658-4063-9AA0-90A6B50B4BEC&amp;UsingLoweredBar=true&amp;IsSecure=true&amp;IsTabBarAvailable=false" id=12>
-      <ScrollView id=19>
-        <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=02185351-127F-4127-B0D1-5F875A2B6EA1&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=40171" id=20>
-          <WebView name="WebView" id=21>
-            <WebView id=22>
-              <WebView id=24>
-                <div name=": Vue" id=28>
-                  <div name="complementary" id=29>
-                    <div name="section header" id=30>
-                      <div id=31 value=3>Vue.js</div>
-                      <div id=33 value=5>Example</div>
-                      <Link id=35>Source</Link>
-                    </div>
-                    <div name="separator" id=37 />
-                    <div id=38>
-                      <div id=39>“</div>
-                      <div id=40>Vue is an approachable, progressive framework for building user interfaces. Components are authored as Single-File Components, with reactive state via the Composition API and `</div>
-                      <div id=41>”</div>
-                    </div>
-                  </div>
-                  <div name="section header" id=42>
-                    <Link id=43>
-                      <Link id=44 value=1>todos</Link>
-                    </Link>
-                  </div>
-                  <div name="content information" id=47>
-                    <div id=49>Double-click to edit a todo</div>
-                    <div id=51>Created by the TodoMVC Team</div>
-                    <div id=52>
-                      <div id=53>Part of</div>
-                      <Link id=54>TodoMVC</Link>
+    <div id=4 visible="false">
+      <div id=5 visible="false">
+        <div id=6 visible="false">
+          <div id=7 visible="false">
+            <div id=8 visible="false">
+              <div id=9 visible="false">
+                <div id=10 visible="false">
+                  <div id=11 visible="false">
+                    <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=22EF9D86-B658-4063-9AA0-90A6B50B4BEC&amp;UsingLoweredBar=true&amp;IsSecure=true&amp;IsTabBarAvailable=false" id=12 visible="false">
+                      <div id=13 visible="false">
+                        <div id=14 visible="false">
+                          <ScrollView id=19 visible="false">
+                            <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=02185351-127F-4127-B0D1-5F875A2B6EA1&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=40171" id=20 visible="false">
+                              <WebView name="WebView" id=21 visible="false">
+                                <WebView id=22 visible="false">
+                                  <WebView id=24 visible="false">
+                                    <div name=": Vue" id=28>
+                                      <div name="complementary" id=29>
+                                        <div name="section header" id=30 visible="false">
+                                          <div id=31 value=3 visible="false">
+                                            <div id=32 visible="false">Vue.js</div>
+                                          </div>
+                                          <div id=33 value=5 visible="false">
+                                            <div id=34 visible="false">Example</div>
+                                          </div>
+                                          <Link id=35 visible="false">
+                                            <div id=36 visible="false">Source</div>
+                                          </Link>
+                                        </div>
+                                        <div name="separator" id=37 visible="false" />
+                                        <div id=38>
+                                          <div id=39 visible="false">“</div>
+                                          <div id=40 visible="false">Vue is an approachable, progressive framework for building user interfaces. Components are authored as Single-File Components, with reactive state via the Composition API and `</div>
+                                          <div id=41>”</div>
+                                        </div>
+                                      </div>
+                                      <div name="section header" id=42>
+                                        <Link id=43>
+                                          <Link id=44 value=1>todos</Link>
+                                        </Link>
+                                        <TextField id=46 value="What needs to be done?" />
+                                      </div>
+                                      <div name="content information" id=47>
+                                        <div id=49>Double-click to edit a todo</div>
+                                        <div id=51>Created by the TodoMVC Team</div>
+                                        <div id=52>
+                                          <div id=53>Part of</div>
+                                          <Link id=54>TodoMVC</Link>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </WebView>
+                                  <div name="Vertical scroll bar, 1 page" id=57 value="0 %" visible="false" />
+                                  <div name="Horizontal scroll bar, 1 page" id=59 value="0 %" visible="false" />
+                                  <div name="Vertical scroll bar, 1 page" id=61 value="0 %" visible="false" />
+                                  <div name="Horizontal scroll bar, 1 page" id=63 value="0 %" visible="false" />
+                                </WebView>
+                              </WebView>
+                            </div>
+                            <div name="Horizontal scroll bar, 1 page" id=65 value="0 %" visible="false" />
+                            <div name="Horizontal scroll bar, 1 page" id=67 value="0 %" visible="false" />
+                          </ScrollView>
+                        </div>
+                      </div>
+                      <div name="CapsuleViewController" id=69 visible="false">
+                        <div id=70 visible="false">
+                          <div id=79 visible="false">
+                            <div id=80 visible="false">
+                              <Button name="BackButton" id=81 label="Back" visible="false" />
+                            </div>
+                          </div>
+                          <div id=82 visible="false">
+                            <div id=83 visible="false">
+                              <div id=84 visible="false">
+                                <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=85 visible="false">
+                                  <Button name="PageFormatMenuButton" id=86 label="Page Menu" visible="false" />
+                                  <TextField name="TabBarItemTitle" id=88 value="‎todomvc.com" label="Address" visible="false" />
+                                  <Button name="ReloadButton" id=89 label="refresh" visible="false" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div id=90 visible="false">
+                            <div id=91 visible="false">
+                              <Button name="MoreMenuButton" id=92 label="More" visible="false" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </WebView>
-              <div name="Vertical scroll bar, 1 page" id=57 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=59 value="0 %" />
-              <div name="Vertical scroll bar, 1 page" id=61 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=63 value="0 %" />
-            </WebView>
-          </WebView>
+              </div>
+            </div>
+          </div>
         </div>
-        <div name="Horizontal scroll bar, 1 page" id=65 value="0 %" />
-        <div name="Horizontal scroll bar, 1 page" id=67 value="0 %" />
-      </ScrollView>
-      <div name="CapsuleViewController" id=69>
-        <Button name="BackButton" id=81 label="Back" />
-        <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=85>
-          <Button name="PageFormatMenuButton" id=86 label="Page Menu" />
-          <TextField name="TabBarItemTitle" id=88 value="‎todomvc.com" label="Address" />
-          <Button name="ReloadButton" id=89 label="refresh" />
-        </div>
-        <Button name="MoreMenuButton" id=92 label="More" />
       </div>
     </div>
     <div id=97>

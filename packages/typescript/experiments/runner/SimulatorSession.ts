@@ -257,6 +257,16 @@ export class SimulatorSession {
    * case, and the common path is that the app opens where it should.
    */
   async dismissInterstitials(): Promise<void> {
+    // A case about the onboarding carousel cannot run if the runner has just
+    // dismissed it: the app is already past the screen under test, and the
+    // step fails saying the button is not visible — because we pressed it a
+    // second earlier.
+    if (process.env["BH_KEEP_INTERSTITIALS"] === "1") {
+      await this.#awaitLanding();
+      await this.systemDialogs.clear("launch");
+      return;
+    }
+
     // Looking before the app has drawn finds nothing and reports success, which
     // is how a run reached its first case still sitting on the onboarding
     // carousel.

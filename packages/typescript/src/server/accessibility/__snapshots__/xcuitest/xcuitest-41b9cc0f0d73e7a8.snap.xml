@@ -2,58 +2,90 @@
   <Window id=2>
     <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=913F2A78-0D34-45E0-8848-FC5DD46EFFCC&amp;UsingLoweredBar=true&amp;IsSecure=false&amp;IsTabBarAvailable=false" id=11>
       <div id=13>
-        <ScrollView id=18>
-          <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=A77B726A-4DA0-41B7-988C-95D51A3084C8&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=44812" id=19>
-            <WebView name="WebView" id=20>
-              <WebView id=21>
-                <div name="Vertical scroll bar, 1 page" id=27 value="0 %" />
-                <div name="Horizontal scroll bar, 1 page" id=29 value="0 %" />
-                <div name="Vertical scroll bar, 1 page" id=31 value="0 %" />
-                <div name="Horizontal scroll bar, 1 page" id=33 value="0 %" />
+        <ScrollView id=18 visible="false">
+          <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=A77B726A-4DA0-41B7-988C-95D51A3084C8&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=44812" id=19 visible="false">
+            <WebView name="WebView" id=20 visible="false">
+              <WebView id=21 visible="false">
+                <div name="Vertical scroll bar, 1 page" id=27 value="0 %" visible="false" />
+                <div name="Horizontal scroll bar, 1 page" id=29 value="0 %" visible="false" />
+                <div name="Vertical scroll bar, 1 page" id=31 value="0 %" visible="false" />
+                <div name="Horizontal scroll bar, 1 page" id=33 value="0 %" visible="false" />
               </WebView>
             </WebView>
           </div>
-          <div name="Horizontal scroll bar, 1 page" id=35 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=37 value="0 %" />
+          <div name="Horizontal scroll bar, 1 page" id=35 value="0 %" visible="false" />
+          <div name="Horizontal scroll bar, 1 page" id=37 value="0 %" visible="false" />
         </ScrollView>
-        <CollectionView name="StartPageCollectionView" id=46>
-          <Cell name="onboardingItemIdentifierContent-CustomizeStartPage" id=49>
-            <div id=53>
-              <div id=54>Start Page</div>
-              <Image name="SafariOnboardingCustomizeStartPage" id=56 />
-              <div id=57>Customise your wallpaper and sections that appear when creating new tabs.</div>
-              <Button name="onboardingButton-CustomizeStartPage" id=58>
-                <div id=59>Customise Start Page</div>
-              </Button>
+        <div id=40 visible="false">
+          <div id=41 visible="false">
+            <div id=42 visible="false">
+              <div id=43 visible="false">
+                <div id=44 visible="false">
+                  <CollectionView name="StartPageCollectionView" id=46 visible="false">
+                    <Cell name="onboardingItemIdentifierContent-CustomizeStartPage" id=49 visible="false">
+                      <div id=52 visible="false">
+                        <div id=53 visible="false">
+                          <div id=54 visible="false">Start Page</div>
+                          <div id=55 visible="false">
+                            <Image name="SafariOnboardingCustomizeStartPage" id=56 visible="false" />
+                          </div>
+                          <div id=57 visible="false">Customise your wallpaper and sections that appear when creating new tabs.</div>
+                          <Button name="onboardingButton-CustomizeStartPage" id=58 visible="false">
+                            <div id=59 visible="false">Customise Start Page</div>
+                          </Button>
+                        </div>
+                        <Button name="close" id=60 visible="false" />
+                      </div>
+                    </Cell>
+                    <div name="privacyReportIdentifierHeader" id=61 visible="false">
+                      <div id=62 visible="false">
+                        <div id=63 visible="false">Privacy Report</div>
+                      </div>
+                    </div>
+                    <Cell name="privacyReportIdentifierContent" id=64 visible="false">
+                      <div id=67 visible="false">
+                        <div name="TrackersPreventedCount?TrackingPreventionDataExists=false" id=69 visible="false">In the last seven days, Safari has prevented 0 trackers from profiling you.</div>
+                      </div>
+                    </Cell>
+                    <Cell name="com.apple.mobilesafari.framework-customization-sectionContent" id=70 visible="false">
+                      <div id=71 visible="false">
+                        <Button name="customizationsSheetButton" id=73 visible="false">
+                          <div id=74 visible="false">Edit</div>
+                        </Button>
+                      </div>
+                    </Cell>
+                    <div name="Vertical scroll bar, 1 page" id=75 value="0 %" visible="false" />
+                    <div name="Horizontal scroll bar, 1 page" id=77 value="0 %" visible="false" />
+                    <div name="Vertical scroll bar, 1 page" id=79 value="0 %" visible="false" />
+                    <div name="Horizontal scroll bar, 1 page" id=81 value="0 %" visible="false" />
+                  </CollectionView>
+                </div>
+              </div>
             </div>
-            <Button name="close" id=60 />
-          </Cell>
-          <div name="privacyReportIdentifierHeader" id=61>
-            <div id=63>Privacy Report</div>
           </div>
-          <Cell name="privacyReportIdentifierContent" id=64>
-            <div name="TrackersPreventedCount?TrackingPreventionDataExists=false" id=69>In the last seven days, Safari has prevented 0 trackers from profiling you.</div>
-          </Cell>
-          <Cell name="com.apple.mobilesafari.framework-customization-sectionContent" id=70>
-            <Button name="customizationsSheetButton" id=73>
-              <div id=74>Edit</div>
-            </Button>
-          </Cell>
-          <div name="Vertical scroll bar, 1 page" id=75 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=77 value="0 %" />
-          <div name="Vertical scroll bar, 1 page" id=79 value="0 %" />
-          <div name="Horizontal scroll bar, 1 page" id=81 value="0 %" />
-        </CollectionView>
+        </div>
       </div>
       <div name="CapsuleViewController" id=85>
         <Button name="BackButton" id=97 label="Back" />
         <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=101>
-          <div name="FluidProgressView" id=104 />
-          <Button name="PageFormatMenuButton" id=105 />
-          <div name="TabBarItemTitle" id=107>‎seleniumbase.io</div>
-          <Button name="StopButton" id=110 label="Close" />
+          <div id=102 visible="false">
+            <div id=103 visible="false">
+              <div name="FluidProgressView" id=104 visible="false" />
+            </div>
+          </div>
+          <Button name="PageFormatMenuButton" id=105 visible="false" />
+          <div name="TabBarItemTitle" id=107 visible="false">
+            <div id=108 visible="false">
+              <div id=109 visible="false">‎seleniumbase.io</div>
+            </div>
+          </div>
+          <Button name="StopButton" id=110 label="Close" visible="false" />
         </div>
-        <Button name="MoreMenuButton" id=113 label="More" />
+        <div id=111 visible="false">
+          <div id=112 visible="false">
+            <Button name="MoreMenuButton" id=113 label="More" visible="false" />
+          </div>
+        </div>
       </div>
     </div>
   </Window>
