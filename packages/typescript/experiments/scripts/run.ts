@@ -15,6 +15,7 @@ import { SUITE_SNAPSHOT_PATH } from "../config/suite.ts";
 import { VARIANTS, variantById, type Variant } from "../config/variants.ts";
 import { Logger } from "../../src/telemetry/Logger.ts";
 import { ExperimentRunner } from "../runner/ExperimentRunner.ts";
+import { preflight } from "../runner/preflight.ts";
 import { SimulatorSession } from "../runner/SimulatorSession.ts";
 import { buildTraceSink } from "../trace/buildTraceSink.ts";
 import { reportRuns } from "../report/reportRuns.ts";
@@ -54,9 +55,16 @@ const eligible = process.argv.includes("--all-cases")
 // sharper filter changes which cases the sample draws — so two runs a day apart
 // can differ by their case set rather than by the thing under test.
 const reuseLabel = flag("cases-from", "");
-const cases = reuseLabel
+const chosen = reuseLabel
   ? await casesFromRun(reuseLabel)
   : sampleCases(eligible, caseCount);
+
+// A shorter run over the head of an earlier run's case set, for when there is
+// time to compare two configurations case by case but not to finish either
+// over the whole set. Kept separate from `--cases`, which samples afresh: this
+// one may only ever narrow a set that is already pinned.
+const limit = Number(flag("limit", "0"));
+const cases = limit > 0 ? chosen.slice(0, limit) : chosen;
 
 async function casesFromRun(label: string) {
   const byId = new Map(snapshot.cases.map((testCase) => [testCase.id, testCase]));
@@ -78,10 +86,14 @@ async function casesFromRun(label: string) {
 
 console.log(`Suite:    ${snapshot.suiteName}`);
 console.log(
-  `Cases:    ${cases.length} of ${eligible.length} eligible (${snapshot.cases.length} in suite)`,
+  `Cases:    ${cases.length} of ${eligible.length} eligible (${snapshot.cases.length} in suite)${limit > 0 ? ` — first ${limit} of "${reuseLabel}"` : ""}`,
 );
 console.log(`Variants: ${variants.map((v) => v.id).join(", ")}`);
 console.log(`Label:    ${runLabel}`);
+
+// Before the simulator, because an unreachable model turns a run into twenty
+// errored cases that read as a pass rate of zero.
+await preflight(variants);
 
 const session = new SimulatorSession(DEVICE);
 await session.start();

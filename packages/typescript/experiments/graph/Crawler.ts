@@ -1,6 +1,4 @@
 import type { Browser } from "webdriverio";
-import { XCUITestAccessibilityTree } from "../../src/accessibility/XCUITestAccessibilityTree.ts";
-import { TreeFactory } from "../../src/tree/TreeFactory.ts";
 import type { PageGraphBuilder } from "./PageGraphBuilder.ts";
 import { readScreen } from "./ScreenSignature.ts";
 
@@ -115,14 +113,12 @@ export class Crawler {
   }
 
   async #record(sequenceId: string): Promise<ReturnType<typeof readScreen>> {
+    // Recorded from the raw dump rather than the compacted tree: only the raw
+    // one says which elements are visible, and this app mounts every tab at
+    // once, so without that every screen reads as the home screen.
     const source = await this.#props.browser.getPageSource();
-    const treeXml = TreeFactory.create(
-      "xcuitest",
-      new XCUITestAccessibilityTree(source).toStr(),
-    ).toXml(new Set(["id"]));
-
-    this.#props.builder.add({ treeXml, instruction: "crawl", sequenceId });
-    return readScreen(treeXml);
+    this.#props.builder.add({ treeXml: source, instruction: "crawl", sequenceId });
+    return readScreen(source);
   }
 
   async #tap(text: string): Promise<boolean> {
@@ -178,13 +174,7 @@ export class Crawler {
   }
 
   async #signature(): Promise<string> {
-    const source = await this.#props.browser.getPageSource();
-    return readScreen(
-      TreeFactory.create(
-        "xcuitest",
-        new XCUITestAccessibilityTree(source).toStr(),
-      ).toXml(new Set(["id"])),
-    ).signature;
+    return readScreen(await this.#props.browser.getPageSource()).signature;
   }
 
   async #relaunch(): Promise<void> {

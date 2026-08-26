@@ -1,3 +1,5 @@
+import { Xml } from "../../src/xml/Xml.ts";
+
 export namespace ScreenSignature {
   export interface Element {
     role: string;
@@ -30,10 +32,6 @@ const CONTENT_LIKE = [
   /^\d+$/,
   /\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s*\d/i,
 ];
-
-const ELEMENT_TAG = /<(\w+)([^>]*?)\/?>/g;
-const ATTR = (attrs: string, key: string) =>
-  new RegExp(`\\b${key}="([^"]*)"`).exec(attrs)?.[1];
 
 /** Roles whose presence and naming define a screen rather than fill it. */
 const STRUCTURAL_ROLES = new Set(["Button", "TextField", "SearchField", "Switch"]);
@@ -73,28 +71,42 @@ export function readScreen(treeXml: string): ScreenSignature.Screen {
   const elements: ScreenSignature.Element[] = [];
   const structural = new Set<string>();
 
-  for (const match of treeXml.matchAll(ELEMENT_TAG)) {
-    const [, role, attrs] = match;
-    if (!role || attrs === undefined) continue;
-
-    const text = (ATTR(attrs, "name") ?? ATTR(attrs, "value") ?? "").trim();
-    if (!text) continue;
-
-    if (isJunk(text)) continue;
-    elements.push({ role, text });
-    if (STRUCTURAL_ROLES.has(role) && !isContentLike(text)) {
-      structural.add(text);
+  const collect = (node: Xml.Node): void => {
+    const text = Xml.nodeAsText(node);
+    if (text) {
+      const body = text.data.trim().replace(/\s+/g, " ");
+      if (body && !isJunk(body)) elements.push({ role: "Text", text: body });
+      return;
     }
-  }
 
-  // Text nodes carry headings, which are the best clue to what a case calls
-  // this screen; the tree renders them as element bodies rather than names.
-  // The opening tag carries an id attribute, so the pattern must allow it —
-  // without that this matched nothing and every screen came out untitled.
-  for (const body of treeXml.matchAll(/<div[^>]*>([^<]{2,80})<\/div>/g)) {
-    const text = body[1]?.trim().replace(/\s+/g, " ");
-    if (text && text.length >= 2) elements.push({ role: "Text", text });
-  }
+    const tag = Xml.nodeAsTag(node);
+    if (!tag) return;
+
+    // Everything under a hidden element is hidden too, and this app keeps every
+    // tab mounted at once — so without this the reading is of all four tabs
+    // stacked together, and no two screens can be told apart.
+    if (tag.attribs["visible"] === "false") return;
+
+    const role = tag.tagName.replace(/^XCUIElementType/, "");
+    const label = (
+      tag.attribs["name"] ??
+      tag.attribs["label"] ??
+      tag.attribs["value"] ??
+      ""
+    ).trim();
+
+    if (label && !isJunk(label)) {
+      const isText = role === "StaticText";
+      elements.push({ role: isText ? "Text" : role, text: label });
+      if (!isText && STRUCTURAL_ROLES.has(role) && !isContentLike(label)) {
+        structural.add(label);
+      }
+    }
+
+    for (const child of tag.children) collect(child);
+  };
+
+  for (const root of Xml.parseRootChildren(treeXml)) collect(root);
 
   const title = guessTitle(elements);
   return {

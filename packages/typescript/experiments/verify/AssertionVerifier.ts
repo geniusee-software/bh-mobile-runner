@@ -1,6 +1,7 @@
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import type { Alumni } from "../../src/client/Alumni.ts";
 import { TreeFactory } from "../../src/tree/TreeFactory.ts";
+import { withPlatformPreamble } from "../../src/server/agents/prompts/platformPreambles.ts";
 import { failure, success, type StepVerifier } from "./StepVerifier.ts";
 
 /** Element ids mean nothing to a judgement and only add tokens. */
@@ -18,6 +19,9 @@ const SYSTEM = [
   "- Answer that it is not satisfied when the screen is plainly a different one, when the named",
   "  element is absent, or when the tree shows the opposite state.",
   "- Do not demand evidence the tree could never carry, such as colour, animation or exact layout.",
+  "- When the expectation is about what is on display rather than what exists — which tab is open,",
+  "  whether a popup is up or gone, which screen replaced which — judge it by what the tree marks",
+  "  as not visible, and say so in OBSERVED.",
   "",
   "Answer in exactly two lines:",
   "OBSERVED: what the screen actually shows about the thing the expectation names.",
@@ -60,7 +64,9 @@ export class AssertionVerifier implements StepVerifier {
     const treeXml = tree.toXml(EXCLUDED_ATTRIBUTES);
 
     const response = await this.#llm.invoke([
-      ["system", SYSTEM],
+      // The judge reads the same tree the agents do, so it needs the same
+      // vocabulary for it — including what an unmarked element means.
+      ["system", withPlatformPreamble(SYSTEM, alumni.driver.platform)],
       [
         "human",
         [

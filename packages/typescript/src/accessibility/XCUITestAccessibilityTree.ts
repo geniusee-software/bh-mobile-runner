@@ -13,6 +13,17 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
    */
   private static readonly WEBVIEW_TYPE = /XCUIElementTypeWebView/;
 
+  /**
+   * `visible="false"` is the one false-valued attribute worth relaying.
+   *
+   * The renderer drops false attributes as noise, which is right for the rest
+   * of them — the interesting half of `enabled` and `accessible` is `true`. For
+   * `visible` it is the other way round, and dropping it here silently emptied
+   * the whole chain: the server tree could carry visibility all it liked while
+   * this side had already thrown it away.
+   */
+  private static readonly PRESERVE_FALSE = new Set(["visible"]);
+
   #xmlString: string;
   #nextRawId: number = 0;
 
@@ -38,7 +49,9 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
     this.#addRawIds(root);
 
     // Serialize back to string
-    return (this.xml = XmlRenderer.render([root]));
+    return (this.xml = XmlRenderer.render([root], {
+      preserveFalseAttrs: XCUITestAccessibilityTree.PRESERVE_FALSE,
+    }));
   }
 
   /** Recursively add raw_id attribute to element and its children. */
@@ -171,7 +184,9 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
     }
 
     // Convert the scoped element back to XML string
-    const scopedXml = XmlRenderer.render([targetElem]);
+    const scopedXml = XmlRenderer.render([targetElem], {
+      preserveFalseAttrs: XCUITestAccessibilityTree.PRESERVE_FALSE,
+    });
 
     return new XCUITestAccessibilityTree(scopedXml);
   }
