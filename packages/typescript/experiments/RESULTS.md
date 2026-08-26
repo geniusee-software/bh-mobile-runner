@@ -74,9 +74,52 @@ drops from 57% to 39%. The cap is left off. See `scripts/probeDepth.ts`.
   repeated label the agent's choice was discarded and the tap landed on another
   row. It looked like the app ignoring the tap, and it accounted for three of
   the five failures in the best configuration.
+- **The tree never said what was on the screen.** iOS keeps every tab of the
+  bottom bar mounted at once, so one dump holds Home, Search, Highlights,
+  Community and Donate together, and `visible` is the only thing separating
+  them. It was dropped in two places — the server tree discards any
+  false-valued attribute, and the client renders the dump before that and
+  discards it first. Fixing only the server half produced a change that passed
+  its own unit tests and did nothing on a device: eighty-five markers in the
+  dump, none in the tree the agents read. Found by checking a live run's
+  recorded traces; the fixtures could not have shown it.
 - **An unstorable response failed the call.** gpt-oss attaches usage metadata in
   a shape the cache's schema does not accept, and the throw travelled out of the
   agent — the call was made, paid for, and discarded.
+
+## What the app is made of
+
+Screens are identified by their heading, which is only meaningful once
+invisible subtrees are excluded — before that, 198 recorded screens collapsed
+into three signatures, all of them the home screen's greeting.
+
+Reading the suite against that map answers a question no pass rate can:
+
+| what the expectation actually says | share of 136 steps |
+| --- | --- |
+| names an element the app really has | 21% |
+| names nothing that can be checked | 74% |
+| names a label no screen has ever shown | 6% |
+
+The last row is the interesting one — cases quoting text such as "What Is Bikur
+Cholim?" that the app has never displayed. Those cannot pass by any means, and
+`validateSuite.ts` names them individually.
+
+The healer that rewrites the middle row is written and currently rewrites
+nothing, by design. Two guards stopped it doing harm:
+
+- It matched screens **by mention**, so "the AhavasYisroel4Life screen is shown"
+  anchored to the home screen, which carries a feed row by that name. The
+  rewritten expectation would then pass exactly when the navigation failed —
+  a false-positive generator, which is the one failure a test runner may not
+  have. It now matches titles only.
+- It refuses to rewrite anything while the graph holds fewer than six screens.
+  Distinctiveness is a comparison, and on a three-screen graph the home feed's
+  own tab bar came out "distinctive": the graph was describing itself.
+
+The bottleneck is the map, not the healer. The crawler can tell tabs apart now,
+but spends about ten seconds a tap re-reading the full dump, and traces from
+ordinary runs are too sparse to substitute — cases rarely leave the home screen.
 
 ## Why cases fail
 
