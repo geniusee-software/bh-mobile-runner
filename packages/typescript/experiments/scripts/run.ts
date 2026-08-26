@@ -6,6 +6,7 @@
 import { SuiteSnapshot } from "../cases/TestCase.ts";
 import { sampleCases } from "../cases/sampleCases.ts";
 import { runnableCases } from "../cases/eligibility.ts";
+import { loadResults } from "../report/loadResults.ts";
 import { DEVICE } from "../config/device.ts";
 import { SUITE_SNAPSHOT_PATH } from "../config/suite.ts";
 import { VARIANTS, variantById, type Variant } from "../config/variants.ts";
@@ -44,7 +45,33 @@ const environment = {
 const eligible = process.argv.includes("--all-cases")
   ? snapshot.cases
   : runnableCases(snapshot.cases, environment);
-const cases = sampleCases(eligible, caseCount);
+
+// Reusing an earlier run's exact case set is what keeps a comparison honest.
+// The eligibility rules get sharper as the suite is understood better, and a
+// sharper filter changes which cases the sample draws — so two runs a day apart
+// can differ by their case set rather than by the thing under test.
+const reuseLabel = flag("cases-from", "");
+const cases = reuseLabel
+  ? await casesFromRun(reuseLabel)
+  : sampleCases(eligible, caseCount);
+
+async function casesFromRun(label: string) {
+  const byId = new Map(snapshot.cases.map((testCase) => [testCase.id, testCase]));
+  const seen = new Set<string>();
+  const reused = [];
+
+  for (const records of (await loadResults(label)).values()) {
+    for (const record of records) {
+      if (seen.has(record.caseId)) continue;
+      seen.add(record.caseId);
+      const testCase = byId.get(record.caseId);
+      if (testCase) reused.push(testCase);
+    }
+  }
+
+  if (!reused.length) throw new Error(`No cases recorded under label "${label}"`);
+  return reused;
+}
 
 console.log(`Suite:    ${snapshot.suiteName}`);
 console.log(

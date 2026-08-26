@@ -48,7 +48,9 @@ const VOLATILE_PATTERNS: ReadonlyArray<[string, RegExp]> = [
  */
 const ACCOUNT_PATTERNS: ReadonlyArray<[string, RegExp]> = [
   ["the profile screen", /\bprofile screen\b|\bavatar button\b/i],
-  ["followed series", /\bfollow(ed|ing)?\b.{0,20}\bseries\b|\bunfollow\b/i],
+  // The gap is generous on purpose: "Follow a second recommended series" sits
+  // just past a tighter window and slipped through as runnable.
+  ["followed series", /\bfollow(ed|ing)?\b.{0,40}\bseries\b|\bunfollow\b/i],
   ["notification settings", /\bnotification (preference|setting)/i],
   ["the user's own details", /\buser's (name|email|country)\b/i],
 ];
