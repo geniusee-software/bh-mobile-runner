@@ -109,6 +109,18 @@ whose expectation quotes concrete words is audited against it for free
 expectation that quotes nothing cannot be checked this way. Comparing models on
 pass rate without it is not sound.
 
+## A comparison is only as good as its case set
+
+Between two sweeps the eligibility rules were sharpened — "Follow a second
+recommended series" sat one character past the account-pattern window and had
+been counted as runnable. That changed which cases the deterministic sample
+drew, and two of six differed. The before/after numbers from those two runs are
+therefore not comparable: the difference could be the case set rather than the
+change under test.
+
+`--cases-from <label>` pins a run to a previous run's exact case set. Use it for
+any before/after; the sample is only for choosing a set in the first place.
+
 ## Why the suite cannot reach 90% here
 
 `bun experiments/scripts/auditSuite.ts`, run against a guest session:
