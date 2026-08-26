@@ -12,7 +12,7 @@ describe(ServerXCUITestAccessibilityTree, () => {
     expect(xml).toMatchInlineSnapshot(`
       "<Application id=1>
         <Window id=2>
-          <div id=5>
+          <div id=3 visible="false">
             <NavigationBar name="BLTNBoard.BulletinView" id=6>
               <Button name="ToDoList" id=7 />
               <Button name="settingsIcon" id=8 />
@@ -162,6 +162,38 @@ describe(ServerXCUITestAccessibilityTree, () => {
         <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=2 />
       </Application>"
     `);
+  });
+
+  describe("what is on screen", () => {
+    const overlaidScreen = `
+      <XCUIElementTypeApplication raw_id="1" visible="true">
+        <XCUIElementTypeOther raw_id="2" visible="false">
+          <XCUIElementTypeOther raw_id="3" visible="false"/>
+          <XCUIElementTypeButton raw_id="4" name="DAILY SHIURIM" visible="false"/>
+        </XCUIElementTypeOther>
+        <XCUIElementTypeButton raw_id="5" name="Dismiss" visible="true"/>
+      </XCUIElementTypeApplication>
+    `;
+
+    it("marks the covered screen and leaves what is on top of it unmarked", () => {
+      const tree = new ServerXCUITestAccessibilityTree(overlaidScreen);
+
+      expect(tree.toXml()).toMatchInlineSnapshot(`
+        "<Application id=1>
+          <div id=2 visible="false">
+            <Button name="DAILY SHIURIM" id=4 />
+          </div>
+          <Button name="Dismiss" id=5 />
+        </Application>"
+      `);
+    });
+
+    it("marks the outermost hidden element only, and drops hidden boxes that name nothing", () => {
+      const xml = new ServerXCUITestAccessibilityTree(overlaidScreen).toXml();
+
+      expect(xml.match(/visible="false"/g)).toHaveLength(1);
+      expect(xml).not.toContain("id=3");
+    });
   });
 
   describe("snapshots", () => {

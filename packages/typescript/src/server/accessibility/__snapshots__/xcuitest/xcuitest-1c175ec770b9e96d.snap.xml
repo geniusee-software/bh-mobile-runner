@@ -1,4 +1,4 @@
-<Application name="Safari" id=1>
+<Application name="Safari" id=1 visible="false">
   <Window id=2>
     <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=22EF9D86-B658-4063-9AA0-90A6B50B4BEC&amp;UsingLoweredBar=true&amp;IsSecure=true&amp;IsTabBarAvailable=false" id=12>
       <ScrollView id=19>
@@ -24,7 +24,6 @@
                     <Link id=43>
                       <Link id=44 value=1>todos</Link>
                     </Link>
-                    <TextField id=46 value="What needs to be done?" />
                   </div>
                   <div name="content information" id=47>
                     <div id=49>Double-click to edit a todo</div>
@@ -59,7 +58,6 @@
     <div id=97>
       <div name="PopoverDismissRegion" id=98 label="dismiss pop-up" />
       <Popover id=99>
-        <Image id=100 />
         <div name="TipView" id=116>
           <ScrollView id=117>
             <div id=118>
@@ -77,5 +75,4 @@
       </Popover>
     </div>
   </Window>
-  <Window id=126 />
 </Application>

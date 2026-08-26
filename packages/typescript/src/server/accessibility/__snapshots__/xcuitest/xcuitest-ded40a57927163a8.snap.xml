@@ -1,4 +1,4 @@
-<Application name="Safari" id=1>
+<Application name="Safari" id=1 visible="false">
   <Window id=2>
     <div name="SafariWindow?View=Narrow&amp;BarsKeptMinimized=false&amp;UUID=22EF9D86-B658-4063-9AA0-90A6B50B4BEC&amp;UsingLoweredBar=true&amp;IsSecure=false&amp;IsTabBarAvailable=false" id=11>
       <div id=13>
@@ -6,7 +6,6 @@
           <div name="TabDocument?IsLoadedUsingDesktopUserAgent=false&amp;InReaderMode=false&amp;UUID=02185351-127F-4127-B0D1-5F875A2B6EA1&amp;IsPrivate=false&amp;IsPageLoaded=true&amp;ProcessID=40171" id=19>
             <WebView name="WebView" id=20>
               <WebView id=21>
-                <WebView id=22 />
                 <div name="Vertical scroll bar, 1 page" id=27 value="0 %" />
                 <div name="Horizontal scroll bar, 1 page" id=29 value="0 %" />
                 <div name="Vertical scroll bar, 1 page" id=31 value="0 %" />
@@ -58,5 +57,4 @@
       </div>
     </div>
   </Window>
-  <Window id=113 />
 </Application>

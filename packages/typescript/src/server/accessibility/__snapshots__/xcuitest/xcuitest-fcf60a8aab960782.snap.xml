@@ -14,7 +14,7 @@
                   </Link>
                   <div name="separator" id=36 />
                   <div id=37 value=1>Web form</div>
-                  <div name="form" id=39>
+                  <div name="form" id=39 visible="false">
                     <div id=40>
                       <div id=41>Text input</div>
                       <TextField name="Text input" id=42 />
@@ -83,21 +83,21 @@
                     </div>
                   </div>
                 </div>
-                <div name="content information" id=93>
+                <div name="content information" id=93 visible="false">
                   <div id=95>Copyright © 2021-2026</div>
                   <Link id=96>Boni García</Link>
                 </div>
               </WebView>
               <Image name="AdditionalDimmingOverlay" id=100 />
               <div name="Vertical scroll bar, 2 pages" id=106 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=108 value="0 %" />
+              <div name="Horizontal scroll bar, 1 page" id=108 value="0 %" visible="false" />
               <div name="Vertical scroll bar, 2 pages" id=110 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=112 value="0 %" />
+              <div name="Horizontal scroll bar, 1 page" id=112 value="0 %" visible="false" />
             </WebView>
           </WebView>
         </div>
-        <div name="Horizontal scroll bar, 1 page" id=114 value="0 %" />
-        <div name="Horizontal scroll bar, 1 page" id=116 value="0 %" />
+        <div name="Horizontal scroll bar, 1 page" id=114 value="0 %" visible="false" />
+        <div name="Horizontal scroll bar, 1 page" id=116 value="0 %" visible="false" />
       </ScrollView>
       <div name="CapsuleViewController" id=118>
         <Button name="BackButton" id=130 label="Back" />
@@ -110,5 +110,4 @@
       </div>
     </div>
   </Window>
-  <Window id=146 />
 </Application>

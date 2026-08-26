@@ -21,6 +21,9 @@ export const PLATFORM_PREAMBLES: Record<Driver.Platform, string> = {
     "- There is no page title and no URL; those fields are empty and carry no meaning. Never reason about them.",
     '- A screen is "titled" by the text in its navigation bar, header or the heading nearest the top — not by the application name.',
     "- Treat `name`, `label` and `value` as the text a person sees. An element is present if it is in the tree, even when it sits below the fold.",
+    '- An iOS app keeps every tab mounted, so the tree holds all of them at once. `visible="false"` marks what is not on the screen right now: a tab that is not open, a sheet underneath, a row below the fold.',
+    "- Which tab is open is therefore readable: it is the one whose content is visible. The tab buttons themselves look identical, so judge by their content, never by the button.",
+    "- An element without that attribute is on screen. One carrying it exists but is not being shown.",
   ].join("\n"),
 
   uiautomator2: [

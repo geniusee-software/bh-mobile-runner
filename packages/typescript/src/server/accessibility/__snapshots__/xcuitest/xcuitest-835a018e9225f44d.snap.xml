@@ -14,7 +14,7 @@
                   </Link>
                   <div name="separator" id=36 />
                   <div id=37 value=1>Web form</div>
-                  <div name="form" id=39>
+                  <div name="form" id=39 visible="false">
                     <div id=40>
                       <div id=41>Text input</div>
                       <TextField name="Text input" id=42 value="Hello Alumnium!Testing the LocatorAgent" />
@@ -83,7 +83,7 @@
                     </div>
                   </div>
                 </div>
-                <div name="content information" id=93>
+                <div name="content information" id=93 visible="false">
                   <div id=95>Copyright © 2021-2026</div>
                   <Link id=96>Boni García</Link>
                 </div>
@@ -95,17 +95,19 @@
             </WebView>
           </WebView>
         </div>
-        <div name="Horizontal scroll bar, 1 page" id=107 value="0 %" />
-        <div name="Horizontal scroll bar, 1 page" id=109 value="0 %" />
+        <div name="Horizontal scroll bar, 1 page" id=107 value="0 %" visible="false" />
+        <div name="Horizontal scroll bar, 1 page" id=109 value="0 %" visible="false" />
       </ScrollView>
       <div name="CapsuleViewController" id=111>
-        <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=124>
-          <div name="TabBarItemTitle" id=125 value="‎bonigarcia.dev" label="Address" />
+        <div id=112 visible="false">
+          <div name="CapsuleNavigationBar?isSelected=true&amp;isDistractionControlOverlayUp=false" id=124>
+            <div name="TabBarItemTitle" id=125 value="‎bonigarcia.dev" label="Address" />
+          </div>
         </div>
       </div>
     </div>
   </Window>
-  <Window id=130>
+  <Window id=130 visible="false">
     <Toolbar name="Toolbar" id=137>
       <Button name="Previous" id=146 />
       <Button name="Next" id=150 />
@@ -116,7 +118,6 @@
   <Window id=156>
     <div name="SystemInputAssistantView" id=160>
       <div name="CenterPageView" id=162>
-        <ScrollView id=164 />
         <div name="Typing Predictions" id=166>
           <Button name="Passwords" id=169>
             <Image name="kb-autofill-key" id=170 />
@@ -126,12 +127,12 @@
     </div>
     <Keyboard id=175>
       <div name="eyboardayouttar review" id=177>
-        <Key name="Padding-Left" id=178 />
-        <Key name="Padding-Right" id=179 />
-        <Key name="Padding-Left" id=180 />
-        <Key name="Padding-Right" id=181 />
-        <Key name="Padding-Left" id=182 />
-        <Key name="Padding-Right" id=183 />
+        <Key name="Padding-Left" id=178 visible="false" />
+        <Key name="Padding-Right" id=179 visible="false" />
+        <Key name="Padding-Left" id=180 visible="false" />
+        <Key name="Padding-Right" id=181 visible="false" />
+        <Key name="Padding-Left" id=182 visible="false" />
+        <Key name="Padding-Right" id=183 visible="false" />
         <Key name="Q" id=184 />
         <Key name="W" id=185 />
         <Key name="E" id=186 />
@@ -166,7 +167,7 @@
         <Button name="Go" id=215 label="go" />
       </div>
     </Keyboard>
-    <div id=216>
+    <div id=216 visible="false">
       <Button name="Next keyboard" id=217 value="Русская" />
       <Button name="dictation" id=219 label="Dictate" />
       <Button name="dictation" id=221 label="Dictate" />

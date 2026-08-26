@@ -34,14 +34,14 @@
                 <Button name="=" id=59 />
               </WebView>
               <div name="Vertical scroll bar, 1 page" id=61 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=63 value="0 %" />
+              <div name="Horizontal scroll bar, 1 page" id=63 value="0 %" visible="false" />
               <div name="Vertical scroll bar, 1 page" id=65 value="0 %" />
-              <div name="Horizontal scroll bar, 1 page" id=67 value="0 %" />
+              <div name="Horizontal scroll bar, 1 page" id=67 value="0 %" visible="false" />
             </WebView>
           </WebView>
         </div>
-        <div name="Horizontal scroll bar, 1 page" id=69 value="0 %" />
-        <div name="Horizontal scroll bar, 1 page" id=71 value="0 %" />
+        <div name="Horizontal scroll bar, 1 page" id=69 value="0 %" visible="false" />
+        <div name="Horizontal scroll bar, 1 page" id=71 value="0 %" visible="false" />
       </ScrollView>
       <div name="CapsuleViewController" id=73>
         <Button name="BackButton" id=85 label="Back" />
@@ -54,5 +54,4 @@
       </div>
     </div>
   </Window>
-  <Window id=101 />
 </Application>
