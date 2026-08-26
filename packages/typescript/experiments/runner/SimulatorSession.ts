@@ -150,11 +150,52 @@ export class SimulatorSession {
     return this.#browser;
   }
 
+  /**
+   * Screens that stand between a launch and the app itself.
+   *
+   * These are not part of any case, and a case that meets one fails on its
+   * first step for a reason that has nothing to do with the app under test.
+   * Measured across every recorded run, that happened in 4.2% of case runs,
+   * spread evenly — the onboarding carousel returns after a reinstall and
+   * stays until something dismisses it.
+   */
+  static readonly #INTERSTITIAL_CONTROLS = [
+    "Skip and explore the app",
+    "Skip",
+    "Not now",
+    "Maybe later",
+  ];
+
   /** Return the app to its first screen without paying for a new WDA handshake. */
   async relaunchApp(): Promise<void> {
     const { bundleId } = this.#props;
     await this.browser.execute("mobile: terminateApp", { bundleId });
     await this.browser.execute("mobile: launchApp", { bundleId });
+    await this.dismissInterstitials();
+  }
+
+  /**
+   * Clears anything the app puts in front of its first screen.
+   *
+   * Deliberately silent when there is nothing to clear: this runs before every
+   * case, and the common path is that the app opens where it should.
+   */
+  async dismissInterstitials(): Promise<void> {
+    for (const label of SimulatorSession.#INTERSTITIAL_CONTROLS) {
+      const control = this.browser.$(
+        `-ios predicate string:name == "${label}" OR label == "${label}"`,
+      );
+      try {
+        if (!(await control.isExisting())) continue;
+        await control.click();
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        return;
+      } catch {
+        // A control that vanishes between the check and the tap is the screen
+        // dismissing itself, which is the outcome we wanted anyway.
+        return;
+      }
+    }
   }
 
   async stop(): Promise<void> {
