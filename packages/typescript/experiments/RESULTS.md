@@ -58,6 +58,13 @@ drops from 57% to 39%. The cap is left off. See `scripts/probeDepth.ts`.
   retriever found "Notifications" in the navigation bar and rejected it because
   "the application's title is Path4Life", which is the only thing a webpage
   could have meant.
+- **The driver acted on the wrong element.** One Path4Life screen carries thirty
+  buttons named `play`, ten named `options` and nine named after the same
+  series. The driver turned the agent's chosen element into a predicate over
+  type, name, value and label and then took the *first* match, so on any
+  repeated label the agent's choice was discarded and the tap landed on another
+  row. It looked like the app ignoring the tap, and it accounted for three of
+  the five failures in the best configuration.
 - **An unstorable response failed the call.** gpt-oss attaches usage metadata in
   a shape the cache's schema does not accept, and the throw travelled out of the
   agent — the call was made, paid for, and discarded.
@@ -84,6 +91,23 @@ through the retriever, whose instructions are to answer only from information
 "directly present" and to refuse otherwise. Right for extracting a value, wrong
 for deciding an assertion. A prompt written for judging (`verify/AssertionVerifier.ts`)
 moved step pass rate from **28% to 39%** on the same six cases.
+
+## Pass rate alone is a misleading metric
+
+In the first sweep one model passed *"a button labeled 'Join Path4life' is
+visible on screen"* — on a registration form that has no such button, confirmed
+against both the screenshot and the tree. Another model rejected the same step
+and was right.
+
+A lenient judge scores well on pass rate precisely by accepting screens that do
+not satisfy the expectation, and for a test runner that is the worse mistake: a
+green step that should be red hides a real defect.
+
+The verifier now carries the tree it reached its verdict on, so every *pass*
+whose expectation quotes concrete words is audited against it for free
+(`report/suspectPasses.ts`). Reported as a rate over auditable passes, since an
+expectation that quotes nothing cannot be checked this way. Comparing models on
+pass rate without it is not sound.
 
 ## Why the suite cannot reach 90% here
 
