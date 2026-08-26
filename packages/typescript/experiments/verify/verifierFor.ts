@@ -1,5 +1,6 @@
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { AssertionVerifier } from "./AssertionVerifier.ts";
+import { VisionAssertionVerifier } from "./VisionAssertionVerifier.ts";
 import type { StepVerifier } from "./StepVerifier.ts";
 import {
   SecondOpinion,
@@ -48,9 +49,11 @@ export function verifierFor(
     case "assert-retry":
       return new SettleAndRetry(new AssertionVerifier(llm));
     case "assert-vision":
+      // The screenshot is the second opinion, not the first: it costs image
+      // tokens on every step it runs, and the tree answers most expectations.
       return new SecondOpinion(
         new SettleAndRetry(new AssertionVerifier(llm)),
-        new VisionVerifier(),
+        new VisionAssertionVerifier(llm),
       );
   }
 }
