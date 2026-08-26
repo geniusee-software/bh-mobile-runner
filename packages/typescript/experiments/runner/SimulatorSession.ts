@@ -183,6 +183,34 @@ export class SimulatorSession {
    * replaced. What follows the splash is either the app itself or something
    * standing in front of it, so waiting for any of those is precise.
    */
+  /**
+   * Answers whatever iOS itself is asking.
+   *
+   * A signed-in launch draws the notification permission dialog over the app,
+   * and it belongs to the system rather than to the app, so nothing inside the
+   * accessibility tree can reach it. Left standing it covers every screen: a
+   * run of twenty signed-in cases passed six steps out of sixty-seven, and the
+   * judge's reason on most of them was a permission dialog blocking the view.
+   *
+   * Accepted rather than declined, because declining leaves iOS free to ask
+   * again and a case is then interrupted mid-run.
+   */
+  async #dismissSystemAlert(): Promise<void> {
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        await this.browser.getAlertText();
+      } catch {
+        return; // Nothing standing, which is the common case.
+      }
+      try {
+        await this.browser.acceptAlert();
+      } catch {
+        await this.browser.dismissAlert().catch(() => undefined);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 700));
+    }
+  }
+
   static readonly #LANDED_MARKERS = [
     "avatar",
     "Home",
@@ -216,6 +244,7 @@ export class SimulatorSession {
     // is how a run reached its first case still sitting on the onboarding
     // carousel.
     await this.#awaitLanding();
+    await this.#dismissSystemAlert();
 
     for (const label of SimulatorSession.#INTERSTITIAL_CONTROLS) {
       const control = this.browser.$(
