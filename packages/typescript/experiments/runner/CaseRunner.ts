@@ -100,6 +100,7 @@ export class CaseRunner {
     this.#llmCalls.reset();
     this.#deviceCalls.reset();
     this.#props.systemDialogs?.forget();
+    this.#lastFingerprint = "";
 
     const alumni = new Alumni(this.#deviceCalls.instrument(browser), {
       model: Model.parse(variant.model),
@@ -182,7 +183,7 @@ export class CaseRunner {
     // apart from a screen that genuinely has nothing on it.
     alumni.driver.lookingFor?.(namedTargets(step.action));
 
-    const before = await this.#fingerprint(alumni);
+    const before = this.#lastFingerprint;
 
     try {
       await alumni.do(step.action);
@@ -191,32 +192,40 @@ export class CaseRunner {
     }
 
     await this.#props.systemDialogs?.clear(`step ${index + 1} after`);
-    let after = await this.#fingerprint(alumni, { fresh: true });
-
-    // One retry, for either of the two ways an action can quietly not happen.
-    // A tap that lands on nothing reports success, so the agent walks on and
-    // fails two steps later with a message about the wrong screen; and a step
-    // that ends on a scroll has not been performed at all, because scrolling
-    // brings the target into view and the instruction asked for something to
-    // be done to it.
-    const retryReason = this.#retryReason(callsBefore, before, after);
-    if (retryReason) {
-      try {
-        await alumni.do(`${step.action}\n\n${RETRY_NOTES[retryReason]}`);
-      } catch (error) {
-        return finish("errored", `action (${retryReason} retry): ${describe(error)}`);
-      }
-      await this.#props.systemDialogs?.clear(`step ${index + 1} after retry`);
-      after = await this.#fingerprint(alumni, { fresh: true });
-    }
-
-    const screenChanged = after !== before;
 
     if (!step.expected) return finish("passed", "");
 
     let outcome;
+    let retryReason: RunRecord.RetryReason | undefined;
+    let screenChanged: boolean | undefined;
     try {
       outcome = await this.#verifierFor(step).verify(alumni, step.expected);
+
+      // The verifier has just read the screen, so asking whether the action
+      // moved it costs nothing here — where doing it before verifying would
+      // add a full snapshot to every step, most of which never needed one.
+      screenChanged = this.#moved(before, outcome.treeXml);
+
+      // One retry, for either of the two ways an action can quietly not
+      // happen. A tap that lands on nothing reports success, so the agent
+      // walks on and fails two steps later blaming a screen it never left;
+      // and a step that ends on a scroll has not been performed at all,
+      // because scrolling brings a target into view and the instruction asked
+      // for something to be done to it.
+      if (!outcome.passed) {
+        retryReason = this.#onlyScrolled(callsBefore)
+          ? "only-scrolled"
+          : screenChanged === false
+            ? "screen-unchanged"
+            : undefined;
+      }
+
+      if (retryReason) {
+        await alumni.do(`${step.action}\n\n${RETRY_NOTES[retryReason]}`);
+        await this.#props.systemDialogs?.clear(`step ${index + 1} after retry`);
+        outcome = await this.#verifierFor(step).verify(alumni, step.expected);
+        screenChanged = this.#moved(before, outcome.treeXml);
+      }
     } catch (error) {
       // The verifier only swallows the app disagreeing; anything reaching here
       // is the harness or the device breaking, and the two must not be pooled.
@@ -339,27 +348,28 @@ export class CaseRunner {
   #lastFingerprint = "";
 
   /**
-   * A cheap statement of what is on the screen, for telling "it moved" from
-   * "it did not".
+   * Whether the action moved the screen, judged from the tree the verifier
+   * just read.
    *
-   * Carried between steps so the common case costs one read rather than two:
-   * the screen a step starts on is the screen the previous step ended on.
+   * Free by construction: the verifier fetches a tree to reach its verdict, so
+   * the comparison rides along. Taking a snapshot of its own either side of
+   * every action would have added a full read to each step — about six seconds
+   * on this app — for a question most steps never ask.
+   *
+   * Answers `undefined` rather than guessing when there is nothing to compare:
+   * the first step of a case has no previous screen, and a verifier that
+   * returned no tree gives no evidence either way.
    */
-  async #fingerprint(
-    alumni: Alumni,
-    options: { fresh?: boolean } = {},
-  ): Promise<string> {
-    if (!options.fresh && this.#lastFingerprint) return this.#lastFingerprint;
+  #moved(before: string, treeXml: string | undefined): boolean | undefined {
+    if (!treeXml) return undefined;
 
-    try {
-      const source = await this.#props.browser.getPageSource();
-      const names = readScreen(source).elements.map((element) => element.text);
-      this.#lastFingerprint = [...new Set(names)].sort().join("\u0001");
-    } catch {
-      // Unreadable screens are not evidence of anything; leave the last
-      // reading alone rather than inventing a change.
-    }
-    return this.#lastFingerprint;
+    const names = readScreen(treeXml).elements.map((element) => element.text);
+    const after = [...new Set(names)].sort().join("\u0001");
+    const previous = this.#lastFingerprint;
+    this.#lastFingerprint = after;
+
+    if (!before || !previous) return undefined;
+    return after !== before;
   }
 
   /**
