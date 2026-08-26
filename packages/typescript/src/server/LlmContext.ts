@@ -1,4 +1,5 @@
 import z from "zod";
+import type { Driver } from "../drivers/Driver.ts";
 import type { Model } from "../Model.ts";
 import type { Agent } from "./agents/Agent.ts";
 
@@ -16,9 +17,12 @@ export class LlmContext {
   static LlmKey = z.string().brand("LlmContext.LlmKey");
 
   readonly model: Model;
+  /** Surface the agents are acting on; decides the vocabulary their prompts use. */
+  readonly platform: Driver.Platform | undefined;
 
-  constructor(model: Model) {
+  constructor(model: Model, platform?: Driver.Platform) {
     this.model = model;
+    this.platform = platform;
   }
 
   #promptsMeta: Record<string, LlmContext.Meta> = {};

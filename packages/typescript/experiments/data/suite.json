@@ -1,0 +1,3071 @@
+{
+  "suiteId": "f823e7c4-c4b7-4a6d-8ed0-a91135f15180",
+  "suiteName": "Path4Life — journeys from a device map (v2)",
+  "fetchedAt": "2026-08-25T23:29:40.500Z",
+  "cases": [
+    {
+      "id": "00f835bd-58e0-4052-b90c-e602a9156618",
+      "title": "Navigate to a topic category from the Notifications screen",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notifications tab to open the Notifications screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Scroll down until the 'Popular Topics' section and the 'View all' button are visible.",
+          "expected": "The heading 'Popular Topics' and a 'View all' button are both visible on screen."
+        },
+        {
+          "action": "Tap the 'Bitachon, 2620 Shiurim' button.",
+          "expected": "A new screen opens showing content related to the Bitachon topic."
+        }
+      ]
+    },
+    {
+      "id": "0495ca03-28f9-4a13-950f-df7b682029be",
+      "title": "Toggle a notification preference from Notifications Settings",
+      "origin": "device map: avatar",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the avatar button to open the profile screen.",
+          "expected": "The Profile screen is visible, showing the user's name and email."
+        },
+        {
+          "action": "Tap the Notifications Settings button.",
+          "expected": "A Notifications Settings screen opens showing at least one notification toggle."
+        },
+        {
+          "action": "Note the current on/off state of the first notification toggle, then tap it.",
+          "expected": "The toggle visually changes state — if it was on it now appears off, or if it was off it now appears on."
+        },
+        {
+          "action": "Tap the first notification toggle again to return it to its original state.",
+          "expected": "The toggle returns to its previous visual state."
+        }
+      ]
+    },
+    {
+      "id": "0522f55f-da1b-4d95-8ba4-02e5a2543209",
+      "title": "Unfollow the Ahavas Yisroel series from the shiur detail options overlay and confirm it leaves the Followed Series list",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the 'Shiur 87., Bikur Cholim, What Is Bikur Cholim?, ∙Ahavas Yisroel, Played' button on the home screen to open the shiur options.",
+          "expected": "An options overlay or detail popup appears containing series information for Ahavas Yisroel."
+        },
+        {
+          "action": "Tap the 'FOLLOWING' button in the overlay.",
+          "expected": "The 'FOLLOWING' button label changes to indicate the series is no longer followed (e.g., reads 'FOLLOW')."
+        },
+        {
+          "action": "Tap 'dismiss popup' to close the overlay.",
+          "expected": "The overlay is dismissed and the home screen is visible."
+        },
+        {
+          "action": "Tap the 'View all' button on the home screen.",
+          "expected": "The Followed Series list opens and does not contain a row or card for 'AhavasYisroel4Life'."
+        }
+      ]
+    },
+    {
+      "id": "05f12c72-a816-464c-8064-9427f5c0d035",
+      "title": "Series detail page reached from RECOMMENDED shows shiur list with title and duration",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or section to view the recommended feed.",
+          "expected": "The RECOMMENDED feed is visible with series cards or shiur entries listed."
+        },
+        {
+          "action": "Tap the 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' button in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens showing 'Hakaras Hatov!' as the series title."
+        },
+        {
+          "action": "Scroll down to view the list of shiurim on the series detail screen.",
+          "expected": "A shiur row titled 'Mesiras Nefesh!' is visible in the list."
+        },
+        {
+          "action": "Scroll further down the series detail screen.",
+          "expected": "A 'View all' button is visible at the bottom of the shiur list."
+        }
+      ]
+    },
+    {
+      "id": "087f2dda-0629-4ec3-b104-d108d42c2d3a",
+      "title": "Unfollow a series from its series screen opened via Hakaras Hatov! in RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or navigate to the RECOMMENDED section of the app.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the shiur row labelled 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min'.",
+          "expected": "A series channel page opens showing the title 'Hakaras Hatov!' at the top."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is now unfollowed (e.g., the button caption or appearance reverts from a filled/active state to the default Follow state)."
+        }
+      ]
+    },
+    {
+      "id": "09c9767b-93a6-49dd-8baf-d1f58c3c0fbe",
+      "title": "Home screen shows DAILY SHIURIM and RECOMMENDED tab buttons",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap 'Skip and explore the app' if an onboarding screen is present.",
+          "expected": "The home screen is visible."
+        },
+        {
+          "action": "Read the content section beneath the date strip.",
+          "expected": "Both a 'DAILY SHIURIM' button and a 'RECOMMENDED' button are visible on screen."
+        },
+        {
+          "action": "Tap the 'RECOMMENDED' button.",
+          "expected": "The 'RECOMMENDED' button is now the active selection."
+        },
+        {
+          "action": "Tap the 'DAILY SHIURIM' button.",
+          "expected": "The 'DAILY SHIURIM' button is now the active selection."
+        }
+      ]
+    },
+    {
+      "id": "0e74b276-d00d-461b-9a02-ddca502cdec1",
+      "title": "Series page reached from RECOMMENDED shows shiur rows with title and duration",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the shiur row labelled 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens showing a list of shiur rows."
+        },
+        {
+          "action": "Observe the first shiur row on screen.",
+          "expected": "A row titled 'Hakaras Hatov!' is visible and includes a duration value."
+        },
+        {
+          "action": "Observe the second shiur row on screen.",
+          "expected": "A row titled 'Mesiras Nefesh!' is visible and includes a duration value."
+        }
+      ]
+    },
+    {
+      "id": "0ffaa0f7-145c-4bf4-b532-5ed7db64df51",
+      "title": "Unfollow a series from the Follow Series full list",
+      "origin": "device map: View all",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section on the home screen.",
+          "expected": "A screen appears showing the heading 'Followed Series' and a list of series cards."
+        },
+        {
+          "action": "Tap the VIEW ALL button to open the full Follow Series list.",
+          "expected": "The Follow Series screen appears, showing both 'Followed Series' and 'Follow Series' headings, with the AhavasYisroel4Life entry displaying an addedCircled button."
+        },
+        {
+          "action": "Tap the addedCircled button next to the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel entry.",
+          "expected": "The button next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel changes from addedCircled to addCircled, indicating the series is no longer followed."
+        },
+        {
+          "action": "Tap the Followed Series button at the top of the Follow Series screen.",
+          "expected": "The list filters to show only followed series, and AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel is not present in the list."
+        }
+      ]
+    },
+    {
+      "id": "112d642d-4458-4b8a-badd-94ab4f402510",
+      "title": "Home screen shows FOLLOWING, DAILY SHIURIM, and RECOMMENDED tab buttons",
+      "origin": "device map: options",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible with a greeting and content below it."
+        },
+        {
+          "action": "If a popup is present, tap dismiss popup.",
+          "expected": "The popup is no longer visible."
+        },
+        {
+          "action": "Locate the FOLLOWING button by tapping it.",
+          "expected": "The FOLLOWING tab button is visible and active on screen."
+        },
+        {
+          "action": "Tap the DAILY SHIURIM button.",
+          "expected": "The DAILY SHIURIM tab button is visible on screen."
+        },
+        {
+          "action": "Tap the RECOMMENDED button.",
+          "expected": "The RECOMMENDED tab button is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "121cd32a-9db7-4019-8a44-7677457cf9f1",
+      "title": "Open the month picker from the Daily Shiurim date strip",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the top of the screen.",
+          "expected": "The DAILY SHIURIM tab is active and the August button is visible on the date strip."
+        },
+        {
+          "action": "Tap the August button on the date strip.",
+          "expected": "A popup or calendar overlay appears, allowing the user to select a month or date."
+        },
+        {
+          "action": "Tap dismiss popup to close the calendar overlay.",
+          "expected": "The popup is dismissed and the date strip is visible again."
+        }
+      ]
+    },
+    {
+      "id": "159d0042-d47a-4da2-b838-22ea8cd7e722",
+      "title": "Sort order can be toggled on the KibudAvVeim4Life channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the KibudAvVeim4Life button in the RECOMMENDED section.",
+          "expected": "The KibudAvVeim4Life series channel page is visible, showing a sortDescending button."
+        },
+        {
+          "action": "Tap the sortDescending button.",
+          "expected": "The shiur list reorders so that the item at the top of the list changes, indicating the sort direction has been toggled."
+        },
+        {
+          "action": "Tap the sortDescending button again.",
+          "expected": "The shiur list reorders again, and 'Shiur 89.' appears at the top of the list, matching the original descending order."
+        }
+      ]
+    },
+    {
+      "id": "174c7df8-975e-498b-8d34-83c8e9b1ef1d",
+      "title": "Filter and sort controls are accessible on the shiur list",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the home screen or navigation menu.",
+          "expected": "The AhavasYisroel4Life screen is shown."
+        },
+        {
+          "action": "Tap the filters button.",
+          "expected": "A filter panel or sheet appears on screen."
+        },
+        {
+          "action": "Tap Back or the dismiss control to close the filter panel.",
+          "expected": "The AhavasYisroel4Life shiur list is visible again."
+        },
+        {
+          "action": "Tap the sortDescending button.",
+          "expected": "A sort options panel or menu appears on screen."
+        }
+      ]
+    },
+    {
+      "id": "1ab910ba-43e5-4a19-8120-70fe20a7e72d",
+      "title": "Home feed tabs switch between FOLLOWING, DAILY SHIURIM, and RECOMMENDED content",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Launch the app and view the home screen.",
+          "expected": "Three tab buttons — FOLLOWING, DAILY SHIURIM, and RECOMMENDED — are visible on the screen."
+        },
+        {
+          "action": "Tap the DAILY SHIURIM button.",
+          "expected": "The DAILY SHIURIM tab is active and a list of shiur items is displayed on screen."
+        },
+        {
+          "action": "Tap the RECOMMENDED button.",
+          "expected": "The RECOMMENDED tab is active and a list of shiur items is displayed on screen."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and a list of shiur items is displayed on screen."
+        }
+      ]
+    },
+    {
+      "id": "1b5201bb-4f79-45e5-8820-f409dccda192",
+      "title": "Daily Shiurim feed shows shiur entries on the home screen",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM feed becomes the active section."
+        },
+        {
+          "action": "Observe the list of items shown in the DAILY SHIURIM feed.",
+          "expected": "At least one shiur row is visible, showing a title and a series name."
+        }
+      ]
+    },
+    {
+      "id": "1b98807a-99c7-4654-815d-8e12298ed592",
+      "title": "Shiur list shows expected series entries under AhavasYisroel4Life",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the main navigation.",
+          "expected": "The AhavasYisroel4Life screen is shown with a list of shiur rows visible."
+        },
+        {
+          "action": "Read the first visible shiur row.",
+          "expected": "A row labelled 'Shiur 87.' is present on screen."
+        },
+        {
+          "action": "Scroll down to find a row labelled 'Shiur 79.'.",
+          "expected": "A row labelled 'Shiur 79., Look, Do I Look For It?' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "1bc64900-2507-4feb-8b2d-a54829b9379f",
+      "title": "Navigate to Account Settings from the Profile screen",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Tap the 'Account Settings' button.",
+          "expected": "A new screen opens — the word 'Settings' or 'Account' appears in the screen header or content, indicating the Account Settings screen has loaded."
+        }
+      ]
+    },
+    {
+      "id": "1bf5c9ae-1b94-4eb9-9f00-0cf5c4b8dbb1",
+      "title": "RECOMMENDED feed shows shiur list with title, series, and duration",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED [Button]",
+          "expected": "The RECOMMENDED tab is active and a list of shiur entries is visible on screen."
+        },
+        {
+          "action": "Scroll down to view additional shiur entries in the RECOMMENDED list",
+          "expected": "At least one shiur entry is visible that shows a shiur title, a series or speaker label, and a duration."
+        }
+      ]
+    },
+    {
+      "id": "1d5c74e3-7d65-41e7-aad2-d2a1c6caca1b",
+      "title": "Followed Series section shows AhavasYisroel4Life series card in View all",
+      "origin": "device map: View all",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap View all on the home screen.",
+          "expected": "The View all screen appears, showing a Followed Series section at the top."
+        },
+        {
+          "action": "Observe the series card area beneath the Followed Series heading.",
+          "expected": "A button labeled 'AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel' is visible in the Followed Series section."
+        },
+        {
+          "action": "Observe the addedCircled button next to the AhavasYisroel4Life card.",
+          "expected": "An addedCircled button is displayed alongside the AhavasYisroel4Life series card, indicating the series is followed."
+        }
+      ]
+    },
+    {
+      "id": "1ec2da4d-e6af-4bd3-be32-32d49ced057d",
+      "title": "Open shiur options menu from the home feed",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button on the visible shiur card.",
+          "expected": "An options menu or action sheet appears with choices related to the shiur."
+        }
+      ]
+    },
+    {
+      "id": "20a7a807-e4e1-427c-a55e-eb5dc8f7ca6c",
+      "title": "Series detail page reached from RECOMMENDED shows filters, sort, and playAll controls",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or section to view the recommended feed.",
+          "expected": "The RECOMMENDED feed is visible with series cards or shiur entries listed."
+        },
+        {
+          "action": "Tap the 'KibudAvVeim4Life' button in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens showing 'KibudAvVeim4Life' as the series name."
+        },
+        {
+          "action": "Locate the top area of the series detail screen without tapping anything.",
+          "expected": "A 'filters' button is visible on the series detail screen."
+        },
+        {
+          "action": "Locate the top area of the series detail screen without tapping anything.",
+          "expected": "A 'sortDescending' button is visible on the series detail screen."
+        },
+        {
+          "action": "Locate the top area of the series detail screen without tapping anything.",
+          "expected": "A 'playAll' button is visible on the series detail screen."
+        }
+      ]
+    },
+    {
+      "id": "283b2376-3611-4c4c-bf18-aa474bcad184",
+      "title": "Registration screen shows all sign-up options including Apple and Google",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button.",
+          "expected": "The Registration screen is visible."
+        },
+        {
+          "action": "Scroll down on the Registration screen.",
+          "expected": "The REGISTER WITH APPLE button is visible on screen."
+        },
+        {
+          "action": "Scroll down further on the Registration screen.",
+          "expected": "The REGISTER WITH GOOGLE button is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "2b59a14f-6611-4289-a24a-0b5e2b4340aa",
+      "title": "Join Path4life button is present on the Notifications screen for signed-out users",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon labeled 'notification' in the bottom navigation bar.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications'."
+        },
+        {
+          "action": "Look at the call-to-action button on the Notifications screen.",
+          "expected": "A button labeled 'Join Path4life' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "2e6767c5-39e7-4524-986e-a3ea25d2b7a7",
+      "title": "Home screen shows today's Hebrew date and parsha label",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap 'Skip and explore the app' if an onboarding screen is present.",
+          "expected": "The home screen is visible."
+        },
+        {
+          "action": "Read the header area of the home screen.",
+          "expected": "A Hebrew date label and a parsha name label are visible in the header area of the home screen."
+        }
+      ]
+    },
+    {
+      "id": "3193205a-8692-4550-9a50-c4cd67f06a9b",
+      "title": "Profile screen shows Popular Topics list with shiur counts",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Scroll down on the Profile screen until the Popular Topics section is visible.",
+          "expected": "A section labelled 'Popular Topics' is visible with at least one topic button showing a shiur count."
+        },
+        {
+          "action": "Tap the 'View all' button in the Popular Topics section.",
+          "expected": "A list of additional topic buttons — each with a name and a Shiurim count — is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "341bceeb-b958-463a-a53a-5f1b6b250eac",
+      "title": "Followed Series list on the View all screen reflects a newly followed series",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap View all in the Popular Topics section on the home screen.",
+          "expected": "The Followed Series screen is visible, showing series cards in the followed list."
+        },
+        {
+          "action": "Scroll left or right through the Followed Series cards at the top of the screen.",
+          "expected": "A card labelled AleiShur4Life is visible among the followed series cards."
+        }
+      ]
+    },
+    {
+      "id": "35f49dd7-690e-4b1e-89bd-0809144a195e",
+      "title": "Registration screen opens from the avatar",
+      "origin": "device map: avatar",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the avatar button.",
+          "expected": "A screen titled 'Registration' is visible."
+        },
+        {
+          "action": "Scroll down on the Registration screen.",
+          "expected": "The REGISTER button is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "364842dd-b7fb-47ff-b4ba-202b4cee4f71",
+      "title": "Return to today's shiurim after browsing a past date",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the bottom of the home screen.",
+          "expected": "The DAILY SHIURIM tab is active and a horizontal date strip with a Today button is visible."
+        },
+        {
+          "action": "Tap the Fri, 21 button on the date strip.",
+          "expected": "The Fri, 21 button appears selected in the date strip."
+        },
+        {
+          "action": "Tap the Today button.",
+          "expected": "The date strip scrolls so that the current day's button is selected, and Fri, 21 is no longer selected."
+        }
+      ]
+    },
+    {
+      "id": "369900dc-9966-4a31-9b40-85da83e21136",
+      "title": "View All popular topics from the Notifications screen expands the full topic list",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notification tab to open the Notifications screen.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications' visible at the top."
+        },
+        {
+          "action": "Scroll down until the 'Popular Topics' section and the 'View all' button are visible.",
+          "expected": "The 'View all' button is visible next to the 'Popular Topics' label."
+        },
+        {
+          "action": "Tap the 'View all' button.",
+          "expected": "A screen or expanded list appears showing additional topic entries beyond the initial Popular Topics selection, such as 'Wonders, 767 Shiurim' or 'Luminaries, 687 Shiurim'."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The Notifications screen is displayed again with the heading 'Notifications' visible."
+        }
+      ]
+    },
+    {
+      "id": "3865feed-41b4-4c14-a078-39e435c40cd3",
+      "title": "Remove a saved shiur from the profile via Account Settings",
+      "origin": "device map: avatar",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the avatar on the home screen to open the profile.",
+          "expected": "The Profile screen is visible, showing the user's name and email."
+        },
+        {
+          "action": "Tap Account Settings.",
+          "expected": "The Account Settings screen opens."
+        }
+      ]
+    },
+    {
+      "id": "39e1dcb1-00d5-44c1-80ee-eb5d2f77dae6",
+      "title": "Popular Topics section is visible on the Notifications screen",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap notification",
+          "expected": "The Notifications screen is visible with the heading 'Notifications' at the top."
+        },
+        {
+          "action": "Scroll down on the Notifications screen",
+          "expected": "A section labelled 'Popular Topics' is visible on the screen."
+        },
+        {
+          "action": "Read the topic buttons visible in the Popular Topics section",
+          "expected": "At least one topic button such as 'Bitachon, 2620 Shiurim' is visible in the Popular Topics section."
+        }
+      ]
+    },
+    {
+      "id": "3d0fc562-97f9-4384-a049-b13add982daa",
+      "title": "Follow a series from the RECOMMENDED tab",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and a list of recommended shiurim is visible."
+        },
+        {
+          "action": "Tap RavAvigdor4Life",
+          "expected": "A series detail screen opens showing a Follow button."
+        },
+        {
+          "action": "Tap Follow",
+          "expected": "The Follow button label changes — it no longer reads 'Follow'."
+        }
+      ]
+    },
+    {
+      "id": "3eefb4b9-3994-4691-b388-b5eb74a45897",
+      "title": "Follow the AhavasYisroel4Life series",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life in the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible, showing a list of shiurim."
+        },
+        {
+          "action": "If the Following button shows a checkmark indicating it is already followed, skip the remaining steps.",
+          "expected": "The Following button is visible on screen."
+        },
+        {
+          "action": "Tap the Following button.",
+          "expected": "The Following button now displays a checkmark, confirming the series is followed."
+        }
+      ]
+    },
+    {
+      "id": "4220f938-ceff-4b11-a2c4-662516e0683d",
+      "title": "Toggle feed filter from FOLLOWING to RECOMMENDED",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button.",
+          "expected": "The RECOMMENDED button appears selected or highlighted, indicating it is the active feed filter."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING button appears selected or highlighted, indicating the feed has returned to the Followed Series view."
+        }
+      ]
+    },
+    {
+      "id": "46c0cd5b-133f-45a9-9e4f-f5bc5ffe18ee",
+      "title": "Unfollow a followed series from the View all Followed Series list",
+      "origin": "device map: options",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the View all button on the home screen.",
+          "expected": "A screen showing followed series is visible, including a card for AhavasYisroel4Life."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button.",
+          "expected": "A series detail screen for AhavasYisroel4Life opens."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The button label changes away from FOLLOWING, indicating the series is no longer followed."
+        },
+        {
+          "action": "Tap the barBackgroundSmall button to navigate back.",
+          "expected": "The Followed Series section on the home screen is visible."
+        },
+        {
+          "action": "Tap the View all button.",
+          "expected": "The Followed Series list no longer contains a card for AhavasYisroel4Life."
+        }
+      ]
+    },
+    {
+      "id": "4af670ca-5900-45a8-b6d6-85aaf704bc7e",
+      "title": "Switch the date strip to a different day",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the bottom of the home screen.",
+          "expected": "The DAILY SHIURIM tab is active and a horizontal date strip is visible."
+        },
+        {
+          "action": "Tap the Mon, 24 button on the date strip.",
+          "expected": "The Mon, 24 button appears selected (highlighted or underlined) in the date strip."
+        },
+        {
+          "action": "Tap the Wed, 19 button on the date strip.",
+          "expected": "The Wed, 19 button appears selected in the date strip, and Mon, 24 is no longer selected."
+        }
+      ]
+    },
+    {
+      "id": "51249694-a506-4dec-a0dc-737e46579df1",
+      "title": "Follow and unfollow the AhavasYisroel4Life series",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible and a button labelled 'Following' is shown near the top of the screen."
+        },
+        {
+          "action": "Tap the Following button.",
+          "expected": "The button no longer reads 'Following', indicating the series has been unfollowed."
+        },
+        {
+          "action": "Tap the button that replaced Following (e.g. Follow) to re-follow the series.",
+          "expected": "The button reads 'Following' again, confirming the follow state has been restored."
+        }
+      ]
+    },
+    {
+      "id": "528320fc-0f42-483a-8e5e-b77366767638",
+      "title": "Follow a series from its channel page reached via Hakaras Hatov! in RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' button in the RECOMMENDED feed.",
+          "expected": "A channel detail page opens showing the heading 'Hakaras Hatov!' and a Follow button."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state to indicate the series is now followed (e.g., reads 'follow' in a filled/active style or its label updates)."
+        }
+      ]
+    },
+    {
+      "id": "5708e825-e964-4981-b725-b50b4663414b",
+      "title": "Filter shiurim in a series channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and recommended shiurim are listed on screen."
+        },
+        {
+          "action": "Tap RavAvigdor4Life",
+          "expected": "The RavAvigdor4Life channel screen opens and a filters button is visible near the top."
+        },
+        {
+          "action": "Tap filters",
+          "expected": "A filters interface or overlay appears, presenting options to narrow the shiurim list."
+        }
+      ]
+    },
+    {
+      "id": "5833f98e-abf8-4630-b33b-e712ad5e4d2d",
+      "title": "View all expands the full shiur list beyond the initial rows",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the home screen or navigation menu.",
+          "expected": "The AhavasYisroel4Life screen is shown with a View all button visible at the bottom of the shiur list."
+        },
+        {
+          "action": "Tap the View all button.",
+          "expected": "A screen or expanded list appears showing additional shiur rows beyond those visible before tapping View all."
+        }
+      ]
+    },
+    {
+      "id": "5b382ba9-2b6e-452c-b184-4abca73197be",
+      "title": "Play all shiurim in the AhavasYisroel4Life series",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life in the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible, showing the playAll button and a list of shiurim."
+        },
+        {
+          "action": "Tap the playAll button.",
+          "expected": "A media player or now-playing indicator appears on screen, signaling that playback has begun."
+        }
+      ]
+    },
+    {
+      "id": "5d7c4f21-8bce-4682-b236-94d004bc6419",
+      "title": "Sort order can be toggled on the series channel page reached via the home screen options",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button on the home screen.",
+          "expected": "A popup or overlay appears on screen."
+        },
+        {
+          "action": "If a dismiss popup control is visible, tap dismiss popup.",
+          "expected": "The popup is dismissed and the home screen is visible."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button on the home screen.",
+          "expected": "A channel or series detail screen for AhavasYisroel4Life opens, showing a list of shiur rows."
+        },
+        {
+          "action": "Tap the options button on the series screen.",
+          "expected": "A popup or overlay with sort or filter options is visible."
+        },
+        {
+          "action": "Tap the first available sort or filter option in the popup.",
+          "expected": "The popup closes or the selection is registered, and the shiur list is displayed."
+        },
+        {
+          "action": "Scroll down in the shiur list to confirm the list is reordered.",
+          "expected": "Shiur rows are visible in the list, indicating the list has refreshed after the sort change."
+        }
+      ]
+    },
+    {
+      "id": "5ecfec67-5cc9-47a7-86a2-94209b9cd288",
+      "title": "Filter shiurim in AhavasYisroel4Life using the filters control",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible and a 'filters' button is shown in the toolbar."
+        },
+        {
+          "action": "Tap the filters button.",
+          "expected": "A filters panel, sheet, or overlay appears on screen."
+        },
+        {
+          "action": "If a 'Played' filter option is present, tap it to toggle it on.",
+          "expected": "The Played filter option appears selected or highlighted, indicating it is active."
+        },
+        {
+          "action": "Tap the Back button or dismiss the filters panel by tapping outside it, if a dismiss control is present.",
+          "expected": "The filters panel is dismissed and the AhavasYisroel4Life series screen is visible."
+        },
+        {
+          "action": "Tap the filters button again.",
+          "expected": "The filters panel appears and the previously selected filter (Played) is still shown as active."
+        }
+      ]
+    },
+    {
+      "id": "6076a9d5-3f86-4a55-b592-dc20c0f6c99b",
+      "title": "Notifications screen shows empty state and prompt to create an account",
+      "origin": "device map: notification",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon labeled 'notification' in the bottom navigation bar.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications'."
+        },
+        {
+          "action": "Read the empty-state message area in the centre of the screen.",
+          "expected": "The text 'No new notifications yet' is visible on screen."
+        },
+        {
+          "action": "Read the supporting text below the empty-state heading.",
+          "expected": "The text 'Create an account to stay up to date on new shiurim' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "60fd941e-b51e-4b57-85e4-9c18edb2143f",
+      "title": "Profile screen shows account name and email",
+      "origin": "device map: avatar",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Read the name displayed below the avatar image.",
+          "expected": "A name is displayed below the avatar — the screen shows a non-empty name label."
+        },
+        {
+          "action": "Read the email displayed on the Profile screen.",
+          "expected": "An email address is visible on the Profile screen."
+        }
+      ]
+    },
+    {
+      "id": "612ef36c-a788-4d8f-871c-4adbd20c9803",
+      "title": "Daily Shiurim tab shows a date strip with selectable days",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM section is displayed on screen."
+        },
+        {
+          "action": "Observe the horizontal date strip beneath the tab bar.",
+          "expected": "A horizontal date strip is visible containing multiple day buttons (e.g., Tue, Mon, Sun, Fri, Thu, Wed)."
+        },
+        {
+          "action": "Tap the Today button in the date strip.",
+          "expected": "The Today button is present and tappable on the date strip."
+        }
+      ]
+    },
+    {
+      "id": "61453640-800c-4012-9fbd-553797a55827",
+      "title": "View all Popular Topics from the Notifications screen",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notifications tab to open the Notifications screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Scroll down until the 'Popular Topics' section and the 'View all' button are visible.",
+          "expected": "The 'Popular Topics' heading and a 'View all' button are visible on screen."
+        },
+        {
+          "action": "Tap the 'View all' button.",
+          "expected": "A screen or expanded list showing additional topic categories beyond the initial set is displayed."
+        }
+      ]
+    },
+    {
+      "id": "63ec2149-10a5-4a80-bcd9-4e76feedb971",
+      "title": "Change the sort order of shiurim in AhavasYisroel4Life",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible and a 'sortDescending' button is shown in the toolbar."
+        },
+        {
+          "action": "Tap the sortDescending button.",
+          "expected": "The sort control icon or label changes, indicating the sort order has been toggled (e.g. from descending to ascending)."
+        },
+        {
+          "action": "Tap the sort button again to return to the original order.",
+          "expected": "The sort control returns to its previous state and the shiur list is reordered accordingly, with the first visible shiur row present in the list."
+        }
+      ]
+    },
+    {
+      "id": "650dea04-5b03-4026-99bd-b59659588276",
+      "title": "Sort order can be toggled on a series channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and recommended shiurim are listed on screen."
+        },
+        {
+          "action": "Tap Halacha4Life",
+          "expected": "The Halacha4Life channel screen opens and a sortDescending button is visible."
+        },
+        {
+          "action": "Tap sortDescending",
+          "expected": "The list of shiurim on screen reorders — the shiur previously shown first is no longer in the first position."
+        }
+      ]
+    },
+    {
+      "id": "65c4d5f2-3f27-4836-bb72-1ccf2bc1a66d",
+      "title": "KibudAvVeim4Life series page reached from RECOMMENDED shows numbered shiur rows",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the series card or shiur row labelled 'KibudAvVeim4Life' in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens showing a list of shiur rows."
+        },
+        {
+          "action": "Observe the first visible shiur row on screen.",
+          "expected": "A row containing 'Shiur 89.' and the title 'Rasha Kal, Who Is a Rasha?' is visible."
+        },
+        {
+          "action": "Observe the second visible shiur row on screen.",
+          "expected": "A row containing 'Shiur 88.' and the title 'Woman, How Is a Woman Different?' is visible."
+        }
+      ]
+    },
+    {
+      "id": "680c30fa-6d9b-4511-ba13-2d9a22fe1b70",
+      "title": "Selecting a past day on the date strip updates the shiurim view",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM section is displayed on screen."
+        },
+        {
+          "action": "Tap the Mon, 24 button in the date strip.",
+          "expected": "The Mon, 24 button is shown as the selected day in the date strip."
+        },
+        {
+          "action": "Tap the Fri, 21 button in the date strip.",
+          "expected": "The Fri, 21 button is shown as the selected day in the date strip."
+        }
+      ]
+    },
+    {
+      "id": "688fd3cd-0cbf-481e-9022-bb4e7591fb36",
+      "title": "VIEW ALL expands the full Follow Series list with additional series entries",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap View all on the home screen.",
+          "expected": "The View all screen appears, showing a Followed Series section and a VIEW ALL button."
+        },
+        {
+          "action": "Tap the VIEW ALL button.",
+          "expected": "A Follow Series screen appears showing a scrollable list of series entries."
+        },
+        {
+          "action": "Observe the series list on the Follow Series screen.",
+          "expected": "A button labeled 'AleiShur4Life, 4 Minutes of Alei Shur' is visible in the list."
+        },
+        {
+          "action": "Observe the series list for an entry beyond the initial Followed Series section.",
+          "expected": "A button labeled 'Avodah4Life, 4 Minutes of Avodah' is visible in the list."
+        }
+      ]
+    },
+    {
+      "id": "69c5d528-be18-49ac-b45d-bc7759d539f3",
+      "title": "Most recently played shiur shows a Played badge on the home screen",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible, showing shiur rows under the FOLLOWING section."
+        },
+        {
+          "action": "Scroll to the shiur row that shows 'What Is Bikur Cholim?' under the FOLLOWING section.",
+          "expected": "A shiur row titled 'What Is Bikur Cholim?' from the Bikur Cholim series is visible."
+        },
+        {
+          "action": "Read the status indicator on the 'What Is Bikur Cholim?' shiur row.",
+          "expected": "A 'Played' badge is shown on the 'What Is Bikur Cholim?' shiur row."
+        }
+      ]
+    },
+    {
+      "id": "6a15ca03-5279-4262-a53c-bc04e0298b50",
+      "title": "Back button on Notifications screen returns to the previous screen",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the notification icon or navigate to the Notifications screen from the home screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The Notifications screen is no longer shown and the previous screen is displayed."
+        }
+      ]
+    },
+    {
+      "id": "6c07493f-51eb-4d94-b3ba-b48294086b86",
+      "title": "Follow a series from the home screen",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the FOLLOWING button on the home screen.",
+          "expected": "The home feed filters to show content from series the user is following."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button.",
+          "expected": "A screen for the Ahavas Yisroel series opens, showing a Follow or similar subscription control."
+        },
+        {
+          "action": "If a Follow button is present and not already active, tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is now followed (e.g., reads 'Following' or fills with color)."
+        }
+      ]
+    },
+    {
+      "id": "6d37b3b5-31d6-4711-9ceb-defb58e9decf",
+      "title": "Followed series appears in the Following feed on launch",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the FOLLOWING button on the home screen.",
+          "expected": "The FOLLOWING feed is displayed and is the active section."
+        },
+        {
+          "action": "Observe the list of shiurim shown under the FOLLOWING feed.",
+          "expected": "At least one shiur row bearing '∙Ahavas Yisroel' is visible in the list."
+        }
+      ]
+    },
+    {
+      "id": "736744b5-aacc-440e-a77c-e37c1406beb6",
+      "title": "Back button on the Notifications screen navigates away from the screen",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon labeled 'notification' in the bottom navigation bar.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications'."
+        },
+        {
+          "action": "Tap the 'Back' button.",
+          "expected": "The Notifications screen is no longer shown; the app displays a different screen."
+        }
+      ]
+    },
+    {
+      "id": "745a15c4-fefe-4225-9284-ac7d9945a98a",
+      "title": "Navigate to the previous month from the August calendar",
+      "origin": "device map: August",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the August section or tab to open the calendar screen.",
+          "expected": "A screen appears containing the heading 'Path4Life' and a 'Select a Date' label."
+        },
+        {
+          "action": "If a popup appears, tap the button to dismiss it.",
+          "expected": "The popup is no longer visible and the calendar grid is fully visible."
+        },
+        {
+          "action": "Tap the 'Previous Month' button.",
+          "expected": "The calendar grid updates and no longer shows '1 August' as the first date entry."
+        }
+      ]
+    },
+    {
+      "id": "75265692-6116-468b-80a8-e74dbad41a8e",
+      "title": "Play a shiur from the FOLLOWING tab home screen card",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button.",
+          "expected": "The home screen is visible with FOLLOWING, DAILY SHIURIM, and RECOMMENDED tab buttons shown."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and a Followed Series section is visible containing a shiur card with a play control."
+        },
+        {
+          "action": "Tap the Played button on the shiur card labelled What Is Bikur Cholim?.",
+          "expected": "A media player or playback interface appears on screen, or the play state of the shiur card changes."
+        }
+      ]
+    },
+    {
+      "id": "7577c344-0b68-4fb9-8120-cf191be110b2",
+      "title": "DAILY SHIURIM tab loads with a horizontal date strip",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM [Button] in the bottom tab bar.",
+          "expected": "The screen scrolls to or highlights the DAILY SHIURIM section."
+        },
+        {
+          "action": "Tap DAILY SHIURIM [Button] a second time to select the Daily Shiurim feed.",
+          "expected": "A horizontal date strip is visible on screen containing day-and-date buttons."
+        },
+        {
+          "action": "Tap Today [Button] in the date strip.",
+          "expected": "The Today button is present and tappable, confirming the date strip is interactive."
+        }
+      ]
+    },
+    {
+      "id": "78629efb-560c-4624-90cb-c16bd369e727",
+      "title": "Popular Topics section lists topic categories with shiur counts",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Read the section heading above the topic buttons.",
+          "expected": "The heading 'Popular Topics' is visible on the Profile screen."
+        },
+        {
+          "action": "Read the first topic button in the Popular Topics section.",
+          "expected": "A button labelled 'Bitachon' with a shiur count is visible in the Popular Topics section."
+        },
+        {
+          "action": "Tap the View all button in the Popular Topics section.",
+          "expected": "Additional topic category buttons beyond the initial visible set become visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "7d2df887-8442-4501-8ac5-072c7dff85ad",
+      "title": "Unfollow a series from its series screen opened via Bitachon4Life in RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED feed is visible, showing shiur rows including a Bitachon4Life button."
+        },
+        {
+          "action": "Tap the Bitachon4Life button.",
+          "expected": "A series screen opens showing a Back button and a Follow button near the top, with Bitachon shiur entries listed."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is no longer followed."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The home screen RECOMMENDED feed is visible."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING feed is displayed and no Bitachon4Life series entry appears in the list."
+        }
+      ]
+    },
+    {
+      "id": "8321b6e1-114f-400f-abad-4e73081de024",
+      "title": "Shiur list loads with series title and episode rows visible",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the home screen or navigation menu.",
+          "expected": "The AhavasYisroel4Life screen is shown."
+        },
+        {
+          "action": "Look at the top area of the screen.",
+          "expected": "A Following button is visible near the top of the screen."
+        },
+        {
+          "action": "Look at the shiur list below the header controls.",
+          "expected": "At least one shiur row is visible, showing a shiur title such as 'What Is Bikur Cholim?'."
+        }
+      ]
+    },
+    {
+      "id": "8472deb5-758f-4763-8f7e-ebfe0c421507",
+      "title": "Follow a series from a series channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min button in the RECOMMENDED section.",
+          "expected": "The Hakaras Hatov! series channel page is visible, showing a Follow button."
+        },
+        {
+          "action": "If the Follow button reads 'Following', tap it to unfollow first, then wait for it to return to 'Follow'.",
+          "expected": "The Follow button reads 'Follow'."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button label changes from 'Follow' to 'Following'."
+        }
+      ]
+    },
+    {
+      "id": "84b07c83-bbd1-4e5b-9d62-a59b79322b1f",
+      "title": "Play all shiurim in a series channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' button in the RECOMMENDED feed.",
+          "expected": "A channel detail page opens showing the heading 'Hakaras Hatov!' and a playAll button."
+        },
+        {
+          "action": "Tap the playAll button.",
+          "expected": "A media player or now-playing interface becomes visible, indicating playback has started."
+        }
+      ]
+    },
+    {
+      "id": "875963ab-c156-4caf-81a3-982891bd1bd6",
+      "title": "Switch between Followed Series and Follow Series views using the tab buttons",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section of the home screen.",
+          "expected": "A screen appears showing Followed Series with a list of followed series."
+        },
+        {
+          "action": "Tap the VIEW ALL button.",
+          "expected": "The Follow Series screen opens showing a list of series with both addedCircled and addCircled buttons visible."
+        },
+        {
+          "action": "Tap the Followed Series button.",
+          "expected": "The screen switches to show only the series that are currently followed, with addedCircled icons."
+        }
+      ]
+    },
+    {
+      "id": "8af8444c-4634-4d36-b263-9090af4707d3",
+      "title": "Follow a series from the home screen FOLLOWING section",
+      "origin": "device map: options",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the options button.",
+          "expected": "The home screen is visible with FOLLOWING, DAILY SHIURIM, and RECOMMENDED tab buttons shown."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and a Followed Series section with a View all button is visible."
+        },
+        {
+          "action": "Tap the View all button.",
+          "expected": "A screen opens showing a list of series entries, including the AhavasYisroel4Life series card."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button.",
+          "expected": "A series detail page for AhavasYisroel4Life opens showing series content."
+        },
+        {
+          "action": "If a Follow button is visible, tap it.",
+          "expected": "The Follow button label changes to Following, indicating the series is now followed."
+        }
+      ]
+    },
+    {
+      "id": "8b0a201f-e995-4c2f-93e2-fee7de5497c3",
+      "title": "Tapping a second channel badge from Recommended opens that channel's shiur list",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED section is displayed and the row 'Shiur 1855., Seiver Part 55 Animals, How Do Animals Have?' is visible."
+        },
+        {
+          "action": "Tap Bitachon4Life",
+          "expected": "A new screen opens showing a list of shiurim for the Bitachon4Life channel, with a Back button visible at the top."
+        },
+        {
+          "action": "Scroll down on the Bitachon4Life channel screen",
+          "expected": "Multiple shiur rows are visible, including a row titled 'Shiur 1854., Seiver Part 54 Pratis, Is It Specific?'."
+        }
+      ]
+    },
+    {
+      "id": "8d0623fb-2174-4979-85b7-5334f32e84df",
+      "title": "Toggle follow state for a series from the home screen FOLLOWING tab",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the FOLLOWING button on the home screen.",
+          "expected": "A screen or list related to followed series or the FOLLOWING tab content is displayed."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button.",
+          "expected": "A series detail screen for AhavasYisroel4Life opens, showing the FOLLOWING button in its current state."
+        },
+        {
+          "action": "Tap the FOLLOWING button to unfollow the series.",
+          "expected": "The button label changes away from FOLLOWING, indicating the series has been unfollowed."
+        },
+        {
+          "action": "Tap the barBackgroundSmall button to navigate back.",
+          "expected": "The previous screen is visible."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button again.",
+          "expected": "The series detail screen for AhavasYisroel4Life opens, showing the button label is not FOLLOWING."
+        },
+        {
+          "action": "Tap the follow button (not labeled FOLLOWING) to re-follow the series.",
+          "expected": "The button label changes to FOLLOWING, confirming the series is now followed again."
+        }
+      ]
+    },
+    {
+      "id": "8ea71311-0cef-4bb2-a098-f6b2cb0243ce",
+      "title": "Unfollow the AhavasYisroel4Life series",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life in the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible, showing a Following button and a list of shiurim."
+        },
+        {
+          "action": "Tap the Following button.",
+          "expected": "The button label changes from Following to a state indicating the series is no longer followed (e.g., the button no longer reads Following)."
+        }
+      ]
+    },
+    {
+      "id": "8f34cc46-10fe-48bd-97ed-d5c004833bcb",
+      "title": "Profile screen shows country location",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Read the location text displayed next to the locationPin icon.",
+          "expected": "The text 'Ukraine' is visible on the Profile screen."
+        }
+      ]
+    },
+    {
+      "id": "9189102b-c9cc-4959-b883-9b3d9fcba919",
+      "title": "Profile screen shows account name and email",
+      "origin": "device map: avatar",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Read the name displayed beneath the avatar image.",
+          "expected": "The text 'Mr. Naz' is visible on the Profile screen."
+        },
+        {
+          "action": "Read the email displayed beneath the name.",
+          "expected": "The text 'haker.nazar@gmail.com' is visible on the Profile screen."
+        }
+      ]
+    },
+    {
+      "id": "92aada1e-8660-4547-b6ef-ff7d34786406",
+      "title": "Toggle Follow state on the KibudAvVeim4Life channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the KibudAvVeim4Life button in the RECOMMENDED section.",
+          "expected": "The KibudAvVeim4Life series channel page is visible, showing a Follow button."
+        },
+        {
+          "action": "Note the current label on the Follow button, then tap it.",
+          "expected": "The Follow button is visible and tappable on the KibudAvVeim4Life channel page."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button label toggles: if it previously read 'Follow' it now reads 'Following', or if it previously read 'Following' it now reads 'Follow'."
+        },
+        {
+          "action": "Tap the Follow button again to restore the original state.",
+          "expected": "The Follow button label has returned to its original state before this test began."
+        }
+      ]
+    },
+    {
+      "id": "93c90719-fa11-4baa-94c5-9c4e57838618",
+      "title": "Follow KibudAvVeim4Life series from its channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the 'KibudAvVeim4Life' button in the RECOMMENDED feed.",
+          "expected": "A channel detail page opens showing the heading 'KibudAvVeim4Life' and a Follow button."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state to indicate the series is now followed (e.g., reads 'follow' in a filled/active style or its label updates)."
+        }
+      ]
+    },
+    {
+      "id": "9587b4e7-68c9-46a1-8319-1227646542fd",
+      "title": "Save a shiur from the AhavasYisroel4Life series list",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life in the app's main navigation to open the series screen.",
+          "expected": "The AhavasYisroel4Life series screen is visible, showing a list of shiurim."
+        },
+        {
+          "action": "Tap the options button next to the first visible shiur in the list.",
+          "expected": "A contextual menu or action sheet appears with options for that shiur."
+        },
+        {
+          "action": "Tap the save or bookmark option in the menu, if present.",
+          "expected": "The menu dismisses and the shiur is marked as saved, or a confirmation indicator appears on screen."
+        }
+      ]
+    },
+    {
+      "id": "963df5da-b7ca-4410-8d75-3130dfacb902",
+      "title": "Follow Series screen shows both followed and unfollowed series",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the View all button next to Popular Topics.",
+          "expected": "A screen appears with topic category buttons including Bitachon, 2620 Shiurim."
+        },
+        {
+          "action": "Tap the VIEW ALL button in the Followed Series section.",
+          "expected": "A screen titled Follow Series appears showing a list of series entries."
+        },
+        {
+          "action": "Scroll down to view more series entries on the Follow Series screen.",
+          "expected": "Multiple series rows are visible, including entries with addedCircled and addCircled icons indicating followed and unfollowed states respectively."
+        }
+      ]
+    },
+    {
+      "id": "964cdec3-48a8-48f9-ac31-3714bf88d919",
+      "title": "Popular Topics section remains intact on Notifications screen after clearing notifications",
+      "origin": "device map: notification",
+      "priority": "Low",
+      "steps": [
+        {
+          "action": "Tap the notification icon or navigate to the Notifications screen from the home screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Scroll down past the empty-state notification area.",
+          "expected": "A 'Popular Topics' heading is visible along with a 'View all' button."
+        },
+        {
+          "action": "Scroll down to view the topic buttons below Popular Topics.",
+          "expected": "At least one topic button such as 'Bitachon, 2620 Shiurim' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "998d7917-2074-46b6-a8d4-87789ff8fc0a",
+      "title": "Unfollow a series from its series screen opened via RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED feed is visible, showing shiur rows including a RavAvigdor4Life button."
+        },
+        {
+          "action": "Tap the RavAvigdor4Life button.",
+          "expected": "A series screen opens showing a Back button and a Follow button near the top."
+        },
+        {
+          "action": "If the Follow button reads 'Follow' (not 'Following' or filled), skip this step; otherwise tap the Follow button to confirm it shows the followed state before unfollowing.",
+          "expected": "The Follow button reflects the currently followed state (e.g. shows 'follow' icon as active)."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is no longer followed."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The home screen RECOMMENDED feed is visible."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING feed is displayed and no series row from RavAvigdor4Life appears in the list."
+        }
+      ]
+    },
+    {
+      "id": "999e5834-662a-4a17-b71d-0ee88c6dff13",
+      "title": "Recommended tab shows a list of shiurim",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is visible and at least one shiur row is shown, including a row titled 'Shiur 167., Tefila, What Is The Purpose Of Tefila?'."
+        },
+        {
+          "action": "Scroll down on the RECOMMENDED list",
+          "expected": "Additional shiur rows are visible below the first one, including a row titled 'Shiur 1855., Seiver Part 55 Animals, How Do Animals Have?'."
+        }
+      ]
+    },
+    {
+      "id": "99d83edf-de62-47d8-b26f-942335486879",
+      "title": "Unfollow a series directly from the home screen options menu",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the 'options' button on the home screen.",
+          "expected": "A popup or options overlay appears on screen."
+        },
+        {
+          "action": "Tap the 'FOLLOWING' button visible in the options overlay.",
+          "expected": "The button label changes away from 'FOLLOWING', indicating the series has been unfollowed."
+        },
+        {
+          "action": "Tap 'dismiss popup' to close the overlay.",
+          "expected": "The popup overlay is dismissed and the home screen is visible."
+        },
+        {
+          "action": "Tap the 'View all' button on the home screen.",
+          "expected": "The Followed Series list opens and the series that was unfollowed is absent from the list."
+        }
+      ]
+    },
+    {
+      "id": "9a87cc1a-a588-4600-a3b5-2339bb0ae5cb",
+      "title": "August calendar loads and shows a date grid with navigable months",
+      "origin": "device map: August",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the August section or tab to open the calendar screen.",
+          "expected": "A screen appears containing the heading 'Path4Life' and a 'Select a Date' label."
+        },
+        {
+          "action": "If a popup appears, tap the button to dismiss it.",
+          "expected": "The popup is no longer visible and the calendar grid is fully visible."
+        },
+        {
+          "action": "Tap the 'Month' button.",
+          "expected": "A calendar grid is visible showing day-of-week columns starting with Saturday."
+        },
+        {
+          "action": "Tap the 'Show year picker' button.",
+          "expected": "A year picker or year selection control becomes visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "9b8efddf-7b30-4b77-b253-e7bd65c3db43",
+      "title": "Followed series card appears on the home screen under Followed Series",
+      "origin": "device map: options",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible, showing a Followed Series section."
+        },
+        {
+          "action": "Scroll down to the Followed Series section.",
+          "expected": "A section labelled 'Followed Series' is visible with at least one series card shown."
+        },
+        {
+          "action": "Read the series card displayed in the Followed Series section.",
+          "expected": "A card labelled 'AhavasYisroel4Life' is visible within the Followed Series section."
+        }
+      ]
+    },
+    {
+      "id": "9baabfcb-84e6-4fa4-92a9-a6b60bb047b3",
+      "title": "Popular Topics section is visible on the Notifications screen",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon to open the Notifications screen.",
+          "expected": "The screen headed 'Notifications' is visible."
+        },
+        {
+          "action": "Scroll down past the empty-state area.",
+          "expected": "A section labelled 'Popular Topics' is visible on screen."
+        },
+        {
+          "action": "Read the topic buttons visible in the Popular Topics section.",
+          "expected": "At least one topic button such as 'Bitachon' is visible within the Popular Topics section."
+        },
+        {
+          "action": "Tap the 'View all' button in the Popular Topics section.",
+          "expected": "The app navigates away from the Notifications screen, showing a broader list or screen of topics."
+        }
+      ]
+    },
+    {
+      "id": "9d400bbc-cb8c-4880-8171-3d00dd03c88a",
+      "title": "Notification screen shows empty state message when no notifications are present",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap notification",
+          "expected": "The Notifications screen is visible with the heading 'Notifications' at the top."
+        },
+        {
+          "action": "Read the main status message on screen",
+          "expected": "The text 'No new notifications' is displayed on the screen."
+        },
+        {
+          "action": "Read the supporting description below the status message",
+          "expected": "The text 'You will get updates regarding new podcasts, replies from Rabbi and comments here.' is visible on the screen."
+        }
+      ]
+    },
+    {
+      "id": "9fa6b401-f708-457b-92cd-de19d2615ced",
+      "title": "Open and dismiss the month picker overlay",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the bottom of the home screen.",
+          "expected": "The DAILY SHIURIM tab is active and an August button with an arrowDown indicator is visible."
+        },
+        {
+          "action": "Tap the August button.",
+          "expected": "A popup overlay appears over the screen."
+        },
+        {
+          "action": "Tap the dismiss popup control.",
+          "expected": "The popup is no longer visible and the date strip is shown again."
+        }
+      ]
+    },
+    {
+      "id": "a06652b4-bd92-4818-b2b4-d1054209ac8f",
+      "title": "Follow a series from the Follow Series screen",
+      "origin": "device map: View all",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section of the home screen.",
+          "expected": "A screen appears showing Followed Series with at least one followed series listed."
+        },
+        {
+          "action": "Tap the VIEW ALL button.",
+          "expected": "The Follow Series screen opens and shows a list of series including entries with addCircled and addedCircled icons."
+        },
+        {
+          "action": "Tap the addCircled button next to AleiShur4Life, 4 Minutes of Alei Shur.",
+          "expected": "The icon next to AleiShur4Life, 4 Minutes of Alei Shur changes from addCircled to addedCircled, indicating the series is now followed."
+        }
+      ]
+    },
+    {
+      "id": "a22816ab-13ce-4709-a211-fbea8a7d55a5",
+      "title": "Update display name from Account Settings",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button to open the profile screen.",
+          "expected": "The Profile screen is visible, showing the user's name and email."
+        },
+        {
+          "action": "Tap the Account Settings button.",
+          "expected": "A settings screen opens containing editable account fields including name."
+        },
+        {
+          "action": "Tap the name field or its edit control.",
+          "expected": "The name field becomes active and a keyboard or text-entry interface is shown."
+        },
+        {
+          "action": "Clear any existing text in the name field.",
+          "expected": "The name field is empty and ready to accept new input."
+        },
+        {
+          "action": "Type 'Mr. Naz' into the name field.",
+          "expected": "The text 'Mr. Naz' appears in the name field."
+        },
+        {
+          "action": "Tap the save or confirm button to submit the change.",
+          "expected": "The edit mode closes and the updated name 'Mr. Naz' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "a270f805-a8a9-4346-b10b-73c4b58961fe",
+      "title": "RECOMMENDED tab shows a list of shiur cards on the home screen",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED tab becomes active and a list of shiur cards is visible on screen."
+        },
+        {
+          "action": "Observe the first shiur card in the RECOMMENDED list.",
+          "expected": "A card titled 'What Is The Purpose Of Tefila?' is visible with a speaker name and a duration shown beneath it."
+        }
+      ]
+    },
+    {
+      "id": "a3e0e955-e977-47a6-b4c6-100fadeba602",
+      "title": "Home screen horizontal date strip is visible with one day selected",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap 'Skip and explore the app' if an onboarding screen is present.",
+          "expected": "The home screen is visible."
+        },
+        {
+          "action": "Read the date strip area beneath the header.",
+          "expected": "A horizontal date strip is visible showing multiple day buttons."
+        },
+        {
+          "action": "Tap the 'Today' button in the date strip.",
+          "expected": "A day button in the date strip appears visually selected or highlighted."
+        }
+      ]
+    },
+    {
+      "id": "a4c6239f-2a0f-470c-a401-cb086854d2fb",
+      "title": "View all expands the full Popular Topics list on the Notifications screen",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap notification",
+          "expected": "The Notifications screen is visible with the heading 'Notifications' at the top."
+        },
+        {
+          "action": "Scroll down until the 'View all' button next to Popular Topics is visible",
+          "expected": "The 'View all' button is visible alongside the 'Popular Topics' heading."
+        },
+        {
+          "action": "Tap the View all button",
+          "expected": "Additional topic buttons beyond the initial set are now visible on screen, such as 'Wonders, 767 Shiurim' or 'Luminaries, 687 Shiurim'."
+        }
+      ]
+    },
+    {
+      "id": "a7025a59-d96d-424d-86b8-f3f5cf6161cb",
+      "title": "Follow multiple series from the Follow Series screen in one session",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap View all in the Popular Topics section on the home screen.",
+          "expected": "A screen with Followed Series at the top and topic buttons including Bitachon and Tefila is visible."
+        },
+        {
+          "action": "Tap VIEW ALL near the top of the screen.",
+          "expected": "The Follow Series screen is visible, showing series entries with addCircled buttons for unfollowed series."
+        },
+        {
+          "action": "Tap the addCircled button next to Avodah4Life, 4 Minutes of Avodah.",
+          "expected": "The button next to Avodah4Life changes to addedCircled."
+        },
+        {
+          "action": "Tap the addCircled button next to Avos4Life, 4 Minutes of Avos.",
+          "expected": "The button next to Avos4Life changes to addedCircled."
+        },
+        {
+          "action": "Tap CONTINUE.",
+          "expected": "The Follow Series screen is dismissed and a previous screen is visible."
+        }
+      ]
+    },
+    {
+      "id": "a85004f7-fda5-4971-b144-a4517dd2a32f",
+      "title": "Open a shiur from the Following feed on the home screen",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the FOLLOWING button on the home screen.",
+          "expected": "The home feed shows a list of shiurim from followed series."
+        },
+        {
+          "action": "Tap the Shiur 87., Bikur Cholim, What Is Bikur Cholim?, ∙Ahavas Yisroel, Played button.",
+          "expected": "A detail or player screen for Shiur 87, What Is Bikur Cholim? opens, showing playback controls."
+        }
+      ]
+    },
+    {
+      "id": "a8ad071f-a2d8-41d7-a264-fc83108fbcc4",
+      "title": "Browse a recommended category and open a series from the home screen",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The home feed updates to show recommended content, including category tiles such as Bitachon, Tefila, and Medrash."
+        },
+        {
+          "action": "Tap the Bitachon, 2620 Shiurim button.",
+          "expected": "A screen for the Bitachon category or series opens, showing a list or detail view with Bitachon in the title or header."
+        }
+      ]
+    },
+    {
+      "id": "aa736f8b-0c1c-4ad3-90d9-c354261caded",
+      "title": "Profile screen shows Popular Topics section with shiur counts",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Scroll down to the Popular Topics section on the Profile screen.",
+          "expected": "A section labelled 'Popular Topics' is visible, with a 'View all' button alongside it."
+        },
+        {
+          "action": "Read the first topic card listed under Popular Topics.",
+          "expected": "A button labelled 'Bitachon' with '2620 Shiurim' is visible in the Popular Topics section."
+        }
+      ]
+    },
+    {
+      "id": "ab4dcaed-f216-4801-ac7a-ca6c11d5d7fe",
+      "title": "Update profile bio from Account Settings",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button to open the profile screen.",
+          "expected": "The Profile screen is visible, showing the user's name and email."
+        },
+        {
+          "action": "Tap the Account Settings button.",
+          "expected": "A settings screen opens, containing editable account fields."
+        },
+        {
+          "action": "Tap the Bio field or its edit control.",
+          "expected": "The Bio field becomes active and a keyboard or text-entry interface is shown."
+        },
+        {
+          "action": "Clear any existing text in the Bio field.",
+          "expected": "The Bio field is empty and ready to accept new input."
+        },
+        {
+          "action": "Type 'Testing bio update' into the Bio field.",
+          "expected": "The text 'Testing bio update' appears in the Bio field."
+        },
+        {
+          "action": "Tap the save or confirm button to submit the change.",
+          "expected": "The edit mode closes and the profile or settings screen reflects the updated Bio text 'Testing bio update'."
+        }
+      ]
+    },
+    {
+      "id": "abdd9f3a-59b4-423b-a5d6-d2e168c24f43",
+      "title": "Selecting a past date in the Daily Shiurim strip updates the visible day",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM [Button] in the bottom tab bar.",
+          "expected": "The screen shows the DAILY SHIURIM section."
+        },
+        {
+          "action": "Tap DAILY SHIURIM [Button] a second time to enter the Daily Shiurim feed.",
+          "expected": "A horizontal date strip with multiple day buttons is visible."
+        },
+        {
+          "action": "Tap Mon, 24 [Button] in the date strip.",
+          "expected": "The Mon, 24 button is displayed as the selected day in the date strip."
+        }
+      ]
+    },
+    {
+      "id": "b032bf6f-b26a-47d5-b28e-f4374e24ecab",
+      "title": "Played shiur is marked as played in the AhavasYisroel4Life list",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the main navigation.",
+          "expected": "The AhavasYisroel4Life screen is shown with a list of shiur rows visible."
+        },
+        {
+          "action": "Read the status indicators on the shiur rows near the top of the list.",
+          "expected": "At least one shiur row displays a 'Played' indicator on screen."
+        }
+      ]
+    },
+    {
+      "id": "b0ac11bc-26f8-4a31-bfba-0e2ed064d9d1",
+      "title": "Follow a second recommended series (Bitachon4Life)",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and a list of recommended shiurim is visible."
+        },
+        {
+          "action": "Tap Bitachon4Life",
+          "expected": "A series detail screen opens showing a Follow button."
+        },
+        {
+          "action": "Tap Follow",
+          "expected": "The Follow button label changes — it no longer reads 'Follow'."
+        }
+      ]
+    },
+    {
+      "id": "b228f7ee-68ab-44ec-a8db-8ed01ed2604c",
+      "title": "View all expands the full shiur list in AhavasYisroel4Life",
+      "origin": "device map: AhavasYisroel4Life",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap AhavasYisroel4Life from the main navigation.",
+          "expected": "The AhavasYisroel4Life screen is shown with a list of shiur rows visible."
+        },
+        {
+          "action": "Scroll down until the View all button is visible.",
+          "expected": "A button labelled 'View all' is visible on screen."
+        },
+        {
+          "action": "Tap the View all button.",
+          "expected": "A screen opens showing more shiur rows than were visible before tapping View all."
+        }
+      ]
+    },
+    {
+      "id": "b2d1c802-135f-44fa-9f36-fc4f84c599e9",
+      "title": "Follow a shiur series from the Daily Shiurim tab",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the top of the screen.",
+          "expected": "The DAILY SHIURIM tab is active and a horizontal date strip is visible."
+        },
+        {
+          "action": "Tap FOLLOWING at the top of the screen.",
+          "expected": "The FOLLOWING tab is active and the feed updates to show followed content."
+        },
+        {
+          "action": "Tap DAILY SHIURIM at the top of the screen.",
+          "expected": "The DAILY SHIURIM tab is active and shiur content is visible."
+        },
+        {
+          "action": "Tap the Today button on the date strip.",
+          "expected": "The date strip shows today's date selected and the shiur list refreshes."
+        }
+      ]
+    },
+    {
+      "id": "b508c268-a1e0-4d3e-9c2b-bfcfd795f8b3",
+      "title": "Tapping Today on the date strip keeps a day selected",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM section is visible and the horizontal date strip is shown."
+        },
+        {
+          "action": "Tap the Today button on the date strip.",
+          "expected": "A day button in the date strip is shown in a selected or highlighted state."
+        }
+      ]
+    },
+    {
+      "id": "b56f6ba5-b63c-4e03-a3a2-f5a16f92b0a2",
+      "title": "Toggle feed filter from FOLLOWING to DAILY SHIURIM",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button.",
+          "expected": "The DAILY SHIURIM button appears selected or highlighted, indicating it is the active feed filter."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING button appears selected or highlighted, indicating the feed has returned to the Followed Series view."
+        }
+      ]
+    },
+    {
+      "id": "b5b0da23-4986-4e4a-b035-f70d8b3e5760",
+      "title": "Notification screen shows empty state when there are no new notifications",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon to open the Notifications screen.",
+          "expected": "The screen headed 'Notifications' is visible."
+        },
+        {
+          "action": "Read the empty-state area below the header.",
+          "expected": "The text 'No new notifications' is visible on screen."
+        },
+        {
+          "action": "Read the descriptive line beneath the empty-state heading.",
+          "expected": "The text 'You will get updates regarding new podcasts, replies from Rabbi and comments here.' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "b7a844ba-9ed7-4c1d-825e-442899dc6624",
+      "title": "Unfollow a series from its series screen opened via Halacha4Life in RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED feed is visible, showing shiur rows including a Halacha4Life button."
+        },
+        {
+          "action": "Tap the Halacha4Life button.",
+          "expected": "A series screen opens showing a Back button and a Follow button near the top, with Halacha shiur entries listed."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is no longer followed."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The home screen RECOMMENDED feed is visible."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING feed is displayed and no Halacha4Life series entry appears in the list."
+        }
+      ]
+    },
+    {
+      "id": "b7fd0b36-5623-47d7-82a2-0974c387f63f",
+      "title": "Unfollow a series from the Followed Series screen reached via View all",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section on the home screen.",
+          "expected": "A screen appears with the heading 'Followed Series' and a card for AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel with an addedCircled button visible."
+        },
+        {
+          "action": "Tap the addedCircled button next to the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel entry.",
+          "expected": "The button next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel changes from addedCircled to addCircled, indicating the series has been unfollowed."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The home screen is visible and the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel card no longer appears in the Followed Series section."
+        }
+      ]
+    },
+    {
+      "id": "ba0ae783-757e-460d-b8de-e3cfff0af578",
+      "title": "Unfollow a series from the Follow Series screen",
+      "origin": "device map: View all",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section of the home screen.",
+          "expected": "A screen appears showing Followed Series with the AhavasYisroel4Life series listed."
+        },
+        {
+          "action": "Tap the VIEW ALL button.",
+          "expected": "The Follow Series screen opens and shows AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel with an addedCircled icon, indicating it is currently followed."
+        },
+        {
+          "action": "Tap the addedCircled button next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel.",
+          "expected": "The icon next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel changes from addedCircled to addCircled, indicating the series is no longer followed."
+        }
+      ]
+    },
+    {
+      "id": "ba9c6931-9a23-4505-8215-bd9d57b1c709",
+      "title": "Home screen shows daily context header with parsha and date info",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Launch the app and view the home screen.",
+          "expected": "A greeting beginning with 'Hello,' is visible at the top of the screen."
+        },
+        {
+          "action": "Read the header area of the home screen.",
+          "expected": "A parsha name is displayed in the header area alongside a Hebrew date string."
+        }
+      ]
+    },
+    {
+      "id": "bb609650-5b95-4a84-a83e-5e323795e19b",
+      "title": "Navigate to a series page from a shiur card in the FOLLOWING section",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button.",
+          "expected": "The home screen is visible with FOLLOWING, DAILY SHIURIM, and RECOMMENDED tab buttons shown."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and a Followed Series section is visible with a shiur card row for Ahavas Yisroel."
+        },
+        {
+          "action": "Tap the shiur row labelled Shiur 87., Bikur Cholim, What Is Bikur Cholim?, ∙Ahavas Yisroel.",
+          "expected": "A detail screen opens showing content related to the Bikur Cholim shiur or the Ahavas Yisroel series."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button.",
+          "expected": "A series page for AhavasYisroel4Life is visible, showing a list of shiur episodes."
+        }
+      ]
+    },
+    {
+      "id": "bb859e2a-46f3-4b3a-b2e9-f7b5283e8f81",
+      "title": "Sign in with the free QA account",
+      "origin": "confirmed on a device",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the 'LOG IN' button on the onboarding screen to open the login form",
+          "expected": "The Log In screen opens, showing an 'Email Address' field, a 'Password' field and a 'LOG IN' button."
+        },
+        {
+          "action": "Type {{qa_free_email}} into the email address field",
+          "expected": "The typed email appears in the email field and no error is shown under it."
+        },
+        {
+          "action": "Tap the password field to put the keyboard into it",
+          "expected": "The password field has focus — a keyboard is shown."
+        },
+        {
+          "action": "Type {{qa_free_password}} into the password field",
+          "expected": "The password field no longer shows the placeholder text 'Enter password'."
+        },
+        {
+          "action": "If the password field still shows the placeholder 'Enter password', tap it and type {{qa_free_password}} again",
+          "expected": "The password field shows masked characters instead of the placeholder."
+        },
+        {
+          "action": "Tap the 'LOG IN' button at the bottom of the login form to submit it",
+          "expected": "The form is submitted — no validation message appears under either field."
+        },
+        {
+          "action": "Wait for the sign-in to finish",
+          "expected": "The Log In screen is gone and no 'Incorrect email or password' message is visible."
+        },
+        {
+          "action": "If a 'Follow Series' screen is shown, tap the add button next to the first series in the list",
+          "expected": "The add button next to that series changes to show it is now followed, and the 'CONTINUE' button is enabled."
+        },
+        {
+          "action": "If a 'CONTINUE' button is shown, tap it",
+          "expected": "The 'Follow Series' screen closes."
+        },
+        {
+          "action": "If a notifications prompt offering 'TURN ON' and 'MAYBE LATER' is shown, tap 'MAYBE LATER'",
+          "expected": "The notifications prompt closes."
+        },
+        {
+          "action": "Wait for the app's own content to load",
+          "expected": "The app's home content is on screen: a greeting and the 'DAILY SHIURIM' and 'RECOMMENDED' sections are visible."
+        }
+      ]
+    },
+    {
+      "id": "bc726ab1-98ec-435a-9721-e9591eea5dae",
+      "title": "Each recommended shiur card shows title, series name, speaker, and duration",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED tab is active and shiur cards are visible."
+        },
+        {
+          "action": "Observe the second shiur card in the RECOMMENDED list.",
+          "expected": "The card displays a shiur title, a series or topic label, a speaker name, and a duration in minutes."
+        }
+      ]
+    },
+    {
+      "id": "bda2927e-e33a-4b1b-8ae3-8daf2e8ba437",
+      "title": "Follow a third recommended series (Halacha4Life)",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and a list of recommended shiurim is visible."
+        },
+        {
+          "action": "Tap Halacha4Life",
+          "expected": "A series detail screen opens showing a Follow button."
+        },
+        {
+          "action": "Tap Follow",
+          "expected": "The Follow button label changes — it no longer reads 'Follow'."
+        }
+      ]
+    },
+    {
+      "id": "c15a1ddb-d839-4a63-9387-d545cf83276d",
+      "title": "RECOMMENDED tab shows a list of shiur cards with title, series, and duration",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM [Button] in the bottom tab bar.",
+          "expected": "The screen shows the DAILY SHIURIM section."
+        },
+        {
+          "action": "Tap RECOMMENDED [Button].",
+          "expected": "The RECOMMENDED feed is displayed with at least one shiur card visible."
+        },
+        {
+          "action": "Locate the first shiur card in the RECOMMENDED list by observing its content.",
+          "expected": "The first shiur card shows a shiur title, a series or speaker name, and a duration value (formatted as minutes)."
+        },
+        {
+          "action": "Tap options [Button] on the first shiur card.",
+          "expected": "An options menu or action sheet appears on screen."
+        }
+      ]
+    },
+    {
+      "id": "c1637dc5-0f3e-49e4-8f25-1ba72d2a707f",
+      "title": "Popular Topics list shows all topic categories with shiur counts",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the View all button next to Popular Topics.",
+          "expected": "A screen appears listing topic category buttons, starting with Bitachon, 2620 Shiurim."
+        },
+        {
+          "action": "Scroll down to reveal more topic buttons below the initially visible ones.",
+          "expected": "Additional topic buttons are visible, including Shulchan Aruch, 779 Shiurim and Kedushah, 771 Shiurim."
+        },
+        {
+          "action": "Scroll further down the topics list.",
+          "expected": "More topic buttons are visible, including Stories, 521 Shiurim near the bottom of the list."
+        }
+      ]
+    },
+    {
+      "id": "c17284be-a9dd-491b-9167-f3018ac2f222",
+      "title": "Followed Series section shows series card with View all option",
+      "origin": "device map: (launch)",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Launch the app and view the home screen.",
+          "expected": "The home screen is visible with a greeting at the top."
+        },
+        {
+          "action": "Scroll down until the 'Followed Series' section heading is visible.",
+          "expected": "The text 'Followed Series' is visible on screen."
+        },
+        {
+          "action": "Read the Followed Series section.",
+          "expected": "A 'View all' button is visible in the Followed Series section."
+        },
+        {
+          "action": "Tap the AhavasYisroel4Life button in the Followed Series section.",
+          "expected": "A new screen opens showing content related to Ahavas Yisroel."
+        }
+      ]
+    },
+    {
+      "id": "c1af188a-3ce4-4b9e-8a8d-04777c585f1b",
+      "title": "Popular Topics list shows expected categories with shiur counts",
+      "origin": "device map: View all",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap View all on the home screen.",
+          "expected": "A screen appears showing a Popular Topics section with category buttons listed below it."
+        },
+        {
+          "action": "Observe the Bitachon, 2620 Shiurim button in the Popular Topics list.",
+          "expected": "A button labeled 'Bitachon, 2620 Shiurim' is visible in the list."
+        },
+        {
+          "action": "Observe the Tefila, 901 Shiurim button in the Popular Topics list.",
+          "expected": "A button labeled 'Tefila, 901 Shiurim' is visible in the list."
+        },
+        {
+          "action": "Observe the Medrash, 786 Shiurim button in the Popular Topics list.",
+          "expected": "A button labeled 'Medrash, 786 Shiurim' is visible in the list."
+        }
+      ]
+    },
+    {
+      "id": "c2733f86-7ec9-4a4b-9118-fedddc00a453",
+      "title": "Open a series page from a series badge in the RECOMMENDED feed",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED [Button]",
+          "expected": "The RECOMMENDED tab is active and shiur entries are visible on screen."
+        },
+        {
+          "action": "Tap Bitachon4Life [Button]",
+          "expected": "A series detail screen opens showing a Back button at the top."
+        },
+        {
+          "action": "Tap Back [Button]",
+          "expected": "The home screen is visible with the RECOMMENDED tab active."
+        },
+        {
+          "action": "Tap Halacha4Life [Button]",
+          "expected": "A series detail screen opens showing a Back button at the top."
+        }
+      ]
+    },
+    {
+      "id": "c2737904-e565-4cf9-aaa4-625e3e4d9062",
+      "title": "Tapping a past day on the date strip updates the selection",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM section is visible and the horizontal date strip is shown."
+        },
+        {
+          "action": "Tap the Mon, 24 button on the date strip.",
+          "expected": "The Mon, 24 button appears in a selected or highlighted state."
+        },
+        {
+          "action": "Tap the Sun, 23 button on the date strip.",
+          "expected": "The Sun, 23 button appears in a selected or highlighted state."
+        }
+      ]
+    },
+    {
+      "id": "c660088f-a450-487b-a04d-985c70396a78",
+      "title": "FOLLOWING tab shows Followed Series section with View all button",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible with content below the greeting."
+        },
+        {
+          "action": "If a popup is present, tap dismiss popup.",
+          "expected": "The popup is no longer visible."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and the screen displays a Followed Series section."
+        },
+        {
+          "action": "Scroll down to locate the View all button.",
+          "expected": "A View all button is visible within the Followed Series section."
+        }
+      ]
+    },
+    {
+      "id": "caf6d6a4-f0ab-47c5-9a08-868c8b395300",
+      "title": "Unfollow a series from the home screen",
+      "origin": "device map: (launch)",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Launch the app (already signed in).",
+          "expected": "The home screen is visible with a 'FOLLOWING' button and a 'Followed Series' section."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "A screen or panel opens showing content related to the series the user is currently following."
+        },
+        {
+          "action": "Tap the options button.",
+          "expected": "An options menu or action sheet appears with choices for the selected series."
+        },
+        {
+          "action": "Tap the option that removes or unfollows the series, if it is present.",
+          "expected": "The action sheet or menu closes and the series is no longer listed in the followed series section."
+        }
+      ]
+    },
+    {
+      "id": "cf4c0d40-b707-4e33-a8f3-873c88394b93",
+      "title": "Series detail page reached from RECOMMENDED shows Follow, Sponsor, and playAll controls",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED [Button]",
+          "expected": "The RECOMMENDED tab is active and shiur entries are visible on screen."
+        },
+        {
+          "action": "Tap RavAvigdor4Life [Button]",
+          "expected": "A series detail screen opens showing a Back button at the top."
+        },
+        {
+          "action": "Scroll up to see the top controls on the series detail screen",
+          "expected": "A Follow button is visible on the series detail screen."
+        },
+        {
+          "action": "Scroll up to see the top controls on the series detail screen",
+          "expected": "A Sponsor button is visible on the series detail screen."
+        },
+        {
+          "action": "Scroll up to see the top controls on the series detail screen",
+          "expected": "A playAll button is visible on the series detail screen."
+        }
+      ]
+    },
+    {
+      "id": "cf8641aa-b210-4270-8b03-3fe695139ba6",
+      "title": "Tapping a channel badge from Recommended opens that channel's shiur list",
+      "origin": "device map: RECOMMENDED",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED section is displayed and the row 'Shiur 167., Tefila, What Is The Purpose Of Tefila?' is visible."
+        },
+        {
+          "action": "Tap RavAvigdor4Life",
+          "expected": "A new screen opens showing a list of shiurim for the RavAvigdor4Life channel, with a Back button visible at the top."
+        },
+        {
+          "action": "Scroll down on the RavAvigdor4Life channel screen",
+          "expected": "Multiple shiur rows are visible, including a row titled 'Shiur 569., Extreme, Is It Extreme?'."
+        }
+      ]
+    },
+    {
+      "id": "d0d120a2-c3e0-4099-8df1-b5a1a27e7108",
+      "title": "Follow Series screen is reachable and shows the Followed Series tab",
+      "origin": "device map: View all",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the View all button next to Popular Topics.",
+          "expected": "A screen appears with topic category buttons including Bitachon, 2620 Shiurim."
+        },
+        {
+          "action": "Tap the VIEW ALL button in the Followed Series section.",
+          "expected": "A screen titled Follow Series appears with a list of series."
+        },
+        {
+          "action": "Tap the Followed Series button.",
+          "expected": "The Followed Series button is active and only series rows with the addedCircled icon are shown in the list."
+        }
+      ]
+    },
+    {
+      "id": "d37ba70f-001c-42fe-a025-30664eb46a63",
+      "title": "FOLLOWING tab displays a shiur card with title, series name, and playback controls",
+      "origin": "device map: options",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible with content below the greeting."
+        },
+        {
+          "action": "If a popup is present, tap dismiss popup.",
+          "expected": "The popup is no longer visible."
+        },
+        {
+          "action": "Tap the FOLLOWING button.",
+          "expected": "The FOLLOWING tab is active and at least one shiur card is visible."
+        },
+        {
+          "action": "Scroll down to view the shiur cards in the FOLLOWING feed.",
+          "expected": "A shiur card showing the text 'Ahavas Yisroel' as the series name is visible."
+        },
+        {
+          "action": "Scroll down to locate the play button on a shiur card.",
+          "expected": "A play button is visible on at least one shiur card in the FOLLOWING feed."
+        }
+      ]
+    },
+    {
+      "id": "d5383272-b4dd-43b6-b307-4f8a00d30e06",
+      "title": "Profile screen shows user name, email, and location",
+      "origin": "device map: avatar",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Read the name displayed below the avatar image.",
+          "expected": "The text 'Mr. Naz' is visible on the Profile screen."
+        },
+        {
+          "action": "Read the email displayed below the name.",
+          "expected": "The text 'haker.nazar@gmail.com' is visible on the Profile screen."
+        },
+        {
+          "action": "Read the location field on the Profile screen.",
+          "expected": "The text 'Ukraine' is visible alongside the location pin icon."
+        }
+      ]
+    },
+    {
+      "id": "d5d74027-7aa2-4579-b3ea-91a11d34e5e6",
+      "title": "Follow a series from its channel page reached via RECOMMENDED",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap RECOMMENDED",
+          "expected": "The RECOMMENDED tab is active and a list of recommended shiurim is visible on screen."
+        },
+        {
+          "action": "Tap Bitachon4Life",
+          "expected": "A channel screen opens showing the Bitachon4Life series with a Follow button visible near the top."
+        },
+        {
+          "action": "Tap Follow",
+          "expected": "The Follow button label changes — it no longer reads 'Follow', indicating the series is now followed."
+        }
+      ]
+    },
+    {
+      "id": "d84d8586-4dc3-4a2c-a795-dfcfcdb4de01",
+      "title": "Popular Topics section shows categories with shiur counts on the home screen",
+      "origin": "device map: options",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the options button to open the home screen.",
+          "expected": "The home screen is visible with its content sections."
+        },
+        {
+          "action": "Scroll down until the Bitachon category button is visible.",
+          "expected": "A button labelled 'Bitachon' with '2620 Shiurim' is visible on screen."
+        },
+        {
+          "action": "Scroll down to check for additional category buttons such as Tefila and Medrash.",
+          "expected": "Buttons labelled 'Tefila' and 'Medrash', each with a shiur count, are visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "e01d296d-f6b0-463f-b1fd-dd3d84cd0f1f",
+      "title": "Daily Shiurim tab loads with a date strip and a selected day",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM tab becomes active and a horizontal date strip is visible on screen."
+        },
+        {
+          "action": "Observe the date strip.",
+          "expected": "Exactly one day button in the date strip appears in a selected or highlighted state."
+        }
+      ]
+    },
+    {
+      "id": "e241995b-09ad-4fde-a8b9-f7e6baf84b5d",
+      "title": "Unfollow a series from the Followed Series list reached via the home screen View all button",
+      "origin": "device map: options",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the 'View all' button on the home screen.",
+          "expected": "A screen showing the Followed Series list is displayed."
+        },
+        {
+          "action": "Tap the 'AhavasYisroel4Life' button in the Followed Series list.",
+          "expected": "The Ahavas Yisroel series detail page opens."
+        },
+        {
+          "action": "Tap the 'FOLLOWING' button on the series detail page.",
+          "expected": "The button label changes from 'FOLLOWING' to a label indicating the series is no longer followed (e.g., 'FOLLOW')."
+        },
+        {
+          "action": "Tap the back navigation control to return to the Followed Series list.",
+          "expected": "The Followed Series list is displayed and 'AhavasYisroel4Life' no longer appears as a row in the list."
+        }
+      ]
+    },
+    {
+      "id": "e4ff6821-4d4f-4abf-bc3c-d2c65ba3b389",
+      "title": "Notification screen shows empty state message when no notifications are present",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notification tab to open the Notifications screen.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications' visible at the top."
+        },
+        {
+          "action": "Read the empty-state area in the centre of the screen.",
+          "expected": "The text 'No new notifications' is visible on screen."
+        },
+        {
+          "action": "Read the supporting text below the empty-state heading.",
+          "expected": "The text 'You will get updates regarding new podcasts, replies from Rabbi and comments here.' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "e95417eb-02eb-4dd7-ba9b-fc7a4963f048",
+      "title": "Browse shiurim on a past date using the date strip",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap DAILY SHIURIM at the top of the screen.",
+          "expected": "The DAILY SHIURIM tab is active and a horizontal date strip is visible."
+        },
+        {
+          "action": "Tap the Mon, 24 button on the date strip.",
+          "expected": "The Mon, 24 button appears selected and the shiur list below updates."
+        }
+      ]
+    },
+    {
+      "id": "eb594d63-853b-4a6e-92a8-e38544a5b518",
+      "title": "Month picker popup appears and can be dismissed on Daily Shiurim",
+      "origin": "device map: DAILY SHIURIM",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the DAILY SHIURIM button on the home screen.",
+          "expected": "The DAILY SHIURIM section is displayed on screen."
+        },
+        {
+          "action": "Tap the August button.",
+          "expected": "A popup or overlay appears over the screen (dismiss popup control is visible)."
+        },
+        {
+          "action": "Tap the dismiss popup control.",
+          "expected": "The popup is no longer visible and the DAILY SHIURIM screen with the date strip is shown."
+        }
+      ]
+    },
+    {
+      "id": "ec655ff9-a5b7-4884-bf25-e721981ca770",
+      "title": "Unfollow a series from its series screen opened via KibudAvVeim4Life in RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or navigate to the RECOMMENDED section of the app.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the series card or row labelled 'KibudAvVeim4Life'.",
+          "expected": "A series channel page opens showing 'KibudAvVeim4Life' content with a Follow button visible."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is now unfollowed (e.g., the button caption or appearance reverts from a filled/active state to the default Follow state)."
+        }
+      ]
+    },
+    {
+      "id": "ed37d0c9-d03a-4f65-9f44-8bcd9e47bb2d",
+      "title": "Profile screen shows navigation links for Donations History, Notifications Settings, and Account Settings",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button on the home screen.",
+          "expected": "The Profile screen is shown."
+        },
+        {
+          "action": "Scroll down until the Donations History row is visible.",
+          "expected": "A row labelled 'Donations History' with an arrow icon is visible on the Profile screen."
+        },
+        {
+          "action": "Scroll down until the Notifications Settings row is visible.",
+          "expected": "A row labelled 'Notifications Settings' is visible on the Profile screen."
+        },
+        {
+          "action": "Scroll down until the Account Settings row is visible.",
+          "expected": "A row labelled 'Account Settings' is visible on the Profile screen."
+        }
+      ]
+    },
+    {
+      "id": "eec91faa-f2f4-40f4-b7d8-ba5afa934edf",
+      "title": "Registration screen has a Log In link for existing accounts",
+      "origin": "device map: avatar",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the avatar button.",
+          "expected": "The Registration screen is visible."
+        },
+        {
+          "action": "Scroll down on the Registration screen.",
+          "expected": "The text 'Already have an account?' and a Log In button are visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "f02c4eed-9c48-47e7-abc5-49dbc032a974",
+      "title": "Tapping the options button on a recommended shiur card opens a menu",
+      "origin": "device map: RECOMMENDED",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED button on the home screen.",
+          "expected": "The RECOMMENDED tab is active and at least one shiur card with an options button is visible."
+        },
+        {
+          "action": "Tap the options button on the first shiur card in the RECOMMENDED list.",
+          "expected": "A menu or action sheet appears on screen with selectable options for that shiur."
+        }
+      ]
+    },
+    {
+      "id": "f3e57a0c-c159-42ab-afde-3d9944a0e6cb",
+      "title": "Series detail page reached from RECOMMENDED shows Sponsor button and series channel link",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or section to view the recommended feed.",
+          "expected": "The RECOMMENDED feed is visible with series cards or shiur entries listed."
+        },
+        {
+          "action": "Tap the 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' button in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens showing 'Hakaras Hatov!' as the series title."
+        },
+        {
+          "action": "Locate the controls area near the top of the series detail screen without tapping anything.",
+          "expected": "A 'Sponsor' button is visible on the series detail screen."
+        },
+        {
+          "action": "Locate the controls area near the top of the series detail screen without tapping anything.",
+          "expected": "A 'Parsha4Life' button is visible on the series detail screen, identifying the series channel."
+        }
+      ]
+    },
+    {
+      "id": "f3f12d38-ad97-4cf6-8b69-0c9b596b69af",
+      "title": "Followed Series section shows a followed series with View all link",
+      "origin": "device map: (launch)",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Observe the home screen after launch without tapping anything.",
+          "expected": "A section labelled 'Followed Series' is visible on the home screen."
+        },
+        {
+          "action": "Observe the Followed Series section.",
+          "expected": "A 'View all' button is visible within or adjacent to the Followed Series section."
+        },
+        {
+          "action": "Observe the content cards inside the Followed Series section.",
+          "expected": "At least one card referencing 'Ahavas Yisroel' is displayed in the Followed Series section."
+        }
+      ]
+    },
+    {
+      "id": "f85ce7c8-49de-4c08-9f9b-2e2cc700ce4b",
+      "title": "Tap a specific date on the August calendar to select it",
+      "origin": "device map: August",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the August section or tab to open the calendar screen.",
+          "expected": "A screen appears containing the heading 'Path4Life' and a 'Select a Date' label."
+        },
+        {
+          "action": "If a popup appears, tap the button to dismiss it.",
+          "expected": "The popup is no longer visible and the calendar grid is fully visible."
+        },
+        {
+          "action": "Tap the 'Wednesday, 5 August' button.",
+          "expected": "The button for 5 August appears visually selected or highlighted, distinguishing it from the other date buttons."
+        }
+      ]
+    },
+    {
+      "id": "f9197d5d-c1a0-4cc6-8430-a99db5619858",
+      "title": "Series page reached from RECOMMENDED shows the series author badge",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the shiur row labelled 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' in the RECOMMENDED feed.",
+          "expected": "A series detail screen opens."
+        },
+        {
+          "action": "Observe the channel attribution area beneath the top shiur entry.",
+          "expected": "A button labelled 'Parsha4Life' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "f9f64b7f-3e75-4633-8740-e238e5a5b732",
+      "title": "Notification screen loads with empty state message",
+      "origin": "device map: notification",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notifications tab to open the Notifications screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Read the empty-state area below the notification icon.",
+          "expected": "The text 'No new notifications' is displayed on screen."
+        },
+        {
+          "action": "Read the supporting description beneath 'No new notifications'.",
+          "expected": "The text 'You will get updates regarding new podcasts, replies from Rabbi and comments here.' is visible on screen."
+        }
+      ]
+    },
+    {
+      "id": "f9f836f2-efd2-4703-87de-105b89f4875a",
+      "title": "Re-follow a series immediately after unfollowing it in the full list",
+      "origin": "device map: View all",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the View all button in the Followed Series section on the home screen.",
+          "expected": "A screen appears with the heading 'Followed Series' and a list of followed series cards."
+        },
+        {
+          "action": "Tap the VIEW ALL button to open the full Follow Series list.",
+          "expected": "The Follow Series screen appears with the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel entry showing an addedCircled button."
+        },
+        {
+          "action": "Tap the addedCircled button next to the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel entry.",
+          "expected": "The button next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel changes from addedCircled to addCircled."
+        },
+        {
+          "action": "Tap the addCircled button next to the AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel entry.",
+          "expected": "The button next to AhavasYisroel4Life, 4 Minutes of Ahavas Yisroel changes back from addCircled to addedCircled, indicating the series is followed again."
+        }
+      ]
+    },
+    {
+      "id": "fa0968d2-f016-4e42-ac29-03fd3ba2c44f",
+      "title": "Tapping a Popular Topic on the Notifications screen opens that topic's shiurim",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification tab or icon to open the Notifications screen.",
+          "expected": "The screen headed 'Notifications' is visible."
+        },
+        {
+          "action": "Scroll down until the Popular Topics section is visible.",
+          "expected": "The 'Popular Topics' heading and at least one topic button are visible on screen."
+        },
+        {
+          "action": "Tap the 'Bitachon, 2620 Shiurim' button.",
+          "expected": "A screen related to the Bitachon topic opens, showing shiurim or series content for that topic."
+        },
+        {
+          "action": "Tap the Back button to return.",
+          "expected": "The Notifications screen with the heading 'Notifications' is visible again."
+        }
+      ]
+    },
+    {
+      "id": "fd8ea226-6bec-400f-8682-60fcece017c0",
+      "title": "Notification screen shows empty state when there are no notifications",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification icon or navigate to the Notifications screen from the home screen.",
+          "expected": "A screen titled 'Notifications' is visible."
+        },
+        {
+          "action": "Read the main message area of the Notifications screen.",
+          "expected": "The text 'No new notifications' is displayed on screen."
+        },
+        {
+          "action": "Read the supporting description beneath the empty-state message.",
+          "expected": "The text 'You will get updates regarding new podcasts, replies from Rabbi and comments here.' is displayed on screen."
+        }
+      ]
+    },
+    {
+      "id": "fdde7c29-65eb-4bcb-8545-6cf4e4326535",
+      "title": "Navigate to a Popular Topic from the Notifications screen and return",
+      "origin": "device map: notification",
+      "priority": "Medium",
+      "steps": [
+        {
+          "action": "Tap the notification bell or notification tab to open the Notifications screen.",
+          "expected": "The Notifications screen is displayed with the heading 'Notifications' visible at the top."
+        },
+        {
+          "action": "Scroll down until the 'Popular Topics' section is visible.",
+          "expected": "The label 'Popular Topics' is visible along with topic buttons such as 'Bitachon, 2620 Shiurim'."
+        },
+        {
+          "action": "Tap the 'Bitachon, 2620 Shiurim' button.",
+          "expected": "A new screen opens showing content related to Bitachon, no longer displaying the Notifications heading."
+        },
+        {
+          "action": "Tap the Back button.",
+          "expected": "The Notifications screen is displayed again with the heading 'Notifications' visible."
+        }
+      ]
+    },
+    {
+      "id": "feeb0bd8-f82a-4285-aa0e-6731bf533ed8",
+      "title": "Unfollow a series from a series page reached via the options control in RECOMMENDED",
+      "origin": "device map: RECOMMENDED > Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min",
+      "priority": "High",
+      "steps": [
+        {
+          "action": "Tap the RECOMMENDED tab or navigate to the RECOMMENDED section of the app.",
+          "expected": "The RECOMMENDED feed is visible with a list of shiurim."
+        },
+        {
+          "action": "Tap the 'options' button on the 'Hakaras Hatov!, ∙Parshas Ki Savo, Aug 24, 2026∙2:18 min' row.",
+          "expected": "An options menu or sheet appears presenting actions for that shiur."
+        },
+        {
+          "action": "Tap the 'Parsha4Life' series badge or link if it is present in the options sheet, to navigate to the series channel page.",
+          "expected": "The series channel page for Hakaras Hatov! / Parsha4Life is displayed with a Follow button visible."
+        },
+        {
+          "action": "Tap the Follow button.",
+          "expected": "The Follow button changes state, indicating the series is now unfollowed (e.g., the button caption or appearance reverts from a filled/active state to the default Follow state)."
+        }
+      ]
+    },
+    {
+      "id": "ffbfd0a8-beaf-4eac-98bb-16a3950b0e2f",
+      "title": "Follow a new series from the Follow Series screen",
+      "origin": "device map: View all",
+      "priority": "Urgent",
+      "steps": [
+        {
+          "action": "Tap View all in the Popular Topics section on the home screen.",
+          "expected": "A screen titled with Followed Series and a list of topics including Bitachon, Tefila, and Medrash is visible."
+        },
+        {
+          "action": "Tap VIEW ALL near the top of the screen.",
+          "expected": "The Follow Series screen is visible, showing a scrollable list of series including AleiShur4Life and addCircled buttons next to unfollowed series."
+        },
+        {
+          "action": "Tap the addCircled button next to AleiShur4Life, 4 Minutes of Alei Shur.",
+          "expected": "The button next to AleiShur4Life changes from addCircled to addedCircled, indicating the series is now followed."
+        }
+      ]
+    }
+  ]
+}

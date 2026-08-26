@@ -6,6 +6,13 @@ import type { AccessibilityElement } from "./AccessibilityElement.ts";
 import { BaseAccessibilityTree } from "./BaseAccessibilityTree.ts";
 
 export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
+  /**
+   * Element types XCUITest reports for embedded web content. `WebView` is the
+   * container; `ScrollView` descendants of it hold the rendered page, so the
+   * container alone is enough to know a webview context may exist.
+   */
+  private static readonly WEBVIEW_TYPE = /XCUIElementTypeWebView/;
+
   #xmlString: string;
   #nextRawId: number = 0;
 
@@ -127,6 +134,10 @@ export class XCUITestAccessibilityTree extends BaseAccessibilityTree<string> {
     const scopedXml = XmlRenderer.render([targetElem]);
 
     return new XCUITestAccessibilityTree(scopedXml);
+  }
+
+  override containsWebview(): boolean {
+    return XCUITestAccessibilityTree.WEBVIEW_TYPE.test(this.#xmlString);
   }
 
   #parseRoot(xml: string): Element {

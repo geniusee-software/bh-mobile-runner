@@ -6,6 +6,12 @@ import type { AccessibilityElement } from "./AccessibilityElement.ts";
 import { BaseAccessibilityTree } from "./BaseAccessibilityTree.ts";
 
 export class UIAutomator2AccessibilityTree extends BaseAccessibilityTree<string> {
+  /**
+   * Classes UiAutomator2 reports for embedded web content: the framework
+   * WebView and the Chrome Custom Tab / WebView variants apps subclass it into.
+   */
+  private static readonly WEBVIEW_CLASS = /android\.webkit\.WebView|WebView"/;
+
   #xmlString: string;
   #nextRawId: number;
 
@@ -135,5 +141,9 @@ export class UIAutomator2AccessibilityTree extends BaseAccessibilityTree<string>
     const scopedXml = XmlRenderer.render([targetElem]);
 
     return new UIAutomator2AccessibilityTree(scopedXml);
+  }
+
+  override containsWebview(): boolean {
+    return UIAutomator2AccessibilityTree.WEBVIEW_CLASS.test(this.#xmlString);
   }
 }

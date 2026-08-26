@@ -1,0 +1,14 @@
+{
+  "name": "@bh/trace-collector",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Collects agent decisions from mobile runs and exports them as fine-tuning data",
+  "type": "module",
+  "scripts": {
+    "deploy": "./deploy.sh"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.917.0",
+    "zod": "^4.1.13"
+  }
+}

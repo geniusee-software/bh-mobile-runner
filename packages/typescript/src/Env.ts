@@ -185,6 +185,14 @@ export const Env = {
     return envVar("ALUMNIUM_MODEL_TIMEOUT", z.coerce.number().default(90));
   },
 
+  /** Reasoning depth for Bedrock-hosted gpt-oss models. */
+  get ALUMNIUM_AWS_REASONING_EFFORT() {
+    return envVar(
+      "ALUMNIUM_AWS_REASONING_EFFORT",
+      z.enum(["low", "medium", "high"]).default("low"),
+    );
+  },
+
   get ALUMNIUM_OLLAMA_URL() {
     return envVar("ALUMNIUM_OLLAMA_URL", z.httpUrl().optional());
   },

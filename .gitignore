@@ -63,3 +63,7 @@ Thumbs.db
 
 # Managed by VS Code Orchardist extension:
 alumnium.wt.code-workspace
+
+# Experiment outputs — results are large and machine-specific
+/packages/typescript/experiments/results/
+/services/trace-collector/.build/

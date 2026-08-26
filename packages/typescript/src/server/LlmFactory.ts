@@ -14,12 +14,12 @@ import {
   type ChatOpenAIFields,
 } from "@langchain/openai";
 import { ChatXAI } from "@langchain/xai";
-import type { DocumentType } from "@smithy/types";
 import { never } from "alwaysly";
 import { Env } from "../Env.ts";
 import { Model } from "../Model.ts";
 import { Logger } from "../telemetry/Logger.ts";
 import { maskString } from "../utils/string.ts";
+import { BedrockRequestPolicies } from "./llm/BedrockRequestPolicies.ts";
 
 const logger = Logger.get(import.meta.url);
 
@@ -44,8 +44,11 @@ export class LlmFactory {
         return LlmFactory.createAzureLlm(model, cache);
       case "anthropic":
         return LlmFactory.createAnthropicLlm(model, cache);
+      case "aws_amazon":
       case "aws_anthropic":
       case "aws_meta":
+      case "aws_openai":
+      case "aws_qwen":
         return LlmFactory.createAwsLlm(model, cache);
       case "codex":
         return LlmFactory.createCodexLlm(model, cache);
@@ -181,27 +184,23 @@ export class LlmFactory {
   static createAwsLlm(model: Model, cache: BaseCache): BaseChatModel {
     logger.debug(`Creating AWS LLM with model ${model.name}`);
 
-    const accessKeyId = Env.AWS_ACCESS_KEY || "";
-    const secretAccessKey = Env.AWS_SECRET_KEY || "";
+    const accessKeyId = Env.AWS_ACCESS_KEY;
+    const secretAccessKey = Env.AWS_SECRET_KEY;
     const region = Env.AWS_REGION_NAME;
-    const additionalModelRequestFields: DocumentType = {};
 
-    if (model.provider === "aws_anthropic") {
-      if (usesAdaptiveThinking(model.name)) {
-        additionalModelRequestFields.thinking = { type: "adaptive" };
-        additionalModelRequestFields.output_config = { effort: "low" };
-      } else {
-        additionalModelRequestFields.thinking = {
-          type: "enabled",
-          budget_tokens: 1024, // Minimum budget for Anthropic thinking
-        };
-      }
-    }
+    const policy = BedrockRequestPolicies.default.policyFor(model);
+    const additionalModelRequestFields = policy.additionalRequestFields(model);
+    logger.debug(`Using Bedrock request policy "${policy.name}"`);
 
     return new ChatBedrockConverse({
       model: model.name,
       region,
-      credentials: { accessKeyId, secretAccessKey },
+      // Passing blank keys makes the SDK sign with empty credentials instead of
+      // falling back, so hand them over only when both are actually set and let
+      // the default provider chain (profile, SSO, instance role) run otherwise.
+      ...(accessKeyId && secretAccessKey
+        ? { credentials: { accessKeyId, secretAccessKey } }
+        : {}),
       additionalModelRequestFields,
       cache,
     });

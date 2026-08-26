@@ -36,6 +36,18 @@ export abstract class BaseAccessibilityTree<Source = unknown> {
 
   abstract scopeToArea(rawId: number): BaseAccessibilityTree<Source>;
 
+  /**
+   * Whether the rendered UI embeds a web view.
+   *
+   * Appium drivers use this to decide whether enumerating webview contexts —
+   * a multi-second round trip on both iOS and Android — can be skipped. The
+   * default is `true` so a tree that cannot answer never causes a driver to
+   * miss a webview; platforms that can answer override it.
+   */
+  containsWebview(): boolean {
+    return true;
+  }
+
   protected set xml(xml: string) {
     this.#xml = xml;
     this.#devAssociateSourceIdToXml();

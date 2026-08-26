@@ -9,10 +9,13 @@ import { AppId } from "../AppId.ts";
 import { Telemetry } from "../telemetry/Telemetry.ts";
 import type { Tracer } from "../telemetry/Tracer.ts";
 import { TreeDevDrillError } from "../tree/dev/TreeDevDrillError.ts";
+import type { TreeReadStrategy } from "./tree/TreeReadStrategy.ts";
+import { ImmediateTreeRead } from "./tree/treeReadStrategies.ts";
 import type { ToolClass } from "../tools/BaseTool.ts";
 import { ClickTool } from "../tools/ClickTool.ts";
 import { DragAndDropTool } from "../tools/DragAndDropTool.ts";
 import { PressKeyTool } from "../tools/PressKeyTool.ts";
+import { ScrollTool } from "../tools/ScrollTool.ts";
 import { TypeTool } from "../tools/TypeTool.ts";
 import { BaseDriver } from "./BaseDriver.ts";
 import type { Keys } from "./keys.ts";
@@ -28,6 +31,9 @@ export namespace AppiumDriver {
 export class AppiumDriver extends BaseDriver {
   static platforms = ["uiautomator2", "xcuitest"] as const;
 
+  /** How far to swipe after WDA refuses to scroll, before giving up. */
+  static readonly MAX_SCROLL_SWIPES = 6;
+
   static Platform = z.enum(AppiumDriver.platforms);
 
   public platform: AppiumDriver.Platform;
@@ -38,12 +44,31 @@ export class AppiumDriver extends BaseDriver {
     ClickTool,
     DragAndDropTool,
     PressKeyTool,
+    ScrollTool,
     TypeTool,
   ]);
   public autoswitchContexts: boolean = true;
   public delay: number = 0;
   public doubleFetchPageSource: boolean = false;
   public hideKeyboardAfterTyping: boolean = false;
+  /**
+   * Consult the accessibility tree before enumerating webview contexts.
+   *
+   * `getAppiumContexts()` costs seconds on a simulator because it probes every
+   * WebKit inspector target, and `title()` and `url()` both need it — so a
+   * single `check()` on a native screen pays it twice to learn there is no
+   * webview. The tree already carries that answer, so the scan only runs when
+   * a webview node is actually present.
+   */
+  public lazyWebviewContexts: boolean = true;
+  /**
+   * When to consider the screen settled enough to read.
+   *
+   * Native transitions animate for a few hundred milliseconds, and a tree read
+   * during one carries element ids that are already gone by the time the agent
+   * acts on them.
+   */
+  public treeRead: TreeReadStrategy = new ImmediateTreeRead();
 
   constructor(driver: Browser) {
     super();
@@ -67,7 +92,9 @@ export class AppiumDriver extends BaseDriver {
       await this.driver.getPageSource();
     }
 
-    const xmlString = await this.driver.getPageSource();
+    const xmlString = await this.treeRead.read(() =>
+      this.driver.getPageSource(),
+    );
     if (this.platform === "uiautomator2") {
       return new UIAutomator2AccessibilityTree(xmlString);
     } else {
@@ -155,7 +182,7 @@ export class AppiumDriver extends BaseDriver {
 
   @span("driver.title", spanAttrs)
   async title(): Promise<string> {
-    await this.ensureWebviewContext();
+    if (!(await this.enterWebContentOrSkip())) return "";
     try {
       return await this.driver.getTitle();
     } catch {
@@ -178,7 +205,7 @@ export class AppiumDriver extends BaseDriver {
 
   @span("driver.url", spanAttrs)
   async url(): Promise<string> {
-    await this.ensureWebviewContext();
+    if (!(await this.enterWebContentOrSkip())) return "";
     try {
       return await this.driver.getUrl();
     } catch {
@@ -251,17 +278,63 @@ export class AppiumDriver extends BaseDriver {
     }
   }
 
-  private async ensureWebviewContext(): Promise<void> {
+  /**
+   * Prepares the session for a web-content call, or reports that there is none.
+   *
+   * `title()` and `url()` only mean something inside a webview. On a native
+   * screen WebDriverAgent either has no such endpoint or answers after a long
+   * timeout, so once the tree is trusted about webviews there is nothing to
+   * gain by asking. Without that trust the old behaviour stands: attempt the
+   * call and let it fail.
+   */
+  private async enterWebContentOrSkip(): Promise<boolean> {
+    const inWebview = await this.ensureWebviewContext();
+    return inWebview || !this.lazyWebviewContexts;
+  }
+
+  /**
+   * Switches to a webview context if the screen has one.
+   *
+   * @returns whether the session ended up in a webview context.
+   */
+  private async ensureWebviewContext(): Promise<boolean> {
     if (!this.autoswitchContexts) {
-      return;
+      return true;
+    }
+
+    if (this.lazyWebviewContexts && !(await this.hasWebviewInTree())) {
+      logger.debug(
+        "No webview in the accessibility tree, skipping context scan",
+      );
+      return false;
     }
 
     const contexts = (await this.driver.getAppiumContexts()) as string[];
     for (const context of contexts.reverse()) {
       if (context.includes("WEBVIEW")) {
         await this.driver.switchContext(context);
-        return;
+        return true;
       }
+    }
+
+    return false;
+  }
+
+  /**
+   * Whether the current screen embeds a webview.
+   *
+   * Reads the cached tree when the caller already fetched one — the common
+   * case, since `check()` and `get()` build the tree before asking for the
+   * title and URL — so the answer is usually free.
+   */
+  private async hasWebviewInTree(): Promise<boolean> {
+    try {
+      const tree = await this.getAccessibilityTree();
+      return tree.containsWebview();
+    } catch (error) {
+      // A tree we cannot read tells us nothing; fall back to scanning.
+      logger.debug(`Failed to inspect tree for webviews: ${error}`);
+      return true;
     }
   }
 
@@ -281,13 +354,51 @@ export class AppiumDriver extends BaseDriver {
     }
   }
 
+  /**
+   * Brings an element into view before acting on it.
+   *
+   * Best effort by design. An element that is already visible needs no
+   * scrolling, and a scroll that cannot be performed does not mean the action
+   * is impossible — so a refusal must never abort it; let the click or type
+   * that follows be the one to decide.
+   */
   private async scrollIntoView(element: WebdriverIO.Element): Promise<void> {
-    if (this.platform === "uiautomator2") {
-      await element.scrollIntoView();
-    } else {
+    try {
+      if (this.platform === "uiautomator2") {
+        await element.scrollIntoView();
+      } else {
+        await this.#scrollIntoViewIos(element);
+      }
+    } catch (error) {
+      logger.debug(`Could not scroll element into view, continuing: ${error}`);
+    }
+  }
+
+  /**
+   * iOS scrolling, with a fallback for the containers WDA cannot drive.
+   *
+   * `mobile: scrollToElement` is the cheap path but refuses outright on
+   * SwiftUI lists and on any element that is its own scroll container, which
+   * covers most of a modern app's content. Swiping the window is slower but
+   * works anywhere, so it takes over when the cheap path is refused — bounded,
+   * because a target that is genuinely absent must not turn into an endless
+   * scroll.
+   */
+  async #scrollIntoViewIos(element: WebdriverIO.Element): Promise<void> {
+    if (await element.isDisplayed().catch(() => false)) return;
+
+    try {
       await this.driver.execute("mobile: scrollToElement", {
         elementId: element.elementId,
       });
+      return;
+    } catch (error) {
+      logger.debug(`scrollToElement refused, falling back to swipes: ${error}`);
+    }
+
+    for (let attempt = 0; attempt < AppiumDriver.MAX_SCROLL_SWIPES; attempt++) {
+      await this.driver.execute("mobile: swipe", { direction: "up" });
+      if (await element.isDisplayed().catch(() => false)) return;
     }
   }
 

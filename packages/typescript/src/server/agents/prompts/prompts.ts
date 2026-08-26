@@ -37,7 +37,12 @@ export const PROVIDER_TO_PROMPTS_DEV: AgentPrompts.ProviderToDev = {
   aws_anthropic: "anthropic",
   google: "google",
   deepseek: "deepseek",
+  aws_amazon: "openai",
   aws_meta: "meta",
+  // Bedrock-hosted open-weight models answer to the OpenAI-shaped prompts:
+  // gpt-oss is OpenAI's own, and Qwen was tuned against the same conventions.
+  aws_openai: "openai",
+  aws_qwen: "openai",
   mistralai: "mistralai",
   ollama: "openai",
   xai: "xai",

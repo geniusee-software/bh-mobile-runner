@@ -17,6 +17,7 @@ import { retry } from "../../utils/retry.ts";
 import { LlmContext } from "../LlmContext.ts";
 import { MODEL_RETRIES, MODEL_TIMEOUT_SEC } from "../LlmFactory.ts";
 import { agentPrompts } from "./prompts/bundledPrompts.ts";
+import { withPlatformPreamble } from "./prompts/platformPreambles.ts";
 import {
   agentClassNameToPromptsAgentKind,
   PROVIDER_TO_PROMPTS_DEV,
@@ -100,7 +101,10 @@ export class BaseAgent {
       agentPrompts[agentClassNameToPromptsAgentKind(this.constructor.name)];
     const prompts = agentPromptsByDev[dev] ?? agentPromptsByDev.openai;
     always(prompts);
-    this.prompts = prompts;
+    this.prompts = {
+      ...prompts,
+      system: withPlatformPreamble(prompts.system, llmContext.platform),
+    };
   }
 
   protected static shouldRetry(this: void, error: unknown): boolean {
