@@ -88,8 +88,11 @@ export class DeviceCallRecorder {
    */
   instrument(browser: Browser): Browser {
     return new Proxy(browser, {
-      get: (target, property, receiver) => {
-        const value = Reflect.get(target, property, receiver);
+      get: (target, property) => {
+        // Read against the target, not the proxy: WebdriverIO exposes getters
+        // that reach for sibling properties, and routing those back through the
+        // proxy re-enters this trap for every one of them.
+        const value = Reflect.get(target, property, target);
         const command = String(property);
 
         if (

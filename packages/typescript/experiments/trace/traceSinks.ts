@@ -42,7 +42,7 @@ export class HttpTraceSink implements TraceSink {
   readonly name: string;
   readonly #url: string;
   readonly #region: string;
-  #client: AwsClient | undefined;
+  readonly #credentials = fromNodeProviderChain();
 
   constructor(url: string, region: string) {
     this.#url = url.replace(/\/$/, "");
@@ -53,7 +53,9 @@ export class HttpTraceSink implements TraceSink {
   async write(events: readonly TraceEvent[]): Promise<void> {
     if (!events.length) return;
 
-    const client = (this.#client ??= await this.#signer());
+    // Signed per batch rather than once: a run outlives short-lived session
+    // credentials, and the provider chain caches until they actually rotate.
+    const client = await this.#signer();
     const response = await client.fetch(`${this.#url}/events`, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -69,7 +71,7 @@ export class HttpTraceSink implements TraceSink {
   }
 
   async #signer(): Promise<AwsClient> {
-    const credentials = await fromNodeProviderChain()();
+    const credentials = await this.#credentials();
     return new AwsClient({
       accessKeyId: credentials.accessKeyId,
       secretAccessKey: credentials.secretAccessKey,
