@@ -120,6 +120,15 @@ export const VARIANTS: readonly Variant.Props[] = [
   },
   {
     ...FAST,
+    id: "judge-vision",
+    hypothesis:
+      "Where the tree cannot answer at all — a state the app draws rather than labels — a screenshot can.",
+    model: MODELS.haiku,
+    treeSettleMs: 800,
+    verifier: "assert-vision",
+  },
+  {
+    ...FAST,
     id: "gpt-oss-120b",
     hypothesis:
       "An open-weight actor matches haiku's accuracy at a fraction of its latency and price.",

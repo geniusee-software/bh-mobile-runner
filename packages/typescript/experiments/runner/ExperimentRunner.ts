@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import path from "node:path";
 import { NullCache } from "../../src/server/cache/NullCache.ts";
 import { LlmFactory } from "../../src/server/LlmFactory.ts";
@@ -148,7 +149,6 @@ function formatProgress(
 }
 
 async function appendJsonl(filePath: string, record: unknown): Promise<void> {
-  const file = Bun.file(filePath);
-  const existing = (await file.exists()) ? await file.text() : "";
-  await Bun.write(filePath, `${existing}${JSON.stringify(record)}\n`);
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.appendFile(filePath, `${JSON.stringify(record)}\n`, "utf8");
 }

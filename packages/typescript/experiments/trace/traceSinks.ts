@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import { AwsClient } from "aws4fetch";
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 import type { TraceEvent, TraceSink } from "./TraceEvent.ts";
@@ -21,10 +23,11 @@ export class FileTraceSink implements TraceSink {
 
   async write(events: readonly TraceEvent[]): Promise<void> {
     if (!events.length) return;
-    const file = Bun.file(this.#filePath);
-    const existing = (await file.exists()) ? await file.text() : "";
+    // Appended rather than rewritten: a trace carries a whole accessibility
+    // tree, so read-modify-write would re-serialise megabytes on every step.
+    await fs.mkdir(path.dirname(this.#filePath), { recursive: true });
     const lines = events.map((event) => JSON.stringify(event)).join("\n");
-    await Bun.write(this.#filePath, `${existing}${lines}\n`);
+    await fs.appendFile(this.#filePath, `${lines}\n`, "utf8");
   }
 }
 

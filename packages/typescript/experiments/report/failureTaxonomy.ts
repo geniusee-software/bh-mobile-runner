@@ -3,9 +3,11 @@ import type { RunRecord } from "../metrics/RunRecord.ts";
 export namespace FailureTaxonomy {
   export type Kind =
     | "driver"
-    | "unverifiable-expectation"
     | "wrong-screen"
-    | "model-judgement";
+    | "partly-present"
+    | "prose-expectation"
+    | "model-judgement"
+    | "unclassified";
 
   export interface Bucket {
     kind: Kind;
@@ -15,38 +17,37 @@ export namespace FailureTaxonomy {
 }
 
 const LABELS: Record<FailureTaxonomy.Kind, string> = {
-  driver: "driver/device error",
-  "unverifiable-expectation": "expectation not on screen (case or prior step)",
-  "wrong-screen": "action left the app somewhere else",
-  "model-judgement": "answer was on screen, model said no",
+  driver: "driver or device refused the action",
+  "wrong-screen": "nothing the case named was on screen — the app is elsewhere",
+  "partly-present": "some of what the case named was on screen, not all",
+  "prose-expectation": "expectation names no concrete element; it is a judgement call",
+  "model-judgement": "everything the case named was on screen, model still said no",
+  unclassified: "failed before evidence could be captured",
 };
 
 /**
- * Sorts failures by who is at fault.
+ * Sorts a failed step by who is at fault.
  *
- * Pass rate alone cannot tell a model that misreads a correct screen from a
- * case that asks about a screen the app never shows, and the two lead to
- * opposite decisions: one is worth training budget, the other is worth an
- * afternoon of editing the suite. The evidence probe captured at failure time
- * is what separates them.
+ * A pass rate cannot tell a model that misread a correct screen from a case
+ * that asks about a screen the app never showed, and the two lead to opposite
+ * decisions: one is worth training budget, the other an afternoon of editing
+ * the suite. The evidence captured at failure time — which of the literals the
+ * expectation quoted were actually in the tree — is what separates them.
+ *
+ * The largest bucket in practice is neither: expectations written as prose
+ * ("a horizontal date strip with multiple day buttons") name nothing a string
+ * match can find, so they turn on how generously the verifier reads them. That
+ * is a property of the suite's phrasing and of the verification prompt, and
+ * attributing it to the model would point the next fix at the wrong place.
  */
 export function classify(step: RunRecord.Step): FailureTaxonomy.Kind {
   if (step.verdict === "errored") return "driver";
 
   const evidence = step.evidence;
-  if (!evidence) return "model-judgement";
-
-  if (evidence.quoted.length === 0) {
-    // Nothing quotable to look for; the model was asked for a judgement call.
-    return "model-judgement";
-  }
-  if (evidence.present.length === 0) {
-    // None of the expected words are anywhere on screen: the app is elsewhere.
-    return "wrong-screen";
-  }
-  if (evidence.missing.length > 0) {
-    return "unverifiable-expectation";
-  }
+  if (!evidence) return "unclassified";
+  if (evidence.quoted.length === 0) return "prose-expectation";
+  if (evidence.present.length === 0) return "wrong-screen";
+  if (evidence.missing.length > 0) return "partly-present";
   return "model-judgement";
 }
 
