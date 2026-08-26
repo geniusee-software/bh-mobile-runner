@@ -7,7 +7,7 @@ import { failure, success, type StepVerifier } from "./StepVerifier.ts";
 /** Element ids mean nothing to a judgement and only add tokens. */
 const EXCLUDED_ATTRIBUTES = new Set(["id"]);
 
-const SYSTEM = [
+export const SYSTEM = [
   "You judge whether a test step's expected result is satisfied by a mobile app screen.",
   "",
   "You are given the screen's accessibility tree. Decide as an experienced QA engineer would:",
