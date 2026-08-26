@@ -27,6 +27,14 @@ export namespace Variant {
     changeAnalysis: boolean;
     /** How a step's expected result is confirmed. */
     verifier: VerifierKind;
+    /**
+     * Model for the verifier, when it should differ from the actor's.
+     *
+     * Acting and judging are different jobs and the sweep priced them
+     * differently: the models that matched on judgement were an order of
+     * magnitude apart in cost, while their action quality did not match at all.
+     */
+    verifierModel?: string | undefined;
     /** How long to let the screen settle before reading it, in milliseconds. */
     treeSettleMs: number;
   }
@@ -126,6 +134,16 @@ export const VARIANTS: readonly Variant.Props[] = [
     model: MODELS.haiku,
     treeSettleMs: 800,
     verifier: "assert-vision",
+  },
+  {
+    ...FAST,
+    id: "split-roles",
+    hypothesis:
+      "Judging is the cheap half: keep the stronger model acting and hand the verdicts to the one that judged as well for a fraction of the price.",
+    model: MODELS.haiku,
+    treeSettleMs: 800,
+    verifier: "assert-retry",
+    verifierModel: MODELS.gptOss120b,
   },
   {
     ...FAST,

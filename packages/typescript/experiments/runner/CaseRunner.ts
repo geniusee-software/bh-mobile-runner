@@ -29,6 +29,8 @@ export namespace CaseRunner {
     resetApp: () => Promise<void>;
     /** Built once per variant so model setup cost is not charged to case one. */
     llm: BaseChatModel;
+    /** Model for the verifier; defaults to the actor's. */
+    verifierLlm?: BaseChatModel | undefined;
     /** Where to save the screen at the moment a check fails; omit to skip. */
     failureShotsDir?: string | undefined;
     /** Collects the model's decisions as training data; omit to skip. */
@@ -54,9 +56,18 @@ export class CaseRunner {
 
   constructor(props: CaseRunner.Props) {
     this.#props = props;
-    this.#verifier = verifierFor(props.variant.verifier, props.llm);
-    // One recorder instance serves every case; the model is shared per variant.
-    props.llm.callbacks = [this.#llmCalls.handler()];
+    this.#verifier = verifierFor(
+      props.variant.verifier,
+      props.verifierLlm ?? props.llm,
+    );
+    // One recorder serves every case and both models; each handler tags its
+    // calls so cost can be priced per model rather than at a single rate.
+    props.llm.callbacks = [this.#llmCalls.handler(Model.parse(props.variant.model).name)];
+    if (props.verifierLlm && props.variant.verifierModel) {
+      props.verifierLlm.callbacks = [
+        this.#llmCalls.handler(Model.parse(props.variant.verifierModel).name),
+      ];
+    }
   }
 
   async run(testCase: TestCase): Promise<RunRecord.Case> {
@@ -206,9 +217,12 @@ export class CaseRunner {
   }
 
   #costUsd(): number {
-    const { input, output } = summariseCalls(this.#llmCalls.calls).tokens;
-    const rate = rateFor(this.#props.variant.model);
-    return (input * rate.input + output * rate.output) / 1_000_000;
+    return this.#llmCalls.calls.reduce((total, call) => {
+      const rate = rateFor(call.model);
+      return (
+        total + (call.inputTokens * rate.input + call.outputTokens * rate.output) / 1_000_000
+      );
+    }, 0);
   }
 
   #deviceTotals(): RunRecord.DeviceTotals {

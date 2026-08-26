@@ -47,21 +47,28 @@ export class ExperimentRunner {
     const { session, cases, runLabel } = this.#props;
 
     const model = Model.parse(variant.model);
-    const llm = LlmFactory.createLlm(
-      model,
-      new NullCache(
-        new SessionContext({
-          app: "experiment" as AppId,
-          sessionId: `${runLabel}-${variant.id}`,
-        }),
-      ),
-    );
+    const buildLlm = (id: Model, suffix: string) =>
+      LlmFactory.createLlm(
+        id,
+        new NullCache(
+          new SessionContext({
+            app: "experiment" as AppId,
+            sessionId: `${runLabel}-${variant.id}${suffix}`,
+          }),
+        ),
+      );
+
+    const llm = buildLlm(model, "");
+    const verifierLlm = variant.verifierModel
+      ? buildLlm(Model.parse(variant.verifierModel), "-verify")
+      : undefined;
 
     const runner = new CaseRunner({
       variant,
       browser: session.browser,
       resetApp: () => session.relaunchApp(),
       llm,
+      verifierLlm,
       failureShotsDir: path.join(RESULTS_DIR, runLabel, "shots", variant.id),
       traces: new TraceCollector({
         sink: this.#props.traceSink,
@@ -79,7 +86,10 @@ export class ExperimentRunner {
     );
     const records: RunRecord.Case[] = [];
 
-    console.log(`\n=== ${variant.id} (${model.name}) ===`);
+    const models = verifierLlm
+      ? `${model.name}, verify: ${Model.parse(variant.verifierModel!).name}`
+      : model.name;
+    console.log(`\n=== ${variant.id} (${models}) ===`);
     console.log(`    ${variant.hypothesis}`);
 
     for (const [index, testCase] of cases.entries()) {

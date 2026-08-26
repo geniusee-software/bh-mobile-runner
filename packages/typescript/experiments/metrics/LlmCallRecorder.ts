@@ -7,6 +7,14 @@ export namespace LlmCallRecorder {
   export interface Call {
     /** Which agent asked, inferred from the system prompt it sent. */
     agent: AgentKind;
+    /**
+     * Model that answered.
+     *
+     * Carried per call because a run may use more than one — acting and
+     * judging can be priced an order of magnitude apart — and a single rate
+     * applied to every token would misreport the cheaper half entirely.
+     */
+    model: string;
     latencyMs: number;
     inputTokens: number;
     outputTokens: number;
@@ -79,8 +87,13 @@ export class LlmCallRecorder {
     this.#pending.clear();
   }
 
-  /** Callback handler to hand to `BaseChatModel#callbacks`. */
-  handler(): Partial<BaseCallbackHandler> {
+  /**
+   * Callback handler to hand to `BaseChatModel#callbacks`.
+   *
+   * @param model names the model this handler is attached to, so calls stay
+   * attributable when a run mixes models.
+   */
+  handler(model: string): Partial<BaseCallbackHandler> {
     return {
       handleChatModelStart: (
         _llm: unknown,
@@ -102,6 +115,7 @@ export class LlmCallRecorder {
         const calls = readToolCalls(output);
         this.#calls.push({
           agent: pending.agent,
+          model,
           latencyMs: Math.round(performance.now() - pending.startedAt),
           ...readUsage(output),
           toolCalls: calls.length,
