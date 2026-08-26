@@ -11,6 +11,15 @@ export namespace RunRecord {
     verdict: StepVerdict;
     /** Why the step did not pass; empty when it did. */
     failure: string;
+    /**
+     * Why a passing step passed, in the judge's own words.
+     *
+     * Failures record their reason in `failure`; passes recorded nothing, which
+     * made exactly the interesting case unauditable — a step that starts
+     * passing after a change cannot be told apart from a step the judge merely
+     * became more generous about.
+     */
+    passReason?: string;
     durationMs: number;
     llmCalls: number;
     /** Present only on a failed check: was the answer on screen at all? */

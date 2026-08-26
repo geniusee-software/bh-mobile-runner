@@ -89,6 +89,24 @@ export class PageGraph {
   }
 
   /**
+   * Screens this text is the name of, rather than screens it appears on.
+   *
+   * The difference decides whether a rewrite is safe. "AhavasYisroel4Life" is
+   * the title of a series screen and also the label of a row in the home feed,
+   * so a search by mention answers "home" — and an expectation about having
+   * navigated somewhere, restated against home, passes precisely when the
+   * navigation failed.
+   */
+  screensTitled(text: string): GraphScreen[] {
+    const needle = text.toLowerCase();
+    return this.screens
+      .filter((screen) =>
+        screen.titles.some((title) => title.toLowerCase() === needle),
+      )
+      .sort((a, b) => b.visits - a.visits);
+  }
+
+  /**
    * Elements that show up on nearly every visit to a screen.
    *
    * These are the ones an expectation can safely name: the chrome that defines

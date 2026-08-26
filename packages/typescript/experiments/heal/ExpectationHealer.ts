@@ -39,6 +39,17 @@ const UNANSWERABLE_BY_TREE =
  * did would simply describe whatever happened and pass every time.
  */
 export class ExpectationHealer {
+  /**
+   * Screens the graph must hold before it may claim anything is distinctive.
+   *
+   * Distinctiveness is a comparison, and with a handful of screens there is
+   * nothing to compare against: on a three-screen graph the home feed's own tab
+   * bar came out "distinctive" and every rewrite in the suite anchored to the
+   * same three labels. A graph this thin is not knowledge about the app, and
+   * the healer says so by leaving every case alone.
+   */
+  static readonly MIN_SCREENS = 6;
+
   readonly #graph: PageGraph;
 
   constructor(graph: PageGraph) {
@@ -76,6 +87,12 @@ export class ExpectationHealer {
       return keep("asks about state the tree cannot express — needs a screenshot");
     }
 
+    if (this.#graph.screens.length < ExpectationHealer.MIN_SCREENS) {
+      return keep(
+        `graph has only ${this.#graph.screens.length} screens; too few to know what is distinctive`,
+      );
+    }
+
     const screen = this.#targetScreen(step);
     if (!screen) return keep("no screen in the graph matches this step");
 
@@ -110,7 +127,10 @@ export class ExpectationHealer {
    */
   #targetScreen(step: TestStep) {
     for (const term of this.#candidateTerms(step)) {
-      const [best] = this.#graph.screensMentioning(term);
+      // Titles only. A screen that merely mentions the term is the wrong
+      // screen, and anchoring to it turns "we arrived at X" into a statement
+      // about the screen we were trying to leave.
+      const [best] = this.#graph.screensTitled(term);
       if (best) return best;
     }
     return undefined;

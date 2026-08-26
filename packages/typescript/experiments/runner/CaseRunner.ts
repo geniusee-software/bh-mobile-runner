@@ -168,6 +168,7 @@ export class CaseRunner {
     if (outcome.passed) {
       const passed = finish("passed", "");
       passed.verifierAttempts = outcome.attempts;
+      passed.passReason = outcome.reason;
       // Audit the pass against the very tree the verdict was reached on: free,
       // and the only guard against a lenient judge scoring well by accepting
       // screens that do not satisfy the expectation.

@@ -147,6 +147,18 @@ export const VARIANTS: readonly Variant.Props[] = [
   },
   {
     ...FAST,
+    id: "best",
+    hypothesis:
+      "Everything that has helped, together: restate expectations against the graph, and buy a screenshot only where the tree provably cannot answer — which on iOS is any question about a segmented control.",
+    model: MODELS.haiku,
+    treeSettleMs: 800,
+    // Vision reads images, so the judge stays on the actor's model here rather
+    // than the cheaper open-weight one the split-roles variant hands it to.
+    verifier: "assert-vision",
+    healExpectations: true,
+  },
+  {
+    ...FAST,
     id: "judge-vision",
     hypothesis:
       "Where the tree cannot answer at all — a state the app draws rather than labels — a screenshot can.",
