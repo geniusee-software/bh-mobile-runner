@@ -380,7 +380,9 @@ export namespace Tracer {
           "cache.update.skip.reason":
             | "no_meta"
             | "not_eligible"
-            | "unimplemented";
+            | "unimplemented"
+            /** The provider's response did not fit the stored-generation schema. */
+            | "unserializable";
         };
       };
     };
