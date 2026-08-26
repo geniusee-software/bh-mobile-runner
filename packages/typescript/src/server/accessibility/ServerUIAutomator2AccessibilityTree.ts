@@ -78,9 +78,9 @@ export class ServerUIAutomator2AccessibilityTree extends BaseServerAccessibility
   }
 
   /**
-   * `selected` is carried for the same reason as on iOS: it is the only thing
-   * distinguishing the active tab or filter from its identical siblings, and
-   * without it an assertion about which one is active cannot be satisfied.
+   * `selected` is the only thing distinguishing the active tab or filter from
+   * its identical siblings, and UiAutomator2 does report it — unlike XCUITest,
+   * whose snapshot has no such attribute at all.
    */
   #xmlAttrsToExtract = new Set([
     "resource-id",

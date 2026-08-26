@@ -73,10 +73,14 @@ export class ServerXCUITestAccessibilityTree extends BaseServerAccessibilityTree
   }
 
   /**
-   * `selected` is carried because it is the only thing that distinguishes the
-   * active tab, segment or filter from its siblings. Without it the tree shows
-   * several identical buttons and a test asking "the DAILY SHIURIM tab is now
-   * active" can never be satisfied, however obvious it is on the screen.
+   * `selected` is listed for completeness, but XCUITest does not report it:
+   * its snapshot carries type, name, label, value, enabled, visible,
+   * accessible, frame and index, and nothing else. Measured on Path4Life, the
+   * active and inactive feed tabs serialise identically —
+   * `<Button name="DAILY SHIURIM" />` beside `<Button name="RECOMMENDED" />` —
+   * so an assertion about which tab is active is unanswerable from an iOS tree
+   * and needs a screenshot. Segmented controls are the exception: they encode
+   * selection in `value`, which is already carried.
    */
   #xmlAttrsToExtract = new Set(["label", "value", "enabled", "selected"]);
 
