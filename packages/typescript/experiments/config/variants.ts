@@ -38,6 +38,16 @@ export namespace Variant {
     /** How long to let the screen settle before reading it, in milliseconds. */
     treeSettleMs: number;
     /**
+     * Cap on how deep a snapshot goes, and whether the cap may be lifted.
+     *
+     * Capped reads are what make a step affordable and are also what hides the
+     * app's content: on this app depth 24 takes 5.7s and reports no feed rows,
+     * uncapped takes 20s and reports forty-three. Adaptive reads shallow and
+     * pays for depth only on the steps whose target the shallow read missed.
+     */
+    snapshotMaxDepth?: number | undefined;
+    adaptiveSnapshotDepth?: boolean;
+    /**
      * Rewrite vague expectations against the page graph before running.
      *
      * The rewrite uses the case's own words and a graph built beforehand, never
@@ -156,6 +166,18 @@ export const VARIANTS: readonly Variant.Props[] = [
     // than the cheaper open-weight one the split-roles variant hands it to.
     verifier: "assert-vision",
     healExpectations: true,
+  },
+  {
+    ...FAST,
+    id: "deep-when-needed",
+    hypothesis:
+      "Reading shallow hides the whole feed, and reading deep everywhere costs four times over; read shallow and pay for depth only where the step's own words were not found.",
+    model: MODELS.haiku,
+    treeSettleMs: 800,
+    verifier: "assert-vision",
+    healExpectations: true,
+    snapshotMaxDepth: 24,
+    adaptiveSnapshotDepth: true,
   },
   {
     ...FAST,

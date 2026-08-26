@@ -75,6 +75,7 @@ export class ExperimentRunner {
           browser,
           resetApp: () => session.relaunchApp(),
           systemDialogs: session.systemDialogs,
+          bundleId: this.#props.app,
           llm,
           verifierLlm,
           failureShotsDir: path.join(RESULTS_DIR, runLabel, "shots", variant.id),

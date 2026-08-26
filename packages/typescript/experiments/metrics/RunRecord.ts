@@ -2,6 +2,9 @@ import type { ExpectationProbe } from "../diagnostics/ExpectationProbe.ts";
 import type { LlmCallRecorder } from "./LlmCallRecorder.ts";
 
 export namespace RunRecord {
+  /** Why an action was given a second attempt. */
+  export type RetryReason = "screen-unchanged" | "only-scrolled";
+
   export type StepVerdict = "passed" | "failed" | "errored";
 
   export interface Step {
@@ -20,8 +23,17 @@ export namespace RunRecord {
      * became more generous about.
      */
     passReason?: string;
-    /** Set when the actor's only move was a scroll and the action was re-issued. */
-    scrollRetried?: boolean;
+    /** Why the action was re-issued, when it was. */
+    retriedBecause?: RetryReason;
+    /**
+     * Whether the action moved the screen at all.
+     *
+     * Separates the two things a bare "caption absent" hides: a case naming
+     * something the app does not show, and a tap that never landed. They need
+     * fixing in different places, and a taxonomy that merges them sends every
+     * one of them to the wrong person.
+     */
+    screenChanged?: boolean;
     durationMs: number;
     llmCalls: number;
     /** Present only on a failed check: was the answer on screen at all? */

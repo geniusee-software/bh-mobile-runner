@@ -3,6 +3,7 @@ import type { RunRecord } from "../metrics/RunRecord.ts";
 export namespace FailureTaxonomy {
   export type Kind =
     | "driver"
+    | "action-did-nothing"
     | "wrong-screen"
     | "partly-present"
     | "prose-expectation"
@@ -18,6 +19,7 @@ export namespace FailureTaxonomy {
 
 const LABELS: Record<FailureTaxonomy.Kind, string> = {
   driver: "driver or device refused the action",
+  "action-did-nothing": "the action left the screen exactly as it was — the tap never landed",
   "wrong-screen": "nothing the case named was on screen — the app is elsewhere",
   "partly-present": "some of what the case named was on screen, not all",
   "prose-expectation": "expectation names no concrete element; it is a judgement call",
@@ -42,6 +44,13 @@ const LABELS: Record<FailureTaxonomy.Kind, string> = {
  */
 export function classify(step: RunRecord.Step): FailureTaxonomy.Kind {
   if (step.verdict === "errored") return "driver";
+
+  // Asked first, because it separates two failures that read identically. A
+  // caption the case named being absent can mean the case named something the
+  // app never shows, or that the tap never landed and we are still on the
+  // previous screen. Those go to different people to fix, and a taxonomy that
+  // merges them sends every one of them to the wrong one.
+  if (step.screenChanged === false) return "action-did-nothing";
 
   const evidence = step.evidence;
   if (!evidence) return "unclassified";

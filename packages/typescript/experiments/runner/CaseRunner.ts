@@ -6,6 +6,7 @@ import {
   DelayedTreeRead,
   ImmediateTreeRead,
 } from "../../src/drivers/tree/treeReadStrategies.ts";
+import { SnapshotDepth } from "../../src/drivers/tree/SnapshotDepth.ts";
 import { Model } from "../../src/Model.ts";
 import type { TestCase } from "../cases/TestCase.ts";
 import { rateFor } from "../config/models.ts";
@@ -14,6 +15,8 @@ import { ExpectationProbe } from "../diagnostics/ExpectationProbe.ts";
 import { DeviceCallRecorder } from "../metrics/DeviceCallRecorder.ts";
 import { LlmCallRecorder } from "../metrics/LlmCallRecorder.ts";
 import { RunRecord, summariseCalls } from "../metrics/RunRecord.ts";
+import { readScreen } from "../graph/ScreenSignature.ts";
+import { namedTargets } from "../cases/namedTargets.ts";
 import type { SystemDialogActor } from "./SystemDialogActor.ts";
 import type { TraceCollector } from "../trace/TraceCollector.ts";
 import type { StepVerifier } from "../verify/StepVerifier.ts";
@@ -36,6 +39,8 @@ export namespace CaseRunner {
     failureShotsDir?: string | undefined;
     /** Collects the model's decisions as training data; omit to skip. */
     traces?: TraceCollector | undefined;
+    /** Needed to open a case's deep link; omit to skip deep links. */
+    bundleId?: string | undefined;
     /**
      * Answers the dialogs iOS puts over the app.
      *
@@ -60,6 +65,14 @@ export class CaseRunner {
   readonly #deviceCalls = new DeviceCallRecorder();
   readonly #expectations = new ExpectationProbe();
   readonly #verifier: StepVerifier;
+  /**
+   * Used only for steps the generator marked as unanswerable from the tree.
+   *
+   * Built once and lazily, because most runs never need it: buying a
+   * screenshot on every step costs image tokens on the many steps that a tree
+   * settles perfectly well.
+   */
+  #eyes: StepVerifier | undefined;
   #currentCaseId = "";
 
   constructor(props: CaseRunner.Props) {
@@ -83,6 +96,7 @@ export class CaseRunner {
 
     this.#currentCaseId = testCase.id.slice(0, 8);
     await resetApp();
+    await this.#openDeepLink(testCase);
     this.#llmCalls.reset();
     this.#deviceCalls.reset();
     this.#props.systemDialogs?.forget();
@@ -93,7 +107,7 @@ export class CaseRunner {
       planner: variant.planner,
       changeAnalysis: variant.changeAnalysis,
     });
-    applyDriverOptions(alumni, variant);
+    applyDriverOptions(alumni, variant, browser);
 
     const startedAt = new Date().toISOString();
     const startedMs = performance.now();
@@ -164,6 +178,12 @@ export class CaseRunner {
     // case failing.
     await this.#props.systemDialogs?.clear(`step ${index + 1} before`);
 
+    // What the instruction names, so a shallow read that missed it can be told
+    // apart from a screen that genuinely has nothing on it.
+    alumni.driver.lookingFor?.(namedTargets(step.action));
+
+    const before = await this.#fingerprint(alumni);
+
     try {
       await alumni.do(step.action);
     } catch (error) {
@@ -171,29 +191,32 @@ export class CaseRunner {
     }
 
     await this.#props.systemDialogs?.clear(`step ${index + 1} after`);
+    let after = await this.#fingerprint(alumni, { fresh: true });
 
-    // A step whose only move was a scroll has not been performed: scrolling
-    // brings the target into view, and the instruction asked for something to
-    // be done to it. Recorded in the traces, this looked like the agent
-    // deciding a card was reached because it had become visible — the tap that
-    // the case actually asked for never happened. One more turn, now that the
-    // target is on screen, is cheaper than losing the case.
-    let scrollRetried = false;
-    if (this.#onlyScrolled(callsBefore)) {
-      scrollRetried = true;
+    // One retry, for either of the two ways an action can quietly not happen.
+    // A tap that lands on nothing reports success, so the agent walks on and
+    // fails two steps later with a message about the wrong screen; and a step
+    // that ends on a scroll has not been performed at all, because scrolling
+    // brings the target into view and the instruction asked for something to
+    // be done to it.
+    const retryReason = this.#retryReason(callsBefore, before, after);
+    if (retryReason) {
       try {
-        await alumni.do(step.action);
+        await alumni.do(`${step.action}\n\n${RETRY_NOTES[retryReason]}`);
       } catch (error) {
-        return finish("errored", `action (after scroll): ${describe(error)}`);
+        return finish("errored", `action (${retryReason} retry): ${describe(error)}`);
       }
       await this.#props.systemDialogs?.clear(`step ${index + 1} after retry`);
+      after = await this.#fingerprint(alumni, { fresh: true });
     }
+
+    const screenChanged = after !== before;
 
     if (!step.expected) return finish("passed", "");
 
     let outcome;
     try {
-      outcome = await this.#verifier.verify(alumni, step.expected);
+      outcome = await this.#verifierFor(step).verify(alumni, step.expected);
     } catch (error) {
       // The verifier only swallows the app disagreeing; anything reaching here
       // is the harness or the device breaking, and the two must not be pooled.
@@ -202,7 +225,8 @@ export class CaseRunner {
 
     if (outcome.passed) {
       const passed = finish("passed", "");
-      passed.scrollRetried = scrollRetried || undefined;
+      passed.retriedBecause = retryReason;
+      passed.screenChanged = screenChanged;
       passed.verifierAttempts = outcome.attempts;
       passed.passReason = outcome.explanation;
       // A pass the tree could not have reached was decided by a picture, and
@@ -222,11 +246,31 @@ export class CaseRunner {
     }
 
     const failed = finish("failed", `check: ${outcome.explanation.slice(0, 300)}`);
-    failed.scrollRetried = scrollRetried || undefined;
+    failed.retriedBecause = retryReason;
+    failed.screenChanged = screenChanged;
     failed.verifierAttempts = outcome.attempts;
     failed.evidence = await this.#probeExpectation(step.expected);
     failed.screenshotPath = await this.#captureScreen(index);
     return failed;
+  }
+
+  /**
+   * Why this action deserves a second attempt, or nothing if it does not.
+   *
+   * Two failures look identical from outside and are both silent: an action
+   * that left the screen exactly as it was, and one that spent its whole turn
+   * scrolling. Neither raises an error — WebDriverAgent reports a tap on an
+   * unresponsive element as a success — so without this the agent walks on and
+   * the case fails two steps later, blaming a screen it never left.
+   */
+  #retryReason(
+    callsBefore: number,
+    before: string,
+    after: string,
+  ): RunRecord.RetryReason | undefined {
+    if (this.#onlyScrolled(callsBefore)) return "only-scrolled";
+    if (before && after && before === after) return "screen-unchanged";
+    return undefined;
   }
 
   /**
@@ -246,6 +290,76 @@ export class CaseRunner {
     return (
       tools.length > 0 && tools.every((tool) => /scroll/i.test(tool.name))
     );
+  }
+
+  /**
+   * The verifier for this step: the variant's, unless the generator said this
+   * one needs a picture.
+   *
+   * The generator knows what it was asking about, and the runner cannot infer
+   * "only a screenshot can settle this" from the wording — an assertion about
+   * which segment is chosen reads exactly like one about which is present.
+   */
+  #verifierFor(step: TestCase["steps"][number]): StepVerifier {
+    if (!step.needsScreenshot) return this.#verifier;
+
+    this.#eyes ??= verifierFor(
+      "assert-vision",
+      this.#props.verifierLlm ?? this.#props.llm,
+    );
+    return this.#eyes;
+  }
+
+  /**
+   * Puts the app where the case is about, before the case starts.
+   *
+   * A precondition, not a step: it is not the thing under test, it consumes no
+   * model call, and it never counts towards the pass rate. Half this suite
+   * reaches the player by tapping whatever the feed happens to be showing,
+   * which ties the case to content that rotates daily; a link does not.
+   */
+  async #openDeepLink(testCase: TestCase): Promise<void> {
+    if (!testCase.deepLink) return;
+    try {
+      await this.#props.browser.execute("mobile: deepLink", {
+        url: testCase.deepLink,
+        bundleId: this.#props.bundleId,
+      });
+      await new Promise((resolve) => setTimeout(resolve, 2500));
+      await this.#props.systemDialogs?.clear("deep link");
+    } catch (error) {
+      // Recorded rather than thrown: the case will fail on its first step with
+      // a screen that says why, which is more use than an errored case.
+      console.log(
+        `    deep link failed for "${testCase.title}": ${describe(error).slice(0, 100)}`,
+      );
+    }
+  }
+
+  #lastFingerprint = "";
+
+  /**
+   * A cheap statement of what is on the screen, for telling "it moved" from
+   * "it did not".
+   *
+   * Carried between steps so the common case costs one read rather than two:
+   * the screen a step starts on is the screen the previous step ended on.
+   */
+  async #fingerprint(
+    alumni: Alumni,
+    options: { fresh?: boolean } = {},
+  ): Promise<string> {
+    if (!options.fresh && this.#lastFingerprint) return this.#lastFingerprint;
+
+    try {
+      const source = await this.#props.browser.getPageSource();
+      const names = readScreen(source).elements.map((element) => element.text);
+      this.#lastFingerprint = [...new Set(names)].sort().join("\u0001");
+    } catch {
+      // Unreadable screens are not evidence of anything; leave the last
+      // reading alone rather than inventing a change.
+    }
+    return this.#lastFingerprint;
   }
 
   /**
@@ -314,7 +428,11 @@ export class CaseRunner {
  * `Alumni` wraps the raw browser itself, so the driver only exists after
  * construction and its flags have to be set on the instance it built.
  */
-function applyDriverOptions(alumni: Alumni, variant: Variant.Props): void {
+function applyDriverOptions(
+  alumni: Alumni,
+  variant: Variant.Props,
+  browser: Browser,
+): void {
   const { driver } = alumni;
   if (!(driver instanceof AppiumDriver)) return;
 
@@ -323,7 +441,30 @@ function applyDriverOptions(alumni: Alumni, variant: Variant.Props): void {
     variant.treeSettleMs > 0
       ? new DelayedTreeRead(variant.treeSettleMs)
       : new ImmediateTreeRead();
+
+  // Shallow by default, deep when the shallow read missed what the step named.
+  // Measured on this app: depth 24 takes 5.7s and reports no feed rows at all,
+  // while uncapped takes 20s and reports forty-three — so a capped-only runner
+  // cannot open a shiur under any wording, and an uncapped-only one pays four
+  // times over on every step that never needed it.
+  if (variant.adaptiveSnapshotDepth && variant.snapshotMaxDepth) {
+    const shallow = variant.snapshotMaxDepth;
+    driver.snapshotDepth = new SnapshotDepth({
+      shallow,
+      setDepth: async (depth) => {
+        await browser.updateSettings({ snapshotMaxDepth: depth ?? 0 });
+      },
+    });
+  }
 }
+
+/** What the agent is told when its action left the screen where it found it. */
+const RETRY_NOTES: Record<RunRecord.RetryReason, string> = {
+  "screen-unchanged":
+    "Nothing on the screen changed. The element you chose did not respond to it — several elements can carry the same label, and only one of them handles the tap. Choose a different element and try again.",
+  "only-scrolled":
+    "You only scrolled. Scrolling brings a target into view; it is not the action that was asked for. The target should be on screen now — do what the instruction asked.",
+};
 
 function describe(error: unknown): string {
   if (error instanceof Error) return error.message.slice(0, 300);

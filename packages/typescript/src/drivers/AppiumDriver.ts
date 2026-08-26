@@ -10,6 +10,7 @@ import { Telemetry } from "../telemetry/Telemetry.ts";
 import type { Tracer } from "../telemetry/Tracer.ts";
 import { TreeDevDrillError } from "../tree/dev/TreeDevDrillError.ts";
 import type { TreeReadStrategy } from "./tree/TreeReadStrategy.ts";
+import type { SnapshotDepth } from "./tree/SnapshotDepth.ts";
 import { ImmediateTreeRead } from "./tree/treeReadStrategies.ts";
 import type { ToolClass } from "../tools/BaseTool.ts";
 import { ClickTool } from "../tools/ClickTool.ts";
@@ -70,6 +71,21 @@ export class AppiumDriver extends BaseDriver {
    */
   public treeRead: TreeReadStrategy = new ImmediateTreeRead();
 
+  /**
+   * Reads shallow, and deep only when the shallow read missed what was asked
+   * for. Left unset, every read is whatever the session's cap says.
+   */
+  public snapshotDepth: SnapshotDepth | undefined;
+
+  /**
+   * Tells the next reads what the current instruction named, so a shallow tree
+   * that does not contain it can be recognised as too shallow rather than as
+   * an empty screen.
+   */
+  lookingFor(terms: readonly string[]): void {
+    this.snapshotDepth?.expect(terms);
+  }
+
   constructor(driver: Browser) {
     super();
     this.driver = driver;
@@ -92,8 +108,11 @@ export class AppiumDriver extends BaseDriver {
       await this.driver.getPageSource();
     }
 
+    const fetchSource = () => this.driver.getPageSource();
     const xmlString = await this.treeRead.read(() =>
-      this.driver.getPageSource(),
+      this.snapshotDepth
+        ? this.snapshotDepth.read(fetchSource)
+        : fetchSource(),
     );
     if (this.platform === "uiautomator2") {
       return new UIAutomator2AccessibilityTree(xmlString);
