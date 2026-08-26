@@ -202,6 +202,13 @@ export class LlmFactory {
         ? { credentials: { accessKeyId, secretAccessKey } }
         : {}),
       additionalModelRequestFields,
+      // Streaming reaches Bedrock through ConverseStream, which the AWS SDK sends
+      // over HTTP/2 — and the HTTP/2 client in the runtime this ships as a
+      // single-file executable never completes the request, so every call fails
+      // with "http2 request did not get a response". Nothing here needs tokens as
+      // they arrive: an agent acts on a whole tool call, so the unary Converse
+      // costs nothing and works.
+      disableStreaming: true,
       cache,
     });
   }
