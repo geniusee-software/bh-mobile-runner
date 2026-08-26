@@ -6,6 +6,9 @@
 import { SuiteSnapshot } from "../cases/TestCase.ts";
 import { sampleCases } from "../cases/sampleCases.ts";
 import { runnableCases } from "../cases/eligibility.ts";
+import { PageGraph, PageGraphData } from "../graph/PageGraph.ts";
+import { GRAPH_PATH } from "../graph/graphPath.ts";
+import { ExpectationHealer } from "../heal/ExpectationHealer.ts";
 import { loadResults } from "../report/loadResults.ts";
 import { DEVICE } from "../config/device.ts";
 import { SUITE_SNAPSHOT_PATH } from "../config/suite.ts";
@@ -86,6 +89,15 @@ await session.start();
 const traceSink = buildTraceSink(runLabel);
 console.log(`Traces:   ${traceSink.name}`);
 
+// Loaded once and shared: the graph is prior knowledge about the app, not
+// something a run should be able to change while it is being measured.
+const graph = (await Bun.file(GRAPH_PATH).exists())
+  ? new PageGraph(PageGraphData.parse(await Bun.file(GRAPH_PATH).json()))
+  : undefined;
+if (variants.some((v) => v.healExpectations) && !graph) {
+  throw new Error(`A healed variant needs a page graph; run crawl.ts first (${GRAPH_PATH})`);
+}
+
 const runner = new ExperimentRunner({
   session,
   cases,
@@ -93,6 +105,7 @@ const runner = new ExperimentRunner({
   traceSink,
   platform: "xcuitest",
   app: DEVICE.bundleId,
+  healer: graph ? new ExpectationHealer(graph) : undefined,
 });
 const byVariant = new Map<string, Awaited<ReturnType<typeof runner.runVariant>>>();
 

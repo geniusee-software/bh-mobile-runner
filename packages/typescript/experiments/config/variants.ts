@@ -37,6 +37,14 @@ export namespace Variant {
     verifierModel?: string | undefined;
     /** How long to let the screen settle before reading it, in milliseconds. */
     treeSettleMs: number;
+    /**
+     * Rewrite vague expectations against the page graph before running.
+     *
+     * The rewrite uses the case's own words and a graph built beforehand, never
+     * the screen the step produces — a healer that saw the outcome would
+     * describe it and pass every time.
+     */
+    healExpectations?: boolean;
   }
 }
 
@@ -125,6 +133,17 @@ export const VARIANTS: readonly Variant.Props[] = [
     model: MODELS.haiku,
     treeSettleMs: 800,
     verifier: "assert-retry",
+  },
+  {
+    ...FAST,
+    id: "healed",
+    hypothesis:
+      "Four in five failures are expectations that name nothing; restating them against the page graph should turn interpretation back into a check.",
+    model: MODELS.haiku,
+    treeSettleMs: 800,
+    verifier: "assert-retry",
+    verifierModel: MODELS.gptOss120b,
+    healExpectations: true,
   },
   {
     ...FAST,

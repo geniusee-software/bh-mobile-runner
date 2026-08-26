@@ -1,0 +1,868 @@
+{
+  "builtAt": "2026-08-26T05:53:41.425Z",
+  "app": "com.thepath4life.ios.prod",
+  "screens": [
+    {
+      "signature": "Hello!",
+      "titles": [
+        "Hello!"
+      ],
+      "visits": 7,
+      "elements": [
+        {
+          "role": "Application",
+          "text": "Path4Life",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "DAILY SHIURIM",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "RECOMMENDED",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "homeHeaderBackground",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "arrowDown",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "Today",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "history",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "avatar",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "notification",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "searchSmall",
+          "seen": 7
+        },
+        {
+          "role": "TextField",
+          "text": "Search topics, Series or Shiurim...",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "View all",
+          "seen": 7
+        },
+        {
+          "role": "Toolbar",
+          "text": "Toolbar",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "notes",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "arrowRight",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "bookmarks",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "savePrimaryBlue",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "heartPrimaryBlue",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "downloadLarge",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "messageQuestion",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "ANNOUNCEMENTS",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "KNOWLEDGE BASE",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "logoSmall",
+          "seen": 7
+        },
+        {
+          "role": "Button",
+          "text": "expandableCellButton",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "microphone",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "homeActive",
+          "seen": 6
+        },
+        {
+          "role": "Image",
+          "text": "search",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "highlights",
+          "seen": 6
+        },
+        {
+          "role": "Image",
+          "text": "community",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "donate",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Hello!",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Wednesday",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Ki Tavo",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "13 Elul 5786",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "August 26",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "WEEKLY SPONSOR",
+          "seen": 6
+        },
+        {
+          "role": "Text",
+          "text": "לעילוי נשמת הרב ישראל חיים בן ר' משה ז\"ל",
+          "seen": 6
+        },
+        {
+          "role": "Text",
+          "text": "August",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Today, August 26",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "No new shiurim here",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Please choose another day to explore",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Popular Topics",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Popular Series",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Popular Shiurim",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Highlights",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Notes",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Bookmarks",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Saved Shiurim",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Followed Series",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Downloads",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "History",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Community",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Questions and Comments",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Ask us anything",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Donate",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor Path4life",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor our App",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor a Shiur",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor specific series you like",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Home",
+          "seen": 7
+        },
+        {
+          "role": "Text",
+          "text": "Search",
+          "seen": 7
+        },
+        {
+          "role": "Image",
+          "text": "home",
+          "seen": 1
+        },
+        {
+          "role": "Image",
+          "text": "highlightsActive",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "DAILY SPONSOR",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "A Zechus For Parnassa",
+          "seen": 1
+        }
+      ]
+    },
+    {
+      "signature": "Email Address",
+      "titles": [
+        "Email Address"
+      ],
+      "visits": 2,
+      "elements": [
+        {
+          "role": "Application",
+          "text": "Path4Life",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "barBackgroundSmall",
+          "seen": 2
+        },
+        {
+          "role": "TextField",
+          "text": "Enter your email address",
+          "seen": 2
+        },
+        {
+          "role": "SecureTextField",
+          "text": "Create password (Minimum 8 characters)",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "eyeClosed",
+          "seen": 2
+        },
+        {
+          "role": "SecureTextField",
+          "text": "Type your password again",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "checkboxOff",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "Terms and Conditions",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "Privacy Policy",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "PrimaryButton",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "apple",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "google",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "Log In",
+          "seen": 2
+        },
+        {
+          "role": "div",
+          "text": "Vertical scroll bar, 1 page",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Email Address",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Password",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Confirm password",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "I agree with",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "and",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "or",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "REGISTER WITH APPLE",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "REGISTER WITH GOOGLE",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Already have an account?",
+          "seen": 2
+        },
+        {
+          "role": "TextField",
+          "text": "Create password (Minimum 8 characters)",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "eye",
+          "seen": 1
+        }
+      ]
+    },
+    {
+      "signature": "Log In",
+      "titles": [
+        "Log In"
+      ],
+      "visits": 1,
+      "elements": [
+        {
+          "role": "Application",
+          "text": "Path4Life",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "Registration",
+          "seen": 1
+        },
+        {
+          "role": "Image",
+          "text": "barBackgroundSmall",
+          "seen": 1
+        },
+        {
+          "role": "TextField",
+          "text": "Enter your email address",
+          "seen": 1
+        },
+        {
+          "role": "SecureTextField",
+          "text": "Enter password",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "eyeClosed",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "Forgot password?",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "PrimaryButton",
+          "seen": 1
+        },
+        {
+          "role": "Image",
+          "text": "apple",
+          "seen": 1
+        },
+        {
+          "role": "Image",
+          "text": "google",
+          "seen": 1
+        },
+        {
+          "role": "div",
+          "text": "Vertical scroll bar, 1 page",
+          "seen": 1
+        },
+        {
+          "role": "Button",
+          "text": "Register",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "Log In",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "Email Address",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "Password",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "or",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "LOGIN WITH APPLE",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "LOGIN WITH GOOGLE",
+          "seen": 1
+        },
+        {
+          "role": "Text",
+          "text": "Don’t have an account?",
+          "seen": 1
+        }
+      ]
+    },
+    {
+      "signature": "Notifications",
+      "titles": [
+        "Notifications"
+      ],
+      "visits": 2,
+      "elements": [
+        {
+          "role": "Application",
+          "text": "Path4Life",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "Back",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "notificationLarge",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "PrimaryButton",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "homeHeaderBackground",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "searchSmall",
+          "seen": 2
+        },
+        {
+          "role": "TextField",
+          "text": "Search topics, Series or Shiurim...",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "View all",
+          "seen": 2
+        },
+        {
+          "role": "Toolbar",
+          "text": "Toolbar",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "avatar",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "notification",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "notes",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "arrowRight",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "bookmarks",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "savePrimaryBlue",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "heartPrimaryBlue",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "downloadLarge",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "history",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "messageQuestion",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "ANNOUNCEMENTS",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "KNOWLEDGE BASE",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "logoSmall",
+          "seen": 2
+        },
+        {
+          "role": "Button",
+          "text": "expandableCellButton",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "microphone",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "homeActive",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "search",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "highlights",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "community",
+          "seen": 2
+        },
+        {
+          "role": "Image",
+          "text": "donate",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Notifications",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "No new notifications yet",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Popular Topics",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Popular Series",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Popular Shiurim",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Highlights",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Notes",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Bookmarks",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Saved Shiurim",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Followed Series",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Downloads",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "History",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Community",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Questions and Comments",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Ask us anything",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Donate",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor Path4life",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor our App",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor a Shiur",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Sponsor specific series you like",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Home",
+          "seen": 2
+        },
+        {
+          "role": "Text",
+          "text": "Search",
+          "seen": 2
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "Log In",
+      "to": "Hello!",
+      "actions": [
+        "crawl"
+      ],
+      "seen": 1
+    },
+    {
+      "from": "Email Address",
+      "to": "Hello!",
+      "actions": [
+        "crawl"
+      ],
+      "seen": 1
+    },
+    {
+      "from": "Notifications",
+      "to": "Hello!",
+      "actions": [
+        "crawl"
+      ],
+      "seen": 1
+    }
+  ]
+}

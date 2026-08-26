@@ -6,6 +6,7 @@ import { SessionContext } from "../../src/server/session/SessionContext.ts";
 import type { AppId } from "../../src/AppId.ts";
 import { Model } from "../../src/Model.ts";
 import type { TestCase } from "../cases/TestCase.ts";
+import type { ExpectationHealer } from "../heal/ExpectationHealer.ts";
 import { RESULTS_DIR } from "../config/suite.ts";
 import type { Variant } from "../config/variants.ts";
 import type { RunRecord } from "../metrics/RunRecord.ts";
@@ -26,6 +27,8 @@ export namespace ExperimentRunner {
     platform: string;
     /** Application under test, recorded alongside every trace. */
     app: string;
+    /** Rewrites vague expectations for variants that ask for it. */
+    healer?: ExpectationHealer | undefined;
   }
 }
 
@@ -92,14 +95,35 @@ export class ExperimentRunner {
     console.log(`\n=== ${variant.id} (${models}) ===`);
     console.log(`    ${variant.hypothesis}`);
 
-    for (const [index, testCase] of cases.entries()) {
+    const toRun = variant.healExpectations
+      ? this.#healed(cases)
+      : [...cases];
+
+    for (const [index, testCase] of toRun.entries()) {
       const record = await this.#runOne(runner, testCase, variant);
       records.push(record);
       await appendJsonl(outputPath, record);
-      console.log(formatProgress(index, cases.length, record));
+      console.log(formatProgress(index, toRun.length, record));
     }
 
     return records;
+  }
+
+  /** Applies the healer and says how much of the suite it touched. */
+  #healed(cases: readonly TestCase[]): TestCase[] {
+    const { healer } = this.#props;
+    if (!healer) throw new Error("This variant heals expectations but no healer was provided");
+
+    let rewritten = 0;
+    const healed = cases.map((testCase) => {
+      const result = healer.heal(testCase);
+      rewritten += result.healedSteps;
+      return { ...testCase, steps: result.steps };
+    });
+
+    const steps = cases.reduce((total, testCase) => total + testCase.steps.length, 0);
+    console.log(`    healer rewrote ${rewritten} of ${steps} expectations`);
+    return healed;
   }
 
   async #runOne(
