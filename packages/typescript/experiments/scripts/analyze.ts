@@ -6,7 +6,11 @@
 import { label as labelFor, taxonomyFor } from "../report/failureTaxonomy.ts";
 import { loadResults } from "../report/loadResults.ts";
 import { reportRuns } from "../report/reportRuns.ts";
-import { auditablePasses, suspectPasses } from "../report/suspectPasses.ts";
+import {
+  auditablePasses,
+  overturnedPasses,
+  suspectPasses,
+} from "../report/suspectPasses.ts";
 
 const runLabel = process.argv[2];
 if (!runLabel) {
@@ -30,6 +34,13 @@ for (const [variantId, records] of byVariant) {
       console.log(`    expected: ${suspect.expected.slice(0, 90)}`);
       console.log(`    not on screen: ${suspect.missing.join(", ")}`);
     }
+  }
+
+  const overturned = overturnedPasses(records);
+  if (overturned) {
+    console.log(
+      `\n--- ${variantId}: ${overturned} passes were granted only by the fallback verifier ---`,
+    );
   }
 
   const failures = taxonomyFor(records);

@@ -47,6 +47,25 @@ export function suspectPasses(
   return suspects;
 }
 
+/**
+ * Passes that only the fallback verifier granted.
+ *
+ * A second opinion wired to run on failure can only ever turn a FAIL into a
+ * PASS, so it raises the pass rate by construction. How often it does is the
+ * number that says whether it is seeing what the tree cannot — or just being
+ * agreeable — and it belongs next to the pass rate rather than inside it.
+ */
+export function overturnedPasses(
+  records: readonly RunRecord.Case[],
+): number {
+  return records
+    .flatMap((record) => record.steps)
+    .filter(
+      (step) =>
+        step.verdict === "passed" && (step.verifierAttempts?.length ?? 0) > 1,
+    ).length;
+}
+
 /** Passed steps that could be audited at all — the denominator for the rate. */
 export function auditablePasses(records: readonly RunRecord.Case[]): number {
   return records
