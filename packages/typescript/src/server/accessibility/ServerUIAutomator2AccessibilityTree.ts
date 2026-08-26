@@ -77,21 +77,29 @@ export class ServerUIAutomator2AccessibilityTree extends BaseServerAccessibility
     return attrValue;
   }
 
+  /**
+   * `selected` is carried for the same reason as on iOS: it is the only thing
+   * distinguishing the active tab or filter from its identical siblings, and
+   * without it an assertion about which one is active cannot be satisfied.
+   */
   #xmlAttrsToExtract = new Set([
     "resource-id",
     "content-desc",
     "text",
     "clickable",
     "checked",
+    "selected",
   ]);
 
   protected override skipXmlAttr(
     role: string,
     attrName: string,
-    _attrValue: string,
+    attrValue: string,
   ): boolean {
     if (!this.#xmlAttrsToExtract.has(attrName)) return true;
     if (role !== "CheckBox" && attrName === "checked") return true;
+    // Almost nothing is selected, so only the true case earns its tokens.
+    if (attrName === "selected" && attrValue !== "true") return true;
     return false;
   }
 

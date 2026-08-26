@@ -72,7 +72,13 @@ export class ServerXCUITestAccessibilityTree extends BaseServerAccessibilityTree
     return this.#textAttrs.has(attrName) ? attrValue.trim() : attrValue;
   }
 
-  #xmlAttrsToExtract = new Set(["label", "value", "enabled"]);
+  /**
+   * `selected` is carried because it is the only thing that distinguishes the
+   * active tab, segment or filter from its siblings. Without it the tree shows
+   * several identical buttons and a test asking "the DAILY SHIURIM tab is now
+   * active" can never be satisfied, however obvious it is on the screen.
+   */
+  #xmlAttrsToExtract = new Set(["label", "value", "enabled", "selected"]);
 
   protected override skipXmlAttr(
     role: string,
@@ -81,7 +87,10 @@ export class ServerXCUITestAccessibilityTree extends BaseServerAccessibilityTree
   ): boolean {
     if (role === "StaticText" && attrName === "name") return false;
     if (!this.#xmlAttrsToExtract.has(attrName)) return true;
+    // Only the surprising value is worth its tokens: almost everything is
+    // enabled and almost nothing is selected.
     if (attrName === "enabled" && attrValue === "true") return true;
+    if (attrName === "selected" && attrValue !== "true") return true;
     return false;
   }
 

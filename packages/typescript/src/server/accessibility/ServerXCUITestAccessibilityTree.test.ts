@@ -197,3 +197,27 @@ async function fixtureTree(
   const xml = await fs.readFile(fixturePath, "utf-8");
   return new ServerXCUITestAccessibilityTree(xml);
 }
+
+describe("selected state", () => {
+  const tabs = (activeSelected: string) => `<AppiumAUT>
+    <XCUIElementTypeApplication type="XCUIElementTypeApplication" name="App" enabled="true">
+      <XCUIElementTypeButton type="XCUIElementTypeButton" name="DAILY SHIURIM" label="DAILY SHIURIM" enabled="true" selected="${activeSelected}" />
+      <XCUIElementTypeButton type="XCUIElementTypeButton" name="RECOMMENDED" label="RECOMMENDED" enabled="true" selected="false" />
+    </XCUIElementTypeApplication>
+  </AppiumAUT>`;
+
+  it("marks the active tab so it is distinguishable from its siblings", () => {
+    // Without it the tree shows two identical buttons and "the DAILY SHIURIM
+    // tab is now active" can never be satisfied.
+    const xml = new ServerXCUITestAccessibilityTree(tabs("true")).toXml();
+
+    expect(xml).toContain('name="DAILY SHIURIM" id=2 selected');
+    expect(xml).toContain('name="RECOMMENDED" id=3 />');
+  });
+
+  it("omits it when nothing is selected", () => {
+    const xml = new ServerXCUITestAccessibilityTree(tabs("false")).toXml();
+
+    expect(xml).not.toContain("selected");
+  });
+});
