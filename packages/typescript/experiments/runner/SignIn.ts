@@ -22,8 +22,12 @@ const PASSWORD_FIELD = byText("Enter password");
 const AVATAR = byText("avatar");
 const LOG_IN_LINK = byText("Log In");
 const SUBMIT = `-ios predicate string:type == "XCUIElementTypeButton" AND label == "LOG IN"`;
-/** Present only once a session exists: the profile screen's sign-out control. */
-const SIGNED_IN_MARKER = byText("Log Out");
+/**
+ * Present only once a session exists: the account's own address, which the
+ * profile screen shows under the name. Chosen over the sign-out control
+ * because that one sits below the fold and reports as absent until scrolled to.
+ */
+const signedInMarker = (email: string) => byText(email);
 
 /**
  * Puts the app into a signed-in state before a run.
@@ -54,7 +58,8 @@ export class SignIn {
   }
 
   async ensureSignedIn(): Promise<SignIn.Result> {
-    if (await this.#exists(SIGNED_IN_MARKER)) {
+    const marker = signedInMarker(this.#credentials.email);
+    if (await this.#exists(marker)) {
       return { signedIn: true, detail: "already signed in" };
     }
 
@@ -65,7 +70,7 @@ export class SignIn {
 
     // The avatar opens the profile when a session exists and registration when
     // it does not, so the marker is the cheapest way to tell them apart.
-    if (await this.#exists(SIGNED_IN_MARKER)) {
+    if (await this.#exists(marker)) {
       await this.#goBack();
       return { signedIn: true, detail: "already signed in" };
     }

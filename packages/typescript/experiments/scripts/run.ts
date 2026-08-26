@@ -16,6 +16,7 @@ import { VARIANTS, variantById, type Variant } from "../config/variants.ts";
 import { Logger } from "../../src/telemetry/Logger.ts";
 import { ExperimentRunner } from "../runner/ExperimentRunner.ts";
 import { preflight } from "../runner/preflight.ts";
+import { SignIn } from "../runner/SignIn.ts";
 import { SimulatorSession } from "../runner/SimulatorSession.ts";
 import { buildTraceSink } from "../trace/buildTraceSink.ts";
 import { reportRuns } from "../report/reportRuns.ts";
@@ -42,10 +43,17 @@ const snapshot = SuiteSnapshot.parse(
 // walking into screens that need a signed-in account — are excluded by default.
 // Mixed in, they cap the pass rate at a number that says nothing about the
 // runner.
+const credentials = SignIn.credentialsFromEnv();
 const environment = {
   signedIn: process.argv.includes("--signed-in"),
   hasUsageHistory: process.argv.includes("--used-app"),
 };
+if (environment.signedIn && !credentials) {
+  throw new Error(
+    "--signed-in needs BH_APP_EMAIL and BH_APP_PASSWORD; without them the run " +
+      "would draw cases the app cannot reach and report their failures as quality.",
+  );
+}
 const eligible = process.argv.includes("--all-cases")
   ? snapshot.cases
   : runnableCases(snapshot.cases, environment);
@@ -97,6 +105,20 @@ await preflight(variants);
 
 const session = new SimulatorSession(DEVICE);
 await session.start();
+
+// Signing in is a precondition, not a thing under test: it runs once, before
+// any case, and never counts towards a pass rate. Refusing to continue when it
+// fails is deliberate — a run that quietly proceeds as a guest reports fifty
+// cases as failures of the app.
+if (environment.signedIn) {
+  await session.relaunchApp();
+  const outcome = await new SignIn(session.browser, credentials!).ensureSignedIn();
+  console.log(`Sign-in:  ${outcome.detail}`);
+  if (!outcome.signedIn) {
+    await session.stop();
+    throw new Error(`Cannot sign in: ${outcome.detail}`);
+  }
+}
 
 const traceSink = buildTraceSink(runLabel);
 console.log(`Traces:   ${traceSink.name}`);
