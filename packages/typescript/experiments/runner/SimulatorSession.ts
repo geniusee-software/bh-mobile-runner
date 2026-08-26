@@ -175,12 +175,48 @@ export class SimulatorSession {
   }
 
   /**
+   * Waits until the app has replaced its splash screen with a real one.
+   *
+   * "Something has been drawn" is not a usable signal: the splash draws a
+   * logo and nothing else, so a check for any named element returns
+   * immediately and every read after it is of a screen that is about to be
+   * replaced. What follows the splash is either the app itself or something
+   * standing in front of it, so waiting for any of those is precise.
+   */
+  static readonly #LANDED_MARKERS = [
+    "avatar",
+    "Home",
+    ...SimulatorSession.#INTERSTITIAL_CONTROLS,
+  ];
+
+  async #awaitLanding(timeoutMs = 15000): Promise<void> {
+    const deadline = Date.now() + timeoutMs;
+    while (Date.now() < deadline) {
+      try {
+        const source = await this.browser.getPageSource();
+        const landed = SimulatorSession.#LANDED_MARKERS.some((marker) =>
+          source.includes(`name="${marker}"`),
+        );
+        if (landed) return;
+      } catch {
+        // The app is still coming up; the next read is the retry.
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  }
+
+  /**
    * Clears anything the app puts in front of its first screen.
    *
    * Deliberately silent when there is nothing to clear: this runs before every
    * case, and the common path is that the app opens where it should.
    */
   async dismissInterstitials(): Promise<void> {
+    // Looking before the app has drawn finds nothing and reports success, which
+    // is how a run reached its first case still sitting on the onboarding
+    // carousel.
+    await this.#awaitLanding();
+
     for (const label of SimulatorSession.#INTERSTITIAL_CONTROLS) {
       const control = this.browser.$(
         `-ios predicate string:name == "${label}" OR label == "${label}"`,
