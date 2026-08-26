@@ -37,7 +37,10 @@ const snapshot = SuiteSnapshot.parse(
 // walking into screens that need a signed-in account — are excluded by default.
 // Mixed in, they cap the pass rate at a number that says nothing about the
 // runner.
-const environment = { signedIn: process.argv.includes("--signed-in") };
+const environment = {
+  signedIn: process.argv.includes("--signed-in"),
+  hasUsageHistory: process.argv.includes("--used-app"),
+};
 const eligible = process.argv.includes("--all-cases")
   ? snapshot.cases
   : runnableCases(snapshot.cases, environment);

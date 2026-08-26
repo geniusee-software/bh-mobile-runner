@@ -1,7 +1,10 @@
 import type { TestCase } from "./TestCase.ts";
 
 export namespace Eligibility {
-  export type Blocker = "volatile-content" | "requires-account";
+  export type Blocker =
+    | "volatile-content"
+    | "requires-account"
+    | "requires-prior-state";
 
   export interface Verdict {
     runnable: boolean;
@@ -13,6 +16,8 @@ export namespace Eligibility {
   export interface Environment {
     /** Whether the app under test is signed in to an account. */
     signedIn: boolean;
+    /** Whether the install carries playback, download or subscription history. */
+    hasUsageHistory: boolean;
   }
 }
 
@@ -46,6 +51,20 @@ const ACCOUNT_PATTERNS: ReadonlyArray<[string, RegExp]> = [
   ["followed series", /\bfollow(ed|ing)?\b.{0,20}\bseries\b|\bunfollow\b/i],
   ["notification settings", /\bnotification (preference|setting)/i],
   ["the user's own details", /\buser's (name|email|country)\b/i],
+];
+
+/**
+ * State a fresh install does not have.
+ *
+ * The generator walked an account that had already listened, downloaded and
+ * subscribed, so it wrote cases that assert on the residue of that history.
+ * Launched clean, the app has none of it, and the step is impossible rather
+ * than failed.
+ */
+const PRIOR_STATE_PATTERNS: ReadonlyArray<[string, RegExp]> = [
+  ["playback history", /\bmarked as played\b|\bcontinue listening\b|\bresume\b/i],
+  ["downloads", /\bdownloaded\b|\boffline\b/i],
+  ["a prior subscription", /\bsubscribed\b|\bmy (series|list)\b/i],
 ];
 
 function matches(
@@ -89,6 +108,14 @@ export function eligibilityOf(
     if (account.length) {
       blockers.push("requires-account");
       reasons.push(...account);
+    }
+  }
+
+  if (!environment.hasUsageHistory) {
+    const priorState = matches(text, PRIOR_STATE_PATTERNS);
+    if (priorState.length) {
+      blockers.push("requires-prior-state");
+      reasons.push(...priorState);
     }
   }
 

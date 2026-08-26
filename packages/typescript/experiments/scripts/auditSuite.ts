@@ -11,7 +11,10 @@ const snapshot = SuiteSnapshot.parse(
   await Bun.file(SUITE_SNAPSHOT_PATH).json(),
 );
 
-const environment = { signedIn: process.argv.includes("--signed-in") };
+const environment = {
+  signedIn: process.argv.includes("--signed-in"),
+  hasUsageHistory: process.argv.includes("--used-app"),
+};
 const verdicts = snapshot.cases.map((testCase) => ({
   testCase,
   verdict: eligibilityOf(testCase, environment),
