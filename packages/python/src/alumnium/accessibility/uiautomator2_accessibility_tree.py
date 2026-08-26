@@ -6,6 +6,10 @@ from .base_accessibility_tree import BaseAccessibilityTree
 
 
 class UIAutomator2AccessibilityTree(BaseAccessibilityTree):
+    # Classes UiAutomator2 reports for embedded web content: the framework
+    # WebView and the Chrome Custom Tab / WebView variants apps subclass it into.
+    WEBVIEW_CLASS = compile(r'android\.webkit\.WebView|WebView"')
+
     def __init__(self, xml_string: str):
         # cleaning multiple xml declaration lines from page source
         xml_declaration_pattern = compile(r"^\s*<\?xml.*\?>\s*$")
@@ -108,3 +112,6 @@ class UIAutomator2AccessibilityTree(BaseAccessibilityTree):
         scoped_xml = tostring(target_elem, encoding="unicode")
 
         return UIAutomator2AccessibilityTree(scoped_xml)
+
+    def contains_webview(self) -> bool:
+        return self.WEBVIEW_CLASS.search(self.xml_string) is not None

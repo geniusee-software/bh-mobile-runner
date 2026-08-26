@@ -31,3 +31,13 @@ def test_scope_to_area_returns_original_if_not_found(simple_tree: UIAutomator2Ac
     result = simple_tree.scope_to_area(99999)
     # Should return the original tree when element not found
     assert result.to_str() == simple_tree.to_str()
+
+
+def test_contains_webview_is_false_for_a_native_screen():
+    xml = '<hierarchy><node class="android.widget.Button" text="Continue" /></hierarchy>'
+    assert UIAutomator2AccessibilityTree(xml).contains_webview() is False
+
+
+def test_contains_webview_is_true_when_the_screen_embeds_one():
+    xml = '<hierarchy><node class="android.webkit.WebView" text="" /></hierarchy>'
+    assert UIAutomator2AccessibilityTree(xml).contains_webview() is True

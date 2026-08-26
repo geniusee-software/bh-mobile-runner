@@ -5,6 +5,11 @@ from .base_accessibility_tree import BaseAccessibilityTree
 
 
 class XCUITestAccessibilityTree(BaseAccessibilityTree):
+    # Element type XCUITest reports for embedded web content. `WebView` is the
+    # container; `ScrollView` descendants of it hold the rendered page, so the
+    # container alone is enough to know a webview context may exist.
+    WEBVIEW_TYPE = "XCUIElementTypeWebView"
+
     def __init__(self, xml_string: str):
         self.xml_string = xml_string
         self._next_raw_id = 0
@@ -68,7 +73,40 @@ class XCUITestAccessibilityTree(BaseAccessibilityTree):
             name=element.get("name"),
             value=element.get("value"),
             label=element.get("label"),
+            match_index=self._match_index_of(root, element),
         )
+
+    def _match_index_of(self, root: Element, target: Element) -> int:
+        """Count how many elements before this one share its identifying attributes.
+
+        Those attributes are all a predicate can carry, and screens repeat them:
+        a feed of thirty shiur rows has thirty buttons named "play". Document
+        order is the order WebDriverAgent returns matches in, so the count is
+        enough to pick this element back out of that set.
+        """
+
+        def signature(elem: Element) -> tuple:
+            return (elem.tag, elem.get("name"), elem.get("value"), elem.get("label"))
+
+        wanted = signature(target)
+        seen = 0
+
+        def walk(elem: Element) -> int | None:
+            nonlocal seen
+            if elem is target:
+                return seen
+            if signature(elem) == wanted:
+                seen += 1
+            for child in elem:
+                found = walk(child)
+                if found is not None:
+                    return found
+            return None
+
+        return walk(root) or 0
+
+    def contains_webview(self) -> bool:
+        return self.WEBVIEW_TYPE in self.xml_string
 
     def scope_to_area(self, raw_id: int) -> "XCUITestAccessibilityTree":
         """Scope the tree to a smaller subtree identified by raw_id."""

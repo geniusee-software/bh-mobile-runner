@@ -22,6 +22,9 @@ logger = get_logger(__name__)
 
 
 class AppiumDriver(BaseDriver):
+    # How far to swipe after WDA refuses to scroll, before giving up.
+    MAX_SCROLL_SWIPES = 6
+
     def __init__(self, driver: Remote):
         self.driver = driver
         self.supported_tools = {
@@ -31,6 +34,14 @@ class AppiumDriver(BaseDriver):
             TypeTool,
         }
         self.autoswitch_contexts = True
+        # Consult the accessibility tree before enumerating webview contexts.
+        #
+        # Listing contexts costs seconds on a simulator because it probes every
+        # WebKit inspector target, and both `title` and `url` need it — so a
+        # single check on a native screen pays it twice to learn there is no
+        # webview. The tree already carries that answer, so the scan only runs
+        # when a webview node is actually present.
+        self.lazy_webview_contexts = True
         self.delay: float = 0
         self.hide_keyboard_after_typing = False
         self.double_fetch_page_source = False
@@ -103,7 +114,8 @@ class AppiumDriver(BaseDriver):
 
     @property
     def title(self) -> str:
-        self._ensure_webview_context()
+        if not self._enter_web_content_or_skip():
+            return ""
         try:
             return self.driver.title
         except UnknownMethodException:
@@ -120,7 +132,8 @@ class AppiumDriver(BaseDriver):
 
     @property
     def url(self) -> str:
-        self._ensure_webview_context()
+        if not self._enter_web_content_or_skip():
+            return ""
         try:
             return self.driver.current_url
         except UnknownMethodException:
@@ -155,14 +168,50 @@ class AppiumDriver(BaseDriver):
         if self.driver.current_context != "NATIVE_APP":
             self.driver.switch_to.context("NATIVE_APP")
 
-    def _ensure_webview_context(self):
+    def _enter_web_content_or_skip(self) -> bool:
+        """Prepare the session for a web-content call, or report there is none.
+
+        `title` and `url` only mean something inside a webview. On a native
+        screen WebDriverAgent either has no such endpoint or answers after a
+        long timeout, so once the tree is trusted about webviews there is
+        nothing to gain by asking. Without that trust the old behaviour stands:
+        attempt the call and let it fail.
+        """
+        in_webview = self._ensure_webview_context()
+        return in_webview or not self.lazy_webview_contexts
+
+    def _ensure_webview_context(self) -> bool:
+        """Switch to a webview context if the screen has one.
+
+        Returns whether the session ended up in a webview context.
+        """
         if not self.autoswitch_contexts:
-            return
+            return True
+
+        if self.lazy_webview_contexts and not self._has_webview_in_tree():
+            logger.debug("No webview in the accessibility tree, skipping context scan")
+            return False
 
         for context in reversed(self.driver.contexts):
             if "WEBVIEW" in context:
                 self.driver.switch_to.context(context)
-                return
+                return True
+
+        return False
+
+    def _has_webview_in_tree(self) -> bool:
+        """Whether the current screen embeds a webview.
+
+        Reads the tree the caller already fetched where one is cached, which is
+        the common case: a check builds the tree before asking for the title and
+        the URL, so the answer is usually free.
+        """
+        try:
+            return self.accessibility_tree.contains_webview()
+        except Exception as error:
+            # A tree we cannot read tells us nothing; fall back to scanning.
+            logger.debug(f"Failed to inspect tree for webviews: {error}")
+            return True
 
     # Use iOS Predicate locators for XCUITest
     def _find_element_ios(self, element):
@@ -182,6 +231,21 @@ class AppiumDriver(BaseDriver):
             predicate += f" AND {props_str}"
 
         logger.debug(f"Finding element by predicate: {predicate}")
+
+        match_index = element.match_index or 0
+        if match_index == 0:
+            return self.driver.find_element(By.IOS_PREDICATE, predicate)  # type: ignore[reportReturnType]
+
+        # The label repeats on this screen, so the predicate names a set and the
+        # agent picked one member of it. Taking the first would silently act on a
+        # different element — usually one belonging to another row entirely.
+        matches = self.driver.find_elements(By.IOS_PREDICATE, predicate)
+        if match_index < len(matches):
+            return matches[match_index]  # type: ignore[reportReturnType]
+
+        logger.debug(
+            f"Expected at least {match_index + 1} matches for the predicate, found {len(matches)}; using the first"
+        )
         return self.driver.find_element(By.IOS_PREDICATE, predicate)  # type: ignore[reportReturnType]
 
     # Use XPath for UIAutomator2
@@ -215,10 +279,51 @@ class AppiumDriver(BaseDriver):
             actions.perform()
 
     def _scroll_into_view(self, element: WebElement):
-        if self.platform == "uiautomator2":
-            self._scroll_into_view_android(element)
-        else:
+        """Bring an element into view before acting on it.
+
+        Best effort by design. An element that is already visible needs no
+        scrolling, and a scroll that cannot be performed does not mean the
+        action is impossible — so a refusal must never abort it; let the click
+        or the typing that follows be the one to decide.
+        """
+        try:
+            if self.platform == "uiautomator2":
+                self._scroll_into_view_android(element)
+            else:
+                self._scroll_into_view_ios(element)
+        except Exception as error:
+            logger.debug(f"Could not scroll element into view, continuing: {error}")
+
+    def _scroll_into_view_ios(self, element: WebElement):
+        """iOS scrolling, with a fallback for the containers WDA cannot drive.
+
+        `mobile: scrollToElement` is the cheap path but refuses outright on
+        SwiftUI lists and on any element that is its own scroll container, which
+        covers most of a modern app's content. Swiping the window is slower but
+        works anywhere, so it takes over when the cheap path is refused —
+        bounded, because a target that is genuinely absent must not turn into an
+        endless scroll.
+        """
+        if self._is_displayed(element):
+            return
+
+        try:
             self.driver.execute_script("mobile: scrollToElement", {"elementId": element.id})
+            return
+        except Exception as error:
+            logger.debug(f"scrollToElement refused, falling back to swipes: {error}")
+
+        for _ in range(self.MAX_SCROLL_SWIPES):
+            self.driver.execute_script("mobile: swipe", {"direction": "up"})
+            if self._is_displayed(element):
+                return
+
+    @staticmethod
+    def _is_displayed(element: WebElement) -> bool:
+        try:
+            return element.is_displayed()
+        except Exception:
+            return False
 
     def _scroll_into_view_android(self, element: WebElement, max_scrolls: int = 10, direction: str = "up"):
         """
