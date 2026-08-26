@@ -6,11 +6,9 @@
  *
  * Run: bun experiments/scripts/summary.ts [label...]
  */
-import fs from "node:fs/promises";
-import path from "node:path";
-import { RESULTS_DIR } from "../config/suite.ts";
 import type { RunRecord } from "../metrics/RunRecord.ts";
 import { label as labelFor, taxonomyFor } from "../report/failureTaxonomy.ts";
+import { listLabels, loadResults } from "../report/loadResults.ts";
 
 interface Row {
   run: string;
@@ -22,22 +20,6 @@ interface Row {
   callsPerCase: number;
   costPerCase: number;
   totalCost: number;
-}
-
-async function loadLabel(label: string): Promise<Map<string, RunRecord.Case[]>> {
-  const dir = path.join(RESULTS_DIR, label);
-  const files = (await fs.readdir(dir).catch(() => []))
-    .filter((name) => name.endsWith(".jsonl") && name !== "traces.jsonl");
-
-  const byVariant = new Map<string, RunRecord.Case[]>();
-  for (const file of files) {
-    const text = await Bun.file(path.join(dir, file)).text();
-    byVariant.set(
-      path.basename(file, ".jsonl"),
-      text.split("\n").filter(Boolean).map((line) => JSON.parse(line)),
-    );
-  }
-  return byVariant;
 }
 
 function toRow(run: string, records: RunRecord.Case[]): Row {
@@ -60,13 +42,13 @@ function toRow(run: string, records: RunRecord.Case[]): Row {
 
 const labels = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : (await fs.readdir(RESULTS_DIR)).sort();
+  : await listLabels();
 
 const rows: Row[] = [];
 const allRecords: RunRecord.Case[] = [];
 
 for (const label of labels) {
-  for (const [variant, records] of await loadLabel(label)) {
+  for (const [variant, records] of await loadResults(label)) {
     if (!records.length) continue;
     rows.push(toRow(`${label}/${variant}`, records));
     allRecords.push(...records);
