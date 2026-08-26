@@ -19,8 +19,11 @@ const SYSTEM = [
   "  element is absent, or when the tree shows the opposite state.",
   "- Do not demand evidence the tree could never carry, such as colour, animation or exact layout.",
   "",
-  "Reply with exactly one line: PASS or FAIL, then a dash, then one sentence of evidence.",
-  "Example: FAIL - the navigation bar reads 'Search', so this is not the profile screen.",
+  "Answer in exactly two lines:",
+  "OBSERVED: what the screen actually shows about the thing the expectation names.",
+  "VERDICT: PASS or FAIL, then a dash, then one sentence of evidence.",
+  "",
+  "Describe before you judge, and judge only against what you described.",
 ].join("\n");
 
 /**
@@ -99,8 +102,16 @@ function textOf(content: unknown): string {
  */
 export function readVerdict(text: string): { passed: boolean; reason: string } {
   const trimmed = text.trim();
-  const match = /\b(PASS|FAIL)\b/i.exec(trimmed);
-  const reason = trimmed.replace(/^\s*(PASS|FAIL)\b\s*[-–—:]?\s*/i, "").trim();
+
+  // The judge describes before it decides, so read the verdict line when there
+  // is one — the description above it may well contain the words PASS or FAIL.
+  const verdictLine =
+    /^\s*VERDICT\s*:\s*(.+)$/im.exec(trimmed)?.[1]?.trim() ?? trimmed;
+
+  const match = /\b(PASS|FAIL)\b/i.exec(verdictLine);
+  const reason = verdictLine
+    .replace(/^\s*(PASS|FAIL)\b\s*[-–—:]?\s*/i, "")
+    .trim();
 
   if (!match) {
     return {
@@ -111,6 +122,6 @@ export function readVerdict(text: string): { passed: boolean; reason: string } {
 
   return {
     passed: match[1]!.toUpperCase() === "PASS",
-    reason: reason || trimmed.slice(0, 200),
+    reason: reason || verdictLine.slice(0, 200),
   };
 }

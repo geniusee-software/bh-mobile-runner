@@ -15,7 +15,11 @@ const SYSTEM = [
   "- Say it is not satisfied when the screen is plainly a different one, or when",
   "  the named element is simply not visible.",
   "",
-  "Reply with exactly one line: PASS or FAIL, then a dash, then one sentence of evidence.",
+  "Answer in exactly two lines:",
+  "OBSERVED: what the screen actually shows about the thing the expectation names.",
+  "VERDICT: PASS or FAIL, then a dash, then one sentence of evidence.",
+  "",
+  "Describe before you judge, and judge only against what you described.",
 ].join("\n");
 
 /**
