@@ -8,7 +8,7 @@ import { loadResults } from "../report/loadResults.ts";
 import { reportRuns } from "../report/reportRuns.ts";
 import {
   auditablePasses,
-  overturnedPasses,
+  overturnedSteps,
   suspectPasses,
 } from "../report/suspectPasses.ts";
 
@@ -36,11 +36,14 @@ for (const [variantId, records] of byVariant) {
     }
   }
 
-  const overturned = overturnedPasses(records);
-  if (overturned) {
+  const overturned = overturnedSteps(records);
+  if (overturned.length) {
     console.log(
-      `\n--- ${variantId}: ${overturned} passes were granted only by the fallback verifier ---`,
+      `\n--- ${variantId}: ${overturned.length} passes came from a second opinion ---`,
     );
+    for (const step of overturned) {
+      console.log(`  granted by ${step.by}: ${step.expected.slice(0, 88)}`);
+    }
   }
 
   const failures = taxonomyFor(records);

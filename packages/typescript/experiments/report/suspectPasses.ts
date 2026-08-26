@@ -48,22 +48,41 @@ export function suspectPasses(
 }
 
 /**
- * Passes that only the fallback verifier granted.
+ * Passes a different verifier granted after the first one refused.
  *
  * A second opinion wired to run on failure can only ever turn a FAIL into a
  * PASS, so it raises the pass rate by construction. How often it does is the
- * number that says whether it is seeing what the tree cannot — or just being
- * agreeable — and it belongs next to the pass rate rather than inside it.
+ * number that says whether it is seeing what the first verifier cannot — or
+ * just being agreeable — and it belongs next to the pass rate, not inside it.
+ *
+ * Only a change of verifier counts. The same verifier answering twice is a
+ * settle-and-retry, which is the screen having caught up rather than a second
+ * opinion overruling the first.
  */
 export function overturnedPasses(
   records: readonly RunRecord.Case[],
 ): number {
-  return records
-    .flatMap((record) => record.steps)
-    .filter(
-      (step) =>
-        step.verdict === "passed" && (step.verifierAttempts?.length ?? 0) > 1,
-    ).length;
+  return records.flatMap((record) => record.steps).filter(isOverturn).length;
+}
+
+/** The steps behind that count, for reading rather than tallying. */
+export function overturnedSteps(
+  records: readonly RunRecord.Case[],
+): Array<{ caseTitle: string; stepIndex: number; expected: string; by: string }> {
+  return records.flatMap((record) =>
+    record.steps.filter(isOverturn).map((step) => ({
+      caseTitle: record.caseTitle,
+      stepIndex: step.index,
+      expected: step.expected,
+      by: step.verifierAttempts?.at(-1) ?? "",
+    })),
+  );
+}
+
+function isOverturn(step: RunRecord.Step): boolean {
+  if (step.verdict !== "passed") return false;
+  const attempts = step.verifierAttempts ?? [];
+  return attempts.length > 1 && attempts.at(-1) !== attempts[0];
 }
 
 /** Passed steps that could be audited at all — the denominator for the rate. */
