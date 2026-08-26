@@ -31,3 +31,19 @@ describe("XCUITestAccessibilityTree", () => {
     });
   });
 });
+
+describe("containsWebview", () => {
+  it("is false for a native-only screen", async () => {
+    const xml = await fs.readFile(SIMPLE_FIXTURE_PATH, "utf-8");
+
+    expect(new XCUITestAccessibilityTree(xml).containsWebview()).toBe(false);
+  });
+
+  it("is true when a web view is present", () => {
+    const xml = `<AppiumAUT><XCUIElementTypeApplication name="App">
+      <XCUIElementTypeWebView name="content" />
+    </XCUIElementTypeApplication></AppiumAUT>`;
+
+    expect(new XCUITestAccessibilityTree(xml).containsWebview()).toBe(true);
+  });
+});
