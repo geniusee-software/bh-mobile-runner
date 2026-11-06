@@ -190,6 +190,7 @@ export class LlmFactory {
 
     const policy = BedrockRequestPolicies.default.policyFor(model);
     const additionalModelRequestFields = policy.additionalRequestFields(model);
+    const supportsToolChoiceValues = policy.toolChoiceValues?.(model);
     logger.debug(`Using Bedrock request policy "${policy.name}"`);
 
     return new ChatBedrockConverse({
@@ -202,6 +203,7 @@ export class LlmFactory {
         ? { credentials: { accessKeyId, secretAccessKey } }
         : {}),
       additionalModelRequestFields,
+      ...(supportsToolChoiceValues ? { supportsToolChoiceValues } : {}),
       // Streaming reaches Bedrock through ConverseStream, which the AWS SDK sends
       // over HTTP/2 — and the HTTP/2 client in the runtime this ships as a
       // single-file executable never completes the request, so every call fails

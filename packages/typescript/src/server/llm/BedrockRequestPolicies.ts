@@ -1,6 +1,9 @@
 import type { DocumentType } from "@smithy/types";
 import type { Model } from "../../Model.ts";
-import type { BedrockRequestPolicy } from "./BedrockRequestPolicy.ts";
+import type {
+  BedrockRequestPolicy,
+  ToolChoiceValue,
+} from "./BedrockRequestPolicy.ts";
 import { AnthropicBedrockPolicy } from "./policies/AnthropicBedrockPolicy.ts";
 import { DefaultBedrockPolicy } from "./policies/DefaultBedrockPolicy.ts";
 import { GptOssBedrockPolicy } from "./policies/GptOssBedrockPolicy.ts";
@@ -41,5 +44,9 @@ export class BedrockRequestPolicies {
 
   additionalRequestFields(model: Model): DocumentType {
     return this.policyFor(model).additionalRequestFields(model);
+  }
+
+  toolChoiceValues(model: Model): ToolChoiceValue[] | undefined {
+    return this.policyFor(model).toolChoiceValues?.(model);
   }
 }

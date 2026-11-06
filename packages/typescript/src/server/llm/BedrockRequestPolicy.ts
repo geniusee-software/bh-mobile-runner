@@ -18,4 +18,12 @@ export interface BedrockRequestPolicy {
 
   /** Fields to merge into `additionalModelRequestFields` for this model. */
   additionalRequestFields(model: Model): DocumentType;
+
+  /**
+   * The `tool_choice` values the model takes, or `undefined` to let
+   * `@langchain/aws` guess from the model id.
+   */
+  toolChoiceValues?(model: Model): ToolChoiceValue[] | undefined;
 }
+
+export type ToolChoiceValue = "auto" | "any" | "tool";

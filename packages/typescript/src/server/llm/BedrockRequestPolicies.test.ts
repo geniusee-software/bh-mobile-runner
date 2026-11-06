@@ -16,6 +16,18 @@ describe("BedrockRequestPolicies", () => {
       expect(policies.policyFor(model).name).toBe("anthropic");
       expect(policies.additionalRequestFields(model)).toEqual({});
     });
+
+    it.each([
+      ["aws_anthropic/eu.anthropic.claude-haiku-4-5-20251001-v1:0"],
+      ["aws_anthropic/eu.anthropic.claude-haiku-5-5"],
+      ["aws_anthropic/eu.anthropic.claude-sonnet-5-5"],
+    ])("states every tool_choice value for %s", (modelString) => {
+      // @langchain/aws only guesses for ids it knows; a Claude 5 id got none,
+      // so structured output ran without a forced tool and came back null.
+      const model = Model.parse(modelString);
+
+      expect(policies.toolChoiceValues(model)).toEqual(["auto", "any", "tool"]);
+    });
   });
 
   describe("gpt-oss", () => {
@@ -40,6 +52,7 @@ describe("BedrockRequestPolicies", () => {
 
       expect(policies.policyFor(model).name).toBe("default");
       expect(policies.additionalRequestFields(model)).toEqual({});
+      expect(policies.toolChoiceValues(model)).toBeUndefined();
     });
   });
 
