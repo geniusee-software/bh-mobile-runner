@@ -12,6 +12,7 @@ import { Telemetry } from "../../telemetry/Telemetry.ts";
 import { NavigateToUrlTool } from "../../tools/NavigateToUrlTool.ts";
 import { UploadTool } from "../../tools/UploadTool.ts";
 import type { LlmContext } from "../LlmContext.ts";
+import { MODEL_RETRIES } from "../LlmFactory.ts";
 import { BaseAgent } from "./BaseAgent.ts";
 import { SwitchToNextTabTool } from "../../tools/SwitchToNextTabTool.ts";
 import { SwitchToPreviousTabTool } from "../../tools/SwitchToPreviousTabTool.ts";
@@ -214,17 +215,56 @@ Actions: [${actionsStr}]`.trim();
       goal,
       accessibility_tree: treeXml,
     };
-    const result = await this.invokeChain(this.chain, input, meta);
+    // invokeChain retries only timeouts and rate limits. A plan in the wrong shape (e.g. `actions`
+    // as a string) is asked for again here: the model's answer is not deterministic.
+    let raw: unknown = null;
+    for (let attempt = 1; attempt <= 1 + MODEL_RETRIES; attempt++) {
+      const result = await this.invokeChain(this.chain, input, meta);
+      raw = result.structured;
+      this.logData(logger, "out", {
+        Result: raw,
+        Usage: result.usage,
+      });
+      const plan = PlannerAgent.readPlan(raw);
+      if (plan) return [plan.explanation, plan.actions];
+      logger.warn(
+        `  -> Plan in the wrong shape (attempt ${attempt}): ${PlannerAgent.#preview(raw)}`,
+      );
+    }
+    throw new Error(
+      `The model's plan is not a list of actions: ${PlannerAgent.#preview(raw)}`,
+    );
+  }
 
-    const structured = result.structured as PlannerAgent.Plan;
-    this.logData(logger, "out", {
-      Result: structured,
-      Usage: result.usage,
-    });
+  /**
+   * The plan the model returned, or null when it cannot be read. Actions that came as a JSON string
+   * (`"[\"tap Login\"]"`) are parsed; empty actions are dropped; an empty list is a valid plan.
+   */
+  static readPlan(structured: unknown): PlannerAgent.Plan | null {
+    if (!structured || typeof structured !== "object") return null;
+    const candidate = { ...(structured as Record<string, unknown>) };
+    if (typeof candidate["actions"] === "string") {
+      try {
+        candidate["actions"] = JSON.parse(candidate["actions"]);
+      } catch {
+        return null;
+      }
+    }
+    const parsed = PlannerAgent.Plan.safeParse(candidate);
+    if (!parsed.success) return null;
+    return {
+      explanation: parsed.data.explanation,
+      actions: parsed.data.actions.filter((action) => action),
+    };
+  }
 
-    return [
-      structured.explanation,
-      structured.actions.filter((action) => action),
-    ];
+  static #preview(raw: unknown): string {
+    let text: string;
+    try {
+      text = JSON.stringify(raw) ?? String(raw);
+    } catch {
+      text = String(raw);
+    }
+    return text.length > 500 ? `${text.slice(0, 500)}…` : text;
   }
 }
