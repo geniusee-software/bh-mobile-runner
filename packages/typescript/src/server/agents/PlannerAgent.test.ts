@@ -23,6 +23,31 @@ describe("PlannerAgent.readPlan", () => {
     });
   });
 
+  it("reads actions written as the list the prompt's examples show", () => {
+    // Haiku 5.5 copied `Actions: ['click button "Foobar"']` into the field (sandbox, 2026-11-26).
+    expect(
+      PlannerAgent.readPlan({
+        explanation: "Swipe the onboarding pages",
+        actions: `['swipe element "onboarding-container" left', 'tap button "Next"']`,
+      }),
+    ).toEqual({
+      explanation: "Swipe the onboarding pages",
+      actions: [
+        'swipe element "onboarding-container" left',
+        'tap button "Next"',
+      ],
+    });
+  });
+
+  it("keeps an escaped quote inside an action of that list", () => {
+    expect(
+      PlannerAgent.readPlan({
+        explanation: "x",
+        actions: String.raw`['tap button "Don\'t allow"']`,
+      }),
+    ).toEqual({ explanation: "x", actions: [`tap button "Don't allow"`] });
+  });
+
   it("accepts an empty plan: nothing to do is a valid answer", () => {
     expect(
       PlannerAgent.readPlan({ explanation: "Nothing to do", actions: [] }),
@@ -37,6 +62,8 @@ describe("PlannerAgent.readPlan", () => {
     "tap Login",
     { explanation: "x" },
     { explanation: "x", actions: "tap Login" },
+    { explanation: "x", actions: "[tap Login]" },
+    { explanation: "x", actions: "['tap Login', 42]" },
     { explanation: "x", actions: '{"a": 1}' },
     { explanation: "x", actions: [1, 2] },
     { actions: ["tap Login"] },

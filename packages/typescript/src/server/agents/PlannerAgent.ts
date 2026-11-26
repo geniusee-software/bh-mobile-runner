@@ -237,18 +237,35 @@ Actions: [${actionsStr}]`.trim();
   }
 
   /**
+   * Actions sent as a string: JSON, or the single-quoted list the prompt's examples teach
+   * (`Actions: ['click button "Foobar"']`), which the model copies into the field. Null otherwise.
+   */
+  static #parseActions(text: string): unknown {
+    try {
+      return JSON.parse(text);
+    } catch {
+      const quoted = String.raw`'(?:[^'\\]|\\.)*'`;
+      const list = new RegExp(
+        String.raw`^\[\s*(?:${quoted}\s*(?:,\s*${quoted}\s*)*,?\s*)?\]$`,
+      );
+      const trimmed = text.trim();
+      if (!list.test(trimmed)) return null;
+      return [...trimmed.matchAll(new RegExp(quoted, "g"))].map((match) =>
+        match[0].slice(1, -1).replace(/\\(.)/g, "$1"),
+      );
+    }
+  }
+
+  /**
    * The plan the model returned, or null when it cannot be read. Actions that came as a JSON string
-   * (`"[\"tap Login\"]"`) are parsed; empty actions are dropped; an empty list is a valid plan.
+   * (`"[\"tap Login\"]"`) or as the list the prompt's examples show (`"['tap Login']"`) are parsed;
+   * empty actions are dropped; an empty list is a valid plan.
    */
   static readPlan(structured: unknown): PlannerAgent.Plan | null {
     if (!structured || typeof structured !== "object") return null;
     const candidate = { ...(structured as Record<string, unknown>) };
     if (typeof candidate["actions"] === "string") {
-      try {
-        candidate["actions"] = JSON.parse(candidate["actions"]);
-      } catch {
-        return null;
-      }
+      candidate["actions"] = PlannerAgent.#parseActions(candidate["actions"]);
     }
     const parsed = PlannerAgent.Plan.safeParse(candidate);
     if (!parsed.success) return null;
